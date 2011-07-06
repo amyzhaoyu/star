@@ -1,0 +1,71 @@
+$colBack: #ffffff;
+$colBase: #f7f7f7;
+$colEdge: #cccccc;
+$maxWidth: 965;
+$headerH:  20;
+
+$black: #000000;
+$grey1: #333333;
+$grey2: #666666;
+$grey3: #999999;
+$grey4: #CCCCCC;
+$white: #FFFFFF;
+
+@mixin css3d($key, $value) {
+	 -moz-#{$key}: $value;
+	   -o-#{$key}: $value;
+  -webkit-#{$key}: $value;
+	  -ms-#{$key}: $value;
+		  #{$key}: $value;
+}
+@mixin css3Transition($time: 0.3s, $type: ease-out) {
+	@include css3d(transition, all $time $type);
+}
+@mixin opacity($alpha: 100) {
+	opacity: $alpha / 100;
+	filter: alpha(opacity=#{$alpha});
+}
+@mixin abspos($l: auto, $t: auto, $r: auto, $b: auto) {
+	position: absolute;
+	@if $l != auto { left:   #{$l}px; }
+	@if $t != auto { top:    #{$t}px; }
+	@if $r != auto { right:  #{$r}px; }
+	@if $b != auto { bottom: #{$b}px; }
+}
+@mixin rectangle($w: auto, $h: auto, $s: auto) {
+	@if $w != auto { width:  #{$w}px; }
+	@if $h != auto { height: #{$h}px; }
+	@if $s != auto {
+		width:  #{$s}px;
+		height: #{$s}px;
+	}
+}
+
+/******************************************************/
+
+
+body {
+	background: $colBack;
+}
+
+#header {
+	@include css3d(box-shadow, 0px 2px 2px #{$grey4});
+	height: #{$headerH}px;
+	background-color: $colBase;
+	width: 100%;
+	padding: 10px 0px;
+	margin: 0px;
+	margin-bottom: 20px;
+	.wrapper {
+		@include rectangle($h: $headerH, $w: $maxWidth);
+		margin: 0 auto;
+	}
+}
+
+#container {
+	position: relative;
+	padding: 0;
+	margin: 0 auto;
+	width: #{$maxWidth}px;
+}
+

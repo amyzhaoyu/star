@@ -1,0 +1,26 @@
+/******************************************************/
+body {
+  background: white; }
+
+#header {
+  -moz-box-shadow: 0px 2px 2px #cccccc;
+  -o-box-shadow: 0px 2px 2px #cccccc;
+  -webkit-box-shadow: 0px 2px 2px #cccccc;
+  -ms-box-shadow: 0px 2px 2px #cccccc;
+  box-shadow: 0px 2px 2px #cccccc;
+  height: 20px;
+  background-color: #f7f7f7;
+  width: 100%;
+  padding: 10px 0px;
+  margin: 0px;
+  margin-bottom: 20px; }
+  #header .wrapper {
+    width: 965px;
+    height: 20px;
+    margin: 0 auto; }
+
+#container {
+  position: relative;
+  padding: 0;
+  margin: 0 auto;
+  width: 965px; }
