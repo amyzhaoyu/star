@@ -86,20 +86,6 @@ a:hover { color: #036; }
     \\ ========================================== //
 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }
 .hidden { display: none; visibility: hidden; }
 .visuallyhidden { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
@@ -138,4 +124,46 @@ a:hover { color: #036; }
   @page { margin: 0.5cm; }
   p, h2, h3 { orphans: 3; widows: 3; }
   h2, h3{ page-break-after: avoid; }
+}
+
+.globalnav a.activeLink {
+    border-left:1px solid #457199;
+    border-right:1px solid #143C6D;
+    background:#295C8A;
+    font-weight:bold;
+}
+.globalnav a.inactiveLink {
+    border-right:1px solid #143C6D;
+}
+.globalnav {
+font-family:Georgia,"Times New Roman",Times,serif;
+left:320px;
+position:absolute;
+text-transform:uppercase;
+top:160px;
+width:1000px;
+}
+.globalnav ul {
+	position:absolute;
+	list-style-type: none;
+}
+.globalnav ul.leftNav {left:0;}
+.globalnav ul.rightNav {right:0;}
+.globalnav li {
+    float:left;
+}
+.globalnav li.active a{
+    color:#FFF;
+}
+.globalnav li a {
+    color:#E6EAF3;
+    display:block;
+    line-height:16px;
+    padding:0 12px 2px;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.globalnav li #login{
+color:#103458;
 }

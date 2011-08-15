@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.8, created on 2011-06-09 15:22:17
+<?php /* Smarty version Smarty-3.0.8, created on 2011-07-07 15:15:50
          compiled from "libs/smarty/templates/index.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:20336816094df11d690ce7b8-31518200%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:14397493114e1605e657be28-57263552%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     '8f707ed918617dc4039b5f94f3bc1651b312ff5f' => 
     array (
       0 => 'libs/smarty/templates/index.tpl',
-      1 => 1307647333,
+      1 => 1307647342,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '20336816094df11d690ce7b8-31518200',
+  'nocache_hash' => '14397493114e1605e657be28-57263552',
   'function' => 
   array (
   ),
@@ -22,9 +22,9 @@ if (!is_callable('smarty_modifier_date_format')) include '/home/ron/Govt/Govt-AP
 if (!is_callable('smarty_function_html_select_date')) include '/home/ron/Govt/Govt-API/NSF/RptSql/py/www/libs/smarty/plugins/function.html_select_date.php';
 if (!is_callable('smarty_function_html_select_time')) include '/home/ron/Govt/Govt-API/NSF/RptSql/py/www/libs/smarty/plugins/function.html_select_time.php';
 if (!is_callable('smarty_function_html_options')) include '/home/ron/Govt/Govt-API/NSF/RptSql/py/www/libs/smarty/plugins/function.html_options.php';
-?><?php echo '/*%%SmartyNocache:20336816094df11d690ce7b8-31518200%%*/<?php if (!is_callable(\'smarty_modifier_capitalize\')) include \'/home/ron/Govt/Govt-API/NSF/RptSql/py/www/libs/smarty/plugins/modifier.capitalize.php\';
+?><?php echo '/*%%SmartyNocache:14397493114e1605e657be28-57263552%%*/<?php if (!is_callable(\'smarty_modifier_capitalize\')) include \'/home/ron/Govt/Govt-API/NSF/RptSql/py/www/libs/smarty/plugins/modifier.capitalize.php\';
 if (!is_callable(\'smarty_modifier_date_format\')) include \'/home/ron/Govt/Govt-API/NSF/RptSql/py/www/libs/smarty/plugins/modifier.date_format.php\';
-?>/*/%%SmartyNocache:20336816094df11d690ce7b8-31518200%%*/';?>
+?>/*/%%SmartyNocache:14397493114e1605e657be28-57263552%%*/';?>
 <?php  $_config = new Smarty_Internal_Config("test.conf", $_smarty_tpl->smarty, $_smarty_tpl);$_config->loadConfigVars("setup", 'local'); ?>
 <?php $sha = sha1("header.tpl" . $_smarty_tpl->cache_id . $_smarty_tpl->compile_id);
 if (isset($_smarty_tpl->smarty->template_objects[$sha])) {
@@ -49,13 +49,13 @@ The value of global assigned variable $SCRIPT_NAME is <?php echo $_smarty_tpl->g
 Example of accessing server environment variable SERVER_NAME: <?php echo $_SERVER['SERVER_NAME'];?>
 
 
-The value of {$Name} is <b><?php echo '/*%%SmartyNocache:20336816094df11d690ce7b8-31518200%%*/<?php echo $_smarty_tpl->getVariable(\'Name\')->value;?>
-/*/%%SmartyNocache:20336816094df11d690ce7b8-31518200%%*/';?></b>
+The value of {$Name} is <b><?php echo '/*%%SmartyNocache:14397493114e1605e657be28-57263552%%*/<?php echo $_smarty_tpl->getVariable(\'Name\')->value;?>
+/*/%%SmartyNocache:14397493114e1605e657be28-57263552%%*/';?></b>
 
 variable modifier example of {$Name|upper}
 
-<b><?php echo '/*%%SmartyNocache:20336816094df11d690ce7b8-31518200%%*/<?php echo ((mb_detect_encoding($_smarty_tpl->getVariable(\'Name\')->value, \'UTF-8, ISO-8859-1\') === \'UTF-8\') ? mb_strtoupper($_smarty_tpl->getVariable(\'Name\')->value,SMARTY_RESOURCE_CHAR_SET) : strtoupper($_smarty_tpl->getVariable(\'Name\')->value));?>
-/*/%%SmartyNocache:20336816094df11d690ce7b8-31518200%%*/';?></b>
+<b><?php echo '/*%%SmartyNocache:14397493114e1605e657be28-57263552%%*/<?php echo ((mb_detect_encoding($_smarty_tpl->getVariable(\'Name\')->value, \'UTF-8, ISO-8859-1\') === \'UTF-8\') ? mb_strtoupper($_smarty_tpl->getVariable(\'Name\')->value,SMARTY_RESOURCE_CHAR_SET) : strtoupper($_smarty_tpl->getVariable(\'Name\')->value));?>
+/*/%%SmartyNocache:14397493114e1605e657be28-57263552%%*/';?></b>
 
 
 An example of a section loop:
@@ -135,16 +135,8 @@ $_smarty_tpl->tpl_vars['smarty']->value['section']['sec1']['last']       = ($_sm
 <p>
 
 testing strip tags
-<table border=0>
-	<tr>
-		<td>
-			<A HREF="<?php echo $_smarty_tpl->getVariable('SCRIPT_NAME')->value;?>
-">
-			<font color="red">This is a  test     </font>
-			</A>
-		</td>
-	</tr>
-</table>
+<table border=0><tr><td><A HREF="<?php echo $_smarty_tpl->getVariable('SCRIPT_NAME')->value;?>
+"><font color="red">This is a  test     </font></A></td></tr></table>
 
 </PRE>
 

@@ -1,11 +1,11 @@
-<?php /*%%SmartyHeaderCode:20336816094df11d690ce7b8-31518200%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:14397493114e1605e657be28-57263552%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     '8f707ed918617dc4039b5f94f3bc1651b312ff5f' => 
     array (
       0 => 'libs/smarty/templates/index.tpl',
-      1 => 1307647333,
+      1 => 1307647342,
       2 => 'file',
     ),
     'd5e409be896360bfae2d34276fab3de61533e831' => 
@@ -27,7 +27,7 @@ $_smarty_tpl->decodeProperties(array (
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '20336816094df11d690ce7b8-31518200',
+  'nocache_hash' => '14397493114e1605e657be28-57263552',
   'has_nocache_code' => true,
   'cache_lifetime' => 120,
 )); /*/%%SmartyHeaderCode%%*/?>
@@ -43,7 +43,7 @@ if (!is_callable('smarty_modifier_date_format')) include '/home/ron/Govt/Govt-AP
 <PRE>
 <b>Title: Welcome To Smarty!
 </b>
-The current date and time is 2011-06-09 15:22:17
+The current date and time is 2011-07-07 15:15:50
 
 The value of global assigned variable $SCRIPT_NAME is /star/index2.php
 
@@ -76,15 +76,7 @@ An example of section looped key values:
 <p>
 
 testing strip tags
-<table border=0>
-	<tr>
-		<td>
-			<A HREF="/star/index2.php">
-			<font color="red">This is a  test     </font>
-			</A>
-		</td>
-	</tr>
-</table>
+<table border=0><tr><td><A HREF="/star/index2.php"><font color="red">This is a  test     </font></A></td></tr></table>
 
 </PRE>
 
@@ -97,8 +89,8 @@ This is an example of the html_select_date function:
 <option value="03">March</option>
 <option value="04">April</option>
 <option value="05">May</option>
-<option value="06" selected="selected">June</option>
-<option value="07">July</option>
+<option value="06">June</option>
+<option value="07" selected="selected">July</option>
 <option value="08">August</option>
 <option value="09">September</option>
 <option value="10">October</option>
@@ -112,9 +104,9 @@ This is an example of the html_select_date function:
 <option value="4">04</option>
 <option value="5">05</option>
 <option value="6">06</option>
-<option value="7">07</option>
+<option value="7" selected="selected">07</option>
 <option value="8">08</option>
-<option value="9" selected="selected">09</option>
+<option value="9">09</option>
 <option value="10">10</option>
 <option value="11">11</option>
 <option value="12">12</option>
@@ -188,14 +180,14 @@ This is an example of the html_select_time function:
 <option value="12">12</option>
 <option value="13">13</option>
 <option value="14">14</option>
-<option value="15">15</option>
+<option value="15" selected="selected">15</option>
 <option value="16">16</option>
 <option value="17">17</option>
 <option value="18">18</option>
 <option value="19">19</option>
 <option value="20">20</option>
 <option value="21">21</option>
-<option value="22" selected="selected">22</option>
+<option value="22">22</option>
 <option value="23">23</option>
 <option value="24">24</option>
 <option value="25">25</option>
@@ -252,7 +244,7 @@ This is an example of the html_select_time function:
 <option value="14">14</option>
 <option value="15">15</option>
 <option value="16">16</option>
-<option value="17" selected="selected">17</option>
+<option value="17">17</option>
 <option value="18">18</option>
 <option value="19">19</option>
 <option value="20">20</option>
@@ -285,7 +277,7 @@ This is an example of the html_select_time function:
 <option value="47">47</option>
 <option value="48">48</option>
 <option value="49">49</option>
-<option value="50">50</option>
+<option value="50" selected="selected">50</option>
 <option value="51">51</option>
 <option value="52">52</option>
 <option value="53">53</option>

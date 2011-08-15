@@ -11,7 +11,7 @@ $smarty->force_compile = true;
 //$smarty->debugging = true;
 $smarty->caching = true;
 $smarty->cache_lifetime = 120;
-$smarty->assign("option_selected", "NE");
-
+$smarty->assign("amy", "NE");
+//echo "Under Construction - come back soon!"
 $smarty->display('people.tpl');
 ?>

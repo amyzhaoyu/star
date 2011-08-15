@@ -1,46 +1,3 @@
-<!doctype html>
-<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
-<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
-<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
-<head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	
-	<title>Star Metrics | National Science Foundation</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<link rel="stylesheet" href="css/style.css?v=2">
-	<link rel="stylesheet" href="css/960.css">
-	<link rel="stylesheet" href="css/style_sass.css">
-	<link rel="stylesheet" href="js/jquery-ui/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-</head>
-<body>
-	<div style="height: 10px"></div>
-	<div id="header"></div>
-	<div id="container">
-		<div id="main" role="main" style="padding: 5px 0px;">
-			<div class="grid_16 alpha omega">
-				{include file="people_leftside.tpl"}
-			</div>
-			<div class="clear"></div>
-		
-			<div class="grid_16 alpha omega">
-				{include file="people_main.tpl"}
-			</div>
-			<div class="clear"></div>
-		</div>
-		
-
-
-		{* End of JQuery UI tabs *}
-
-	</div>
 	<div id="footer"></div>
 
 	<script src="js/libs/modernizr-1.7.min.js"></script>
@@ -88,7 +45,7 @@
 	$(document).ready(function() {
 
 		// TableTools defaults
-		TableTools.DEFAULTS.aButtons = [ "copy", "csv", "pdf", "print" ];
+		//TableTools.DEFAULTS.aButtons = [ "copy", "csv", "pdf", "print" ];
 		TableTools.DEFAULTS.sSwfPath = "js/tabletools/media/swf/copy_cvs_xls_pdf.swf";
 
 		// Tabs
@@ -100,7 +57,23 @@
 			}
 		});
 
-		//$('#tabs').tabs();	
+		//$('#tabs').tabs();
+
+		//QTip to show information in form options	
+		$('option').each(function(){
+			$(this).qtip({
+				content: $(this).html(),
+				show: 'mouseover',
+				hide: 'mouseout',
+				position: {
+					target: 'mouse',
+			  		corner: {
+						target: 'topLeft',
+				 		tooltip: 'bottomLeft'
+			   		}
+				}
+			});
+		});
 	
 		
 		$.data($("body").get(0), "orgSelect", $("#orgs").html());
@@ -120,14 +93,14 @@
 				var aData = oTable.fnGetData(nTr);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + aData[6]).slideUp(function() {
 						oTable.fnClose(nTr);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[6] + "'></div>", 'details' );
 					$.getJSON('py/api.py/prop?id=' + aData[6], function(data) {
 						$("#pid_" + aData[6]).hide()
@@ -145,14 +118,14 @@
 				var pData = mTable.fnGetData(pi_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + pData[1]).slideUp(function() {
 						mTable.fnClose(pi_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					mTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'></div>", 'details' );
 					$.getJSON(('py/api.py/prop?id=' + pData[6]).split(' ').join(''), function(data) {
 						$("#pid_" + pData[1]).hide()
@@ -173,14 +146,14 @@
 				var orgData = iTable.fnGetData(org_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#oid_" + orgData[1]).slideUp(function() {
 						iTable.fnClose(org_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					iTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[1] + "'></div>", 'details' );
 					
 					$.getJSON('py/api.py/org?id=' + orgData[1], function(data) {

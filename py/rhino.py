@@ -80,6 +80,8 @@ def organization(req):
         return p.prop()
     elif page.lower() in ("pi", "pis"):
         return p.PI()
+    elif page.lower() in ("alias"):
+        return p.alias()
     elif page.lower() in ("search") and "q" in info:
         return p.search(query=info["q"])
     else:
@@ -104,6 +106,8 @@ def topic(req):
         return p.PI(org)
     elif page.lower() in ("org", "inst", "organization", "institution"):
         return p.org(org)
+    elif page.lower() in ("summ", "summary"):
+        return p.summ(org)
     elif page.lower() in ("search") and "q" in info:
         return p.search(query=info["q"])
     else:
