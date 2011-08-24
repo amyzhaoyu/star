@@ -45,7 +45,7 @@
 
 {* html *}
 	<h1> Query results: </h1>
-
+	<h3> Click on individual rows to select data. Drill down into each line item by clicking on the "+" button. </h3>
 	{* JQuery UI - tabs *}
 	<div id="tabs">
 		<ul>

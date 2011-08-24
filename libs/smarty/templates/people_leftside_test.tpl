@@ -17,7 +17,7 @@
 		<form action = "" method = "post">
 			<div id="leftOption1" class="grid_6 alpha">
 				<p>
-					NSF Division(s): 
+					Select NSF Division(s): 
 					<input type="button" onclick='$("#orgs").html($.data($("body").get(0), "orgSelect"));' value="Reset Selections" />
 				</p>	
 				<select id="orgs" multiple="multiple" name="org" class="sel">
@@ -82,8 +82,8 @@
 			</div>
 			<div id="leftOption2" class="grid_6">
 				<p>
-					Topic(s): 	
-					<input type="checkbox" id = "primary_topic" name = "primary_topic" value = true checked> Select by primary topic
+					Select Topic(s):	
+					<input type="checkbox" id = "primary_topic" name = "primary_topic" value = true checked> Use primary topic
 				</p>	
 				<select id="topics" multiple = "multiple" name="topic" class="sel">
 				</select>
