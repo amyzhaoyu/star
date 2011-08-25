@@ -52,10 +52,14 @@
 			<li><a href="#tabs-1">Grants</a></li>
 			<li><a href="#tabs-2">People</a></li>
 			<li><a href="#tabs-3">Institutions</a></li>
+			<li><a href="#tabs-4">Related Divisions</a></li>
+			<li><a href="#tabs-5">Topics</a></li>
 		</ul>
 		<div id="tabs-1"><div id="grants"></div> </div>
 		<div id="tabs-2"><div id="pi"></div> </div>
 		<div id="tabs-3"><div id="org"></div></div>
+		<div id="tabs-4"><div id="divs"></div></div>
+		<div id="tabs-5"><div id = "topics"></div></div>
 	</div>
 
 {* scripts *}

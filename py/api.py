@@ -97,10 +97,11 @@ def topic(req):
     info = req.form
     page = "me"
     if "page" in info:
-        page = info["page"]
+	page = info["page"]
     p = Topic(full=full)
     p.setParams(info)
 
+    """
     org =  ("org"  in info) and info["org"]  or None
     if page.lower() in ("pi", "pis"):
         return p.PI(org)
@@ -112,4 +113,21 @@ def topic(req):
         return p.search(query=info["q"])
     else:
         return p.me(org)
+    """
+    data = ""
+    org =  ("org"  in info) and info["org"]  or None
+    if page.lower() in ("pi", "pis"):
+	data = p.PI(org)
+    elif page.lower() in ("org", "inst", "organization", "institution"):
+	data = p.org(org)
+    elif page.lower() in ("summ", "summary"):
+	data = p.summ(org)
+    elif page.lower() in ("search") and "q" in info:
+	data = p.search(query=info["q"])
+    else:
+	data = p.me(org)
 
+    if('jsoncallback' in info):
+	return info['jsoncallback'] + "(" + data + ")"
+    else:
+    	return data

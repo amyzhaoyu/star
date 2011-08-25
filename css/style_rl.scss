@@ -1,0 +1,82 @@
+$colBack: #ffffff;
+$colBase: #f7f7f7;
+$colEdge: #cccccc;
+$maxWidth: 965;
+$headerH:  20;
+
+$black: #000000;
+$grey1: #333333;
+$grey2: #666666;
+$grey3: #999999;
+$grey4: #CCCCCC;
+$white: #FFFFFF;
+
+@mixin css3d($key, $value) {
+	 -moz-#{$key}: $value;
+	   -o-#{$key}: $value;
+  -webkit-#{$key}: $value;
+	  -ms-#{$key}: $value;
+		  #{$key}: $value;
+}
+@mixin css3Transition($time: 0.3s, $type: ease-out) {
+	@include css3d(transition, all $time $type);
+}
+@mixin opacity($alpha: 100) {
+	opacity: $alpha / 100;
+	filter: alpha(opacity=#{$alpha});
+}
+@mixin abspos($l: auto, $t: auto, $r: auto, $b: auto) {
+	position: absolute;
+	@if $l != auto { left:   #{$l}px; }
+	@if $t != auto { top:    #{$t}px; }
+	@if $r != auto { right:  #{$r}px; }
+	@if $b != auto { bottom: #{$b}px; }
+}
+@mixin rectangle($w: auto, $h: auto, $s: auto) {
+	@if $w != auto { width:  #{$w}px; }
+	@if $h != auto { height: #{$h}px; }
+	@if $s != auto {
+		width:  #{$s}px;
+		height: #{$s}px;
+	}
+}
+
+/******************************************************/
+
+#output { 
+	padding: 5px; 
+	background-color: $white; 
+	color: $grey2; 
+	p { 
+		padding: 5px; 
+	}
+	a {
+		cursor: pointer;
+	}
+	div { 
+		padding: 2px;
+		background-color: white; 
+		color: $grey4; 
+	}	
+
+	/*
+		table { 
+			cursor: pointer; 
+			border-collapse:collapse; 
+			border:2px solid blue; 
+			width:300px; 
+			margin:8px; 
+			tr { 
+				border:1px solid blue; 
+				color:blue; background-color:#f8f8f8; 
+				&:hover { 
+					color:red; 
+				}
+				td { 
+					padding:3px; 
+				} 
+			} 
+		}
+	*/
+}
+
