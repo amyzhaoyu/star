@@ -1,17 +1,17 @@
-<?php /* Smarty version Smarty-3.0.8, created on 2011-08-23 11:49:35
+<?php /* Smarty version Smarty-3.0.8, created on 2011-08-25 10:51:18
          compiled from "libs/smarty/templates/people.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:6161677384e53cc0f5d5238-37214801%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:277409804e566166395e39-15386833%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'd0ada542da285280afcc3c81081bb150efa2a8b6' => 
     array (
       0 => 'libs/smarty/templates/people.tpl',
-      1 => 1313343449,
+      1 => 1314283873,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '6161677384e53cc0f5d5238-37214801',
+  'nocache_hash' => '277409804e566166395e39-15386833',
   'function' => 
   array (
   ),
@@ -146,14 +146,14 @@ $_template = new Smarty_Internal_Template("people_main.tpl", $_smarty_tpl->smart
 				var aData = oTable.fnGetData(nTr);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + aData[6]).slideUp(function() {
 						oTable.fnClose(nTr);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[6] + "'></div>", 'details' );
 					$.getJSON('py/api.py/prop?id=' + aData[6], function(data) {
 						$("#pid_" + aData[6]).hide()
@@ -171,14 +171,14 @@ $_template = new Smarty_Internal_Template("people_main.tpl", $_smarty_tpl->smart
 				var pData = mTable.fnGetData(pi_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + pData[1]).slideUp(function() {
 						mTable.fnClose(pi_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					mTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'></div>", 'details' );
 					$.getJSON(('py/api.py/prop?id=' + pData[6]).split(' ').join(''), function(data) {
 						$("#pid_" + pData[1]).hide()
@@ -199,14 +199,14 @@ $_template = new Smarty_Internal_Template("people_main.tpl", $_smarty_tpl->smart
 				var orgData = iTable.fnGetData(org_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#oid_" + orgData[1]).slideUp(function() {
 						iTable.fnClose(org_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					iTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[1] + "'></div>", 'details' );
 					
 					$.getJSON('py/api.py/org?id=' + orgData[1], function(data) {

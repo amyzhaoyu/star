@@ -120,14 +120,14 @@
 				var aData = oTable.fnGetData(nTr);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + aData[6]).slideUp(function() {
 						oTable.fnClose(nTr);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[6] + "'></div>", 'details' );
 					$.getJSON('py/api.py/prop?id=' + aData[6], function(data) {
 						$("#pid_" + aData[6]).hide()
@@ -145,14 +145,14 @@
 				var pData = mTable.fnGetData(pi_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + pData[1]).slideUp(function() {
 						mTable.fnClose(pi_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					mTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'></div>", 'details' );
 					$.getJSON(('py/api.py/prop?id=' + pData[6]).split(' ').join(''), function(data) {
 						$("#pid_" + pData[1]).hide()
@@ -173,14 +173,14 @@
 				var orgData = iTable.fnGetData(org_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#oid_" + orgData[1]).slideUp(function() {
 						iTable.fnClose(org_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					iTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[1] + "'></div>", 'details' );
 					
 					$.getJSON('py/api.py/org?id=' + orgData[1], function(data) {

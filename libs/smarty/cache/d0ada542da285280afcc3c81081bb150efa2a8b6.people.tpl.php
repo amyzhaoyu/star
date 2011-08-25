@@ -1,11 +1,11 @@
-<?php /*%%SmartyHeaderCode:6161677384e53cc0f5d5238-37214801%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
+<?php /*%%SmartyHeaderCode:277409804e566166395e39-15386833%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_smarty_tpl->decodeProperties(array (
   'file_dependency' => 
   array (
     'd0ada542da285280afcc3c81081bb150efa2a8b6' => 
     array (
       0 => 'libs/smarty/templates/people.tpl',
-      1 => 1313343449,
+      1 => 1314283873,
       2 => 'file',
     ),
     'f77024a61bbba2f871a51a33df510d9971c15a5f' => 
@@ -17,11 +17,11 @@ $_smarty_tpl->decodeProperties(array (
     '8f6f1d88aedd20a5a8292a519027ae6e05c1d09c' => 
     array (
       0 => 'libs/smarty/templates/people_main.tpl',
-      1 => 1312138952,
+      1 => 1314283808,
       2 => 'file',
     ),
   ),
-  'nocache_hash' => '6161677384e53cc0f5d5238-37214801',
+  'nocache_hash' => '277409804e566166395e39-15386833',
   'has_nocache_code' => false,
   'cache_lifetime' => 120,
 )); /*/%%SmartyHeaderCode%%*/?>
@@ -410,7 +410,7 @@ $_smarty_tpl->decodeProperties(array (
 
 						aaData = _.map(data["data"], function(v) { 
 							return [
-								'<img src="details_open.png">',
+								'<img src="images/details_open.png">',
 								v["topic"]["id"].join(", "), 
 								v["org"]["name"],
 								v["pge"]["code"], 
@@ -460,7 +460,7 @@ $_smarty_tpl->decodeProperties(array (
 						data["data"] = $.grep(data["data"], function(v) { return (v.inst != null); }); //removes the double not available
 						aaData = _.map(data["data"], function(v) { 
 							return [
-								'<img src="details_open.png">',
+								'<img src="images/details_open.png">',
 								v["nsf_id"], 
 								v["name"], 
 								keyExists("inst.name", v, "Not Available"),
@@ -500,7 +500,7 @@ $_smarty_tpl->decodeProperties(array (
 						//data["data"] = $.grep(data["data"], function(v) { return (v.inst != null); }); //removes the double not available
 						aaData = _.map(data["data"], function(v) { 
 							return [
-								'<img src="details_open.png">',
+								'<img src="images/details_open.png">',
 								keyExists("nsf_id", v, "Not Available"), 
 								keyExists("name", v, "Not Available"),
 								v["count"],
@@ -619,14 +619,14 @@ $_smarty_tpl->decodeProperties(array (
 				var aData = oTable.fnGetData(nTr);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + aData[6]).slideUp(function() {
 						oTable.fnClose(nTr);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[6] + "'></div>", 'details' );
 					$.getJSON('py/api.py/prop?id=' + aData[6], function(data) {
 						$("#pid_" + aData[6]).hide()
@@ -644,14 +644,14 @@ $_smarty_tpl->decodeProperties(array (
 				var pData = mTable.fnGetData(pi_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#pid_" + pData[1]).slideUp(function() {
 						mTable.fnClose(pi_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					mTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'></div>", 'details' );
 					$.getJSON(('py/api.py/prop?id=' + pData[6]).split(' ').join(''), function(data) {
 						$("#pid_" + pData[1]).hide()
@@ -672,14 +672,14 @@ $_smarty_tpl->decodeProperties(array (
 				var orgData = iTable.fnGetData(org_node);
 				if ( this.src.match('details_close') )
 				{
-					this.src = "details_open.png";
+					this.src = "images/details_open.png";
 					$("#oid_" + orgData[1]).slideUp(function() {
 						iTable.fnClose(org_node);
 					});
 				}
 				else
 				{
-					this.src = "details_close.png";
+					this.src = "images/details_close.png";
 					iTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[1] + "'></div>", 'details' );
 					
 					$.getJSON('py/api.py/org?id=' + orgData[1], function(data) {
