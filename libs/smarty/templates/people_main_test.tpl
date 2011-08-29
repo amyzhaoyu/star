@@ -96,6 +96,7 @@ function renderJSON(query, tab)
 			createTable(tab, data);		
 		});
 	}
+	// example: http://readidata.nitrd.gov/star/py/api.py/topic?year=2010-2010&t1=341,123&summ=full
 	else if (tab == "divs"){
 		alert('py/api.py/topic?' + query + '&summ=full')
 	}
