@@ -96,6 +96,9 @@ function renderJSON(query, tab)
 			createTable(tab, data);		
 		});
 	}
+	else if (tab == "divs"){
+		alert('py/api.py/topic?' + query + '&summ=full')
+	}
 	else{
 		$.getJSON('py/api.py/topic?' + query + '&page=' + tab, function(data) {
 			createTable(tab, data);		
