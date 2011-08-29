@@ -92,7 +92,7 @@ function renderJSON(query, tab)
 	query = query.substr(0, query.length-1);
 
 	if(tab == "topics_tab"){
-		$.getJSON('py/api.py/topic?' + query + '&summ', function(data){
+		$.getJSON('py/api.py/topic?' + query + '&summ=full', function(data){
 			createTable(tab, data);		
 		});
 	}

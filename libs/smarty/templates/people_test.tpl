@@ -17,7 +17,7 @@
 			<div class="clear"></div>
 		
 			<div class="grid_16 alpha omega">
-				{include file="people_main_test_2.tpl"}
+				{include file="people_main_test.tpl"}
 			</div>
 			<div class="clear"></div>
 		</div>
