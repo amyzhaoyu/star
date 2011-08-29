@@ -267,9 +267,6 @@
 			}
 			else
 			{
-				{if $smarty.get.alert=="amy"}
-					alert('py/api.py/topic?' + query);
-				{/if}
 				renderJSON(query, tab);
 				{*
 				$.getJSON('py/api.py/topic?' + query, function(data) {

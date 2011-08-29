@@ -15,7 +15,6 @@ $smarty->assign("amy", "NE");
 
 $smarty->display('people_test.tpl');
 
-print 'here';
 
 
 ?>
