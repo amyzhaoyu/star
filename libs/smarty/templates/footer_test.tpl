@@ -43,7 +43,6 @@
 		});
 		return o;
 	};
-<<<<<<< HEAD
 		
 	$(document).ready(function() {
 
