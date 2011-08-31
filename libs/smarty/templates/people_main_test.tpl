@@ -107,18 +107,6 @@ function renderJSON(query, tab)
 	}
 }
 
-<<<<<<< HEAD
-			$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&page=' + tab+'&jsoncallback=?', function(data) {
-				if (data["Error"] != undefined){
-					validateMsg(data["Error"]);
-					$("#loader").hide();
-				}
-				else {
-					if (tab == "grant") {
-						{* BEGIN GRANTS TABLE *}
-						{* Render Grant DataTable *}
-						$("#grants").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable' style='width: 894px;'></table>");
-=======
 function createTable(tab, data)
 {
 	if (data["Error"] != undefined){
@@ -130,7 +118,6 @@ function createTable(tab, data)
 			{* BEGIN GRANTS TABLE *}
 			{* Render Grant DataTable *}
 			$("#grants").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable' style='width: 894px;'></table>");
->>>>>>> 403cbf23cc6c0cc4de1453ec9a6c8427e637131d
 
 			aaData = _.map(data["data"], function(v) { 
 				return [

@@ -14,11 +14,8 @@
 	<script src="js/jquery.tools.min.js"></script>
 	<script src="js/jquery.sparkline.min.js"></script>
 	<script src="js/jquery.qtip-1.0.0-rc3.min.js"></script>
-<<<<<<< HEAD
 	<script src="js/funcs.js"></script>
-=======
 	<script src="js/functions.js"></script>
->>>>>>> 403cbf23cc6c0cc4de1453ec9a6c8427e637131d
 
 	{* TEMPLATES *}
 
@@ -171,8 +168,6 @@
 			}
 		});
 	});		
-=======
->>>>>>> 403cbf23cc6c0cc4de1453ec9a6c8427e637131d
 	</script>
 
 	
