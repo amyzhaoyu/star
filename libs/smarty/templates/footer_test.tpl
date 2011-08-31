@@ -14,6 +14,7 @@
 	<script src="js/jquery.tools.min.js"></script>
 	<script src="js/jquery.sparkline.min.js"></script>
 	<script src="js/jquery.qtip-1.0.0-rc3.min.js"></script>
+	<script src="js/funcs.js"></script>
 
 	{* TEMPLATES *}
 
@@ -78,13 +79,13 @@
 		
 		$.data($("body").get(0), "orgSelect", $("#orgs").html());
 		$("#orgs").val("CHE");
-		$("#orgs").change(_.throttle(function() { chgSelects("topic"); }, 400));
-		$("#topics").change(_.throttle(function() { chgSelects("org"); }, 400));
-		$("#primary_topic").change(_.throttle(function() { chgSelects("org"); }, 400));
-		$("#leftOption3 select").change(_.throttle(function() { chgSelects("all"); }, 400)); // Make sure you don't overload Javascript!
-		chgSelects("topic");
+		//$("#orgs").change(_.throttle(function() { chgSelects("topic"); }, 400));
+		//$("#topics").change(_.throttle(function() { chgSelects("org"); }, 400));
+		//$("#primary_topic").change(_.throttle(function() { chgSelects("org"); }, 400));
+		//$("#leftOption3 select").change(_.throttle(function() { chgSelects("all"); }, 400)); // Make sure you don't overload Javascript!
+		//chgSelects("topic"); //NK - comment this out if you want to initialize the page showing the topics for some preselected items
 		
-		submitMenu();
+		//submitMenu(); //NK - comment this out if you want to initialize the page showing the topics for some preselected items
 		
 		/* Detail for Grant Details */
 		$('#grants #dtable tbody td img').live('click', function () {
@@ -102,7 +103,7 @@
 				{
 					this.src = "images/details_close.png";
 					oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[6] + "'></div>", 'details' );
-					$.getJSON('py/api.py/prop?id=' + aData[6], function(data) {
+					$.getJSON('http://readidata.nitrd.gov/star/py/api.py/prop?id=' + aData[6], function(data) {
 						$("#pid_" + aData[6]).hide()
 						$("#pid_" + aData[6]).html($("#propRender").tmpl(data["data"]));
 						$("#pid_" + aData[6]).slideDown()
@@ -127,7 +128,7 @@
 				{
 					this.src = "images/details_close.png";
 					mTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'></div>", 'details' );
-					$.getJSON(('py/api.py/prop?id=' + pData[6]).split(' ').join(''), function(data) {
+					$.getJSON(('http://readidata.nitrd.gov/star/py/api.py/prop?id=' + pData[6]).split(' ').join(''), function(data) {
 						$("#pid_" + pData[1]).hide()
 						// Use $.each() to get all grant details for each PI
 						$.each(data["data"], function(i, item){
@@ -156,7 +157,7 @@
 					this.src = "images/details_close.png";
 					iTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[1] + "'></div>", 'details' );
 					
-					$.getJSON('py/api.py/org?id=' + orgData[1], function(data) {
+					$.getJSON('http://readidata.nitrd.gov/star/py/api.py/org?id=' + orgData[1], function(data) {
 						$("#oid_" + orgData[1]).hide()
 						$("#oid_" + orgData[1]).html($("#orgRender").tmpl(data["data"]));
 						$("#oid_" + orgData[1]).slideDown()

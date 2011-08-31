@@ -88,7 +88,7 @@
 				tab = "grant";
 			query = query.substr(0, query.length-1);
 
-			$.getJSON('py/api.py/topic?' + query + '&page=' + tab, function(data) {
+			$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&page=' + tab+'&jsoncallback=?', function(data) {
 				if (data["Error"] != undefined){
 					validateMsg(data["Error"]);
 					$("#loader").hide();
