@@ -23,6 +23,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
 
+<<<<<<< HEAD
 <!--        <div class="globalnav">
             <ul>
 		<li class="active"><a href="/star/index_test.php" title="Query & Download Data">Queries</a></li>
@@ -34,6 +35,8 @@
 	    </ul>    
         </div> -->
 
+=======
+>>>>>>> 403cbf23cc6c0cc4de1453ec9a6c8427e637131d
 </head>
 <body>
 

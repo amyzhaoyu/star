@@ -33,16 +33,16 @@ def user(req):
 
     p = Person(full=full)
     p.setParams(info)
-    
+    data = ""
     if page.lower() in ("proposal", "proposals", "prop", "props"):
-        return p.prop()
+        data = p.prop()
     elif page.lower() in ("co-pi", "co-pis", "copi", "copis", "pi", "pis"):
-        return p.PI()
+        data = p.PI()
     elif page.lower() in ("search") and "q" in info:
-        return p.search(query=info["q"])
+        data = p.search(query=info["q"])
     else:
-        return p.me()
-
+        data = p.me()
+    return formatJson(data, info)
 ###########################
 
 def proposal(req):
@@ -53,15 +53,16 @@ def proposal(req):
 
     p = Proposal(full=full)
     p.setParams(info)
-
+    data = ""
     if page.lower() in ("co-pi", "co-pis", "copi", "copis", "pi", "pis"):
-        return p.PI()
+        data = p.PI()
     elif page.lower() in ("org", "inst", "organization", "institution"):
-        return p.org()
+        data = p.org()
     elif page.lower() in ("search") and "q" in info:
-        return p.search(query=info["q"])
+        data = p.search(query=info["q"])
     else:
-        return p.me()
+        data = p.me()
+    return formatJson(data, info)
 def prop(req):
     return proposal(req)
 
@@ -75,19 +76,20 @@ def organization(req):
 
     p = Organization(full=full)
     p.setParams(info)
-
+    data = ""
     if page.lower() in ("proposal", "proposals", "prop", "props"):
-        return p.prop()
+        data = p.prop()
     elif page.lower() in ("pi", "pis"):
-        return p.PI()
+        data = p.PI()
     elif page.lower() in ("alias"):
-        return p.alias()
+        data = p.alias()
     elif page.lower() in ("summ"):
-        return p.summ()
+        data = p.summ()
     elif page.lower() in ("search") and "q" in info:
-        return p.search(query=info["q"])
+        data = p.search(query=info["q"])
     else:
-        return p.me()    
+        data = p.me() 
+    return formatJson(data, info)   
 def org(req):
     return organization(req)
 
@@ -126,7 +128,9 @@ def topic(req):
 	data = p.search(query=info["q"])
     else:
 	data = p.me(org)
+    return formatJson(data, info)
 
+def formatJson(data, info):
     if('jsoncallback' in info):
 	return info['jsoncallback'] + "(" + data + ")"
     else:

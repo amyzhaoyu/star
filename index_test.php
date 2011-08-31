@@ -14,4 +14,10 @@ $smarty->cache_lifetime = 120;
 $smarty->assign("amy", "NE");
 
 $smarty->display('people_test.tpl');
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 403cbf23cc6c0cc4de1453ec9a6c8427e637131d
 ?>

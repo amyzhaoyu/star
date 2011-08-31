@@ -424,4 +424,156 @@
 			</div>
 			<div class="clear"></div>
 		</form>
+<<<<<<< HEAD
 	</div> -->
+=======
+	</div>
+
+{* script *}
+	<script>
+		function setSelects() {
+			selValues = $("#topics").val();
+			$("#topics_selected").html((selValues==null)?"":("Selected: " + selValues));
+			selValues = $("#orgs").val();
+			$("#orgs_selected").html((selValues==null)?"":("Selected: " + selValues)); 
+		}		
+		function chgSelects(selector) {
+			if (selector == "topic" || selector == "all") {
+				selTopics = $("#topics").val(); //PREVIOUSLY SELECTED
+				if ($("#orgs").val() != null) {
+					params = "org=" + $("#orgs").val() + "&" + "year=" + $("#leftOption3 select[name=year_from]").val() + "-" + $("#leftOption3 select[name=year_to]").val()
+					$.getJSON('py/api.py/topic?' + params + '&summ', function(data) {
+						$("#topics").empty();
+						$("#topics").html( $('#topicList').tmpl(data["data"]));
+						$("#topics option").each(function(i, v) { //SELECT ITEMS THAT WERE PREVIOUSLY SELECTED
+							if ($.inArray($(v).val(), selTopics) > -1) {
+								$(v).attr("selected", "selected");
+							}
+						});
+						// QTip to show all of topic text!!
+						$('#topics option').each(function(){
+							$(this).qtip({
+								content: $(this).html(),
+								show: 'mouseover',
+								hide: 'mouseout',
+								position: {
+									target: 'mouse',
+							  		corner: {
+										target: 'topLeft',
+								 		tooltip: 'bottomLeft'
+							   		}
+								}
+							});
+						});
+
+						setSelects();
+					}); 
+				}
+			}
+			if (selector == "org" || selector == "all") {
+				if ($("#topics").val() != null) {
+					topicStr = "t" + ($("#primary_topic").attr("checked")?"1":"") + "=" + $("#topics").val() + "&";
+				}
+				params = topicStr + "year=" + $("#leftOption3 select[name=year_from]").val() + "-" + $("#leftOption3 select[name=year_to]").val()
+				prevSelOrgs = $("#orgs").val(); //PREVIOUSLY SELECTED 
+				$.getJSON('py/api.py/topic?' + params + '&summ', function(data) {
+					selOrgs = _.uniq(_.map(data["data"], function(v) { return v["org"]; }));
+					$("#orgs").html($.data($("body").get(0), "orgSelect")); //RESET ORG VIEW
+					$("#orgs optgroup").each(function(i, v) { //SELECT ITEMS THAT WERE PREVIOUSLY SELECTED
+						if (_.intersect(selOrgs, $(v).attr("value").split(",")).length == 0) {
+							$(v).remove();
+						} else {
+							$(v).children("option").each(function(i2, v2) {
+								if ($.inArray($(v2).val(), selOrgs) == -1) {
+									$(v2).remove();
+								} else if ($.inArray($(v2).val(), prevSelOrgs) > -1) {
+									$(v2).attr("selected", "selected");
+								} 
+							});
+						}
+					});
+				}); 
+			}
+			setSelects();
+		}
+	
+		function validateMsg(text) {
+			$("#message").html(text)
+			$("#message").show();
+			setTimeout('$("#message").slideUp()', 2500);
+		}
+	
+		function submitMenu() {
+			tab = selTab;
+				
+			var input = $("#menu form").serializeObject();
+			query_nsfDiv = input.org;
+			query_yearFrom = input.year_from;
+			query_yearTo = input.year_to;
+			query_topics = input.topic;
+			query_primtopic = input.primary_topic;
+
+			{if $smarty.get.alert=="amy"}
+				alert(JSON.stringify(input));
+			{/if}
+			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, tab);
+			//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "grant");
+			//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
+			//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
+		}
+		function renderIt(org, year_from, year_to, topic, prim, tab) {
+			var year = "";
+			if(year_from > year_to) {
+				validateMsg("Please enter a valid date range!");
+				return;
+			}
+			else if (year_from == year_to){
+				year = year_from;
+			}
+		
+			else{
+				year = year_from + "-" + year_to;
+			}
+
+			$("#loader").show();
+			var query = "";
+			if(org != undefined){
+				query = query + "org=" + org + "&";
+			}
+			if(year != ""){
+				query = query + "year=" + year + "&";
+			}
+			if(topic != undefined){
+				if(prim){
+					query = query + "t1=" + topic + "&";
+				}
+				else{
+					query = query + "t=" + topic + "&";
+				}
+			}
+
+			if(query == ""){
+				$("#loader").hide();
+				validateMsg("Please enter a search query!");
+				return;
+			}
+			else
+			{
+				renderJSON(query, tab);
+				{*
+				$.getJSON('py/api.py/topic?' + query, function(data) {
+					if (data["Error"] != undefined){
+						validateMsg(data["Error"]);
+						$("#loader").hide();
+					}
+					else{
+						renderJSON(data);
+						$("#loader").hide();
+					}
+				});
+				*}
+			
+			}
+		}
+	</script>
+>>>>>>> 403cbf23cc6c0cc4de1453ec9a6c8427e637131d
