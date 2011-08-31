@@ -92,16 +92,16 @@ function renderJSON(query, tab)
 	query = query.substr(0, query.length-1);
 
 	if(tab == "topics_tab"){
-		$.getJSON('py/api.py/topic?' + query + '&summ=full', function(data){
+		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&summ=full&jsoncallback=?', function(data){
 			createTable(tab, data);		
 		});
 	}
 	// example: http://readidata.nitrd.gov/star/py/api.py/topic?year=2010-2010&t1=341,123&summ=full
 	else if (tab == "divs"){
-		alert('py/api.py/topic?' + query + '&summ=full')
+		alert('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&summ=full&jsoncallback=?')
 	}
 	else{
-		$.getJSON('py/api.py/topic?' + query + '&page=' + tab, function(data) {
+		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&page=' + tab + '&jsoncallback=?', function(data) {
 			createTable(tab, data);		
 		});
 	}
