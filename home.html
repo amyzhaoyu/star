@@ -1,23 +1,132 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Star Metrics</title>
+	<meta name="description" content="">
+
+	<meta name="author" content="">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+
+	<link rel="stylesheet" href="css/style.css?v=2">
+	<link rel="stylesheet" href="css/960.css">
+	<link rel="stylesheet" href="css/style_sass.css">
+	<link rel="stylesheet" href="js/jquery-ui/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />	
+	<link rel="stylesheet" href="css/starMetrics-css.css" rel="stylesheet" />	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+
+<!--        <div class="globalnav">
+            <ul>
+		<li class="active"><a href="/star/index_test.php" title="Query & Download Data">Queries</a></li>
+		<li><a href="#" title="Topic Analysis & Exploration">Topics</a></li>
+		<li><a href="#" title="Data Visualization">Visuals</a></li>
+		<li><a href="#" title="API Documentation">API</a></li>
+		<li><a href="#" title="Frequently Asked Questions">FAQs</a></li>
+		<li><a href="#" title="Contact Us">Contact Us</a></li>
+	    </ul>    
+        </div> -->
+
+</head>
+<body>
+
+	<div style="height: 10px"></div>
+	<div id="header">
+		<div class="menu mainNav horizontal green">
+	<ul>
+		<li class="highlight"><span class="menu_r"><a href="home.php"><span class="menu_ar">Home</span></a></span></li>
+		<li><span class="menu_r"><a href="index_test.php"><span class="menu_ar">Portfolio Viewer</span></a></span></li>
+		<li><span class="menu_r"><a href="#"><span class="menu_ar">Expertise Locator</span></a></span></li>
+		<li><span class="menu_r"><a href="#"><span class="menu_ar">People Locator</span></a></span></li>
+		<li><span class="menu_r"><a href="http://rd-dashboard.nitrd.gov/investment.html" target="_blank"><span class="menu_ar">Institutions</span></a></span></li>
+	</ul>
+</div>
+	</div>
+	<div id="container">
+		<div id="main" role="main">
+			<br />
+
+			<table width="100%" border="0" cellspacing="0" cellpadding="10">
+			  <tr valign="top">
+			    <td colspan="2" align="left"><h1><br />
+			      Welcome</h1>
+			      <span style="font-size: 110%">
+			      <p>&ldquo;Empowering the Nation Through Discovery and Innovation: The National
+			        Science Foundation Strategic Plan for Fiscal Years (FY) 2011-2016&rdquo; sets
+			        the Foundation&rsquo;s direction for the next five years. The vision
+			        focuses it&rsquo;s goals to better integrate them with the concepts of
+			        research and learning, and more closely align with NSF&rsquo;s review
+			        criteria of intellectual merit and broader impacts. </p>
+
+			      <p>This prototype represents Star Metrics&rsquo; analytic approach to viewing
+			        the data to better understand the broader implication and impact of NSF
+			        funding. Star Metrics demonstrates portfolio views that allow NSF to
+			        better compare its performance relevance in science and technology investments. <br />
+			      <br />
+			      </p>
+			    </span></td>
+			    <td align="left"><br />
+			      <h2 style="color: #336699;">Recent
+			        News</h2>
+			      <p><span style="font-size: 90%;"><span style="color: #336699;"><img src="images/thumb-idx-report.png" alt="Report" width="110" height="135" border="0" align="right" /></span>STAR METRICS National Jobs Report: The
+			          STAR METRICS program is the first large-scale effort to document the
+			          results of federal S&amp;T investments by directly linking inputs and
+			          outputs, using administrative records of research institutions. A first
+			          look at a national review of the jobs produced by Star Metrics from
+			          federal research investments from NSF, NIH, DOE and EPA will be released
+			    in September 2011.<br /><br /></span></p></td>
+
+			  </tr>
+			  <tr valign="top">
+			    <td width="33%" align="center"><h2 style="color: #336699;">Portfolio Explorer</h2>
+			      <p><img src="images/thumb-idx-portfolio.png" alt="portfolio" width="300" height="255" vspace="10" /></p>
+			      <p>View NSF research portfolios by topic.</p></td>
+			    <td width="34%" align="center"><h2 style="color: #336699;">Expertise Locator</h2>
+			      <p><img src="images/thumb-idx-expertise.png" alt="expertise locator" width="300" height="255" vspace="10" /></p>
+
+			      <p>View NSF researchers and their collaborators.</p></td>
+			    <td width="33%" align="center"><h2 style="color: #336699;">Institutions</h2>
+			      <p><img src="images/thumb-idx-institutions.png" alt="institutions" width="300" height="255" vspace="10" /></p>
+			      <p>View NSF funded institutions.</p></td>
+			  </tr>
+			</table>
+			<p>&nbsp;</p>
+
+			<p>&nbsp; </p>
+		</div>
+		
+
+	</div>
+
 	<div id="footer"></div>
 
 	<script src="js/libs/modernizr-1.7.min.js"></script>
 	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
+
 	<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
 	<script src="js/plugins.js"></script>
 	<script src="js/script.js"></script>
 	<script src="js/star.js"></script>
 	<script src="js/datatables/media/js/jquery.dataTables.min.js"></script>
 	<script src="js/tabletools/media/js/TableTools.min.js"></script>
+
 	<script src="js/tabletools/media/js/ZeroClipboard.js"></script>
 	<script src="js/underscore.js"></script>
 	<script src="js/jquery-ui/jquery-ui-1.8.14.custom.min.js"></script>
 	<script src="js/jquery.tools.min.js"></script>
 	<script src="js/jquery.sparkline.min.js"></script>
 	<script src="js/jquery.qtip-1.0.0-rc3.min.js"></script>
+
 	<script src="js/funcs.js"></script>
 	<script src="js/functions.js"></script>
-
-	{* TEMPLATES *}
 
 	<script>
 	var selTab = "grant";

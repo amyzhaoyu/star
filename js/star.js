@@ -12,9 +12,10 @@ amy = () ->
 
 
 Reusable functions for the API front-end
-*/var renderProp;
+*/
+var renderProp;
 renderProp = function(q, me) {
-  return $.getJSON('py/api.py/prop?' + q, function(data) {
+  return $.getJSON('http://readidata.nitrd.gov/star/py/api.py/prop?' + q + '&jsoncallback=?', function(data) {
     $("#div_" + me + " div").html($("#propRender").tmpl(data["data"]));
     return $("#div_" + me).slideDown();
   });

@@ -292,7 +292,7 @@
         <span class="values">[count]</span></td>
       <td><span class="values">Patents<br />
         (soon)</span></td>
-      <td><span class="values">Pubications<br />
+      <td><span class="values">Publications<br />
 (soon)</span></td>
       <td align="right"><input class="buttonGreen-sm" type="submit" value="Edit" onClick="editTopics();" /></td>
     </tr>

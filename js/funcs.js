@@ -299,7 +299,7 @@ function submitMenu(tab) {
 	query_yearFrom = input.year_from;
 	query_yearTo = input.year_to;
 	var tmp = input["topic[]"];
-	var query_topics = "";
+	query_topics = "";
 	if( Object.prototype.toString.call( tmp ) === '[object Array]' ) {
 		//cheaper than a jquery map for this simple thing
 		for(var i = 0, l = tmp.length; i < l; i++) {
@@ -318,6 +318,15 @@ function submitMenu(tab) {
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "grant");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
+
+	//activate tab
+	if (tab=='grant') {
+		$('#tabs').tabs('select','tabs-1');
+	} else if (tab=='pi') {
+		$('#tabs').tabs('select','tabs-2');			
+	} else if (tab=='org') {
+		$('#tabs').tabs('select','tabs-3');
+	}
 	
 	//now either show the results or in case an error occurred, don't show them
 	//we check error by seeing if there is anything in the message div - not the best way but quick for now
