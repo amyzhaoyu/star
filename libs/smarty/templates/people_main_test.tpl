@@ -50,7 +50,7 @@
 		<li><a href="#tabs-1">Awards</a></li>
 		<li><a href="#tabs-2">Researchers</a></li>
 		<li><a href="#tabs-3">Institutions</a></li>
-		<li><a href="#tabs-4">Related Divisions</a></li>
+<!--		<li><a href="#tabs-4">Related Divisions</a></li>-->
 		<li><a href="#tabs-5">Topics</a></li>
 		<li><a href="#tabs-6">Patents (soon)</a></li>
 		<li><a href="#tabs-7">Publications (soon)</a></li>
@@ -58,7 +58,7 @@
 	<div id="tabs-1"><div id="grants"></div> </div>
 	<div id="tabs-2"><div id="pi"></div> </div>
 	<div id="tabs-3"><div id="org"></div></div>
-	<div id="tabs-4"><div id="divs"></div></div>
+<!--	<div id="tabs-4"><div id="divs"></div></div>-->
 	<div id="tabs-5"><div id = "topics_tab"></div></div>
 	<div id="tabs-6"><div id = "patents"></div></div>
 	<div id="tabs-7"><div id = "publications"></div></div>
