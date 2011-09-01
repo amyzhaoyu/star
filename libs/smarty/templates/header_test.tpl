@@ -19,8 +19,21 @@
 	<link rel="stylesheet" href="css/960.css">
 	<link rel="stylesheet" href="css/style_sass.css">
 	<link rel="stylesheet" href="js/jquery-ui/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />	
+	<link rel="stylesheet" href="css/starMetrics-css.css" rel="stylesheet" />	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
 
+<!--        <div class="globalnav">
+            <ul>
+		<li class="active"><a href="/star/index_test.php" title="Query & Download Data">Queries</a></li>
+		<li><a href="#" title="Topic Analysis & Exploration">Topics</a></li>
+		<li><a href="#" title="Data Visualization">Visuals</a></li>
+		<li><a href="#" title="API Documentation">API</a></li>
+		<li><a href="#" title="Frequently Asked Questions">FAQs</a></li>
+		<li><a href="#" title="Contact Us">Contact Us</a></li>
+	    </ul>    
+        </div> -->
+
 </head>
 <body>
+
