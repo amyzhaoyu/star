@@ -47,7 +47,7 @@
 {* JQuery UI - tabs *}
 <div id="tabs">
 	<ul>
-		<li><a href="#tabs-1">Proposals</a></li>
+		<li><a href="#tabs-1">Awards</a></li>
 		<li><a href="#tabs-2">Researchers</a></li>
 		<li><a href="#tabs-3">Institutions</a></li>
 		<li><a href="#tabs-4">Related Divisions</a></li>

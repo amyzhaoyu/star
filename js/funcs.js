@@ -245,9 +245,9 @@ function loadTopics(data) {
 		else $(".button_view_results").show();
 	});	
 	
-	$("#navDivisions").hide();
-	$("#navDivisions-sm").show();
-	$("#navTopics").show();
+	$("#navDivisions").slideUp();
+	$("#navDivisions-sm").slideDown();
+	$("#navTopics").slideDown();
 }
 
 function validateMsg(text) {
@@ -274,20 +274,20 @@ function getTopics() {
 }
 
 function editQuery() {
-	$("#queryresults").hide();
-	$("#navDivisions-sm").hide(); //this is the guy that shows a summary of the query params
-	$("#navTopics-sm").hide(); //this is the guy that shows a summary of the query params
-	$("#navTopics").hide();
+	$("#queryresults").slideUp();
+	$("#navDivisions-sm").slideUp(); //this is the guy that shows a summary of the query params
+	$("#navTopics-sm").slideUp(); //this is the guy that shows a summary of the query params
+	$("#navTopics").slideUp();
 	//show form
-	$("#navDivisions").show();
+	$("#navDivisions").slideDown();
 }
 
 function editTopics() {
 	//hide results
-	$("#queryresults").hide();
-	$("#navTopics-sm").hide(); //this is the guy that shows a summary of the query params
+	$("#queryresults").slideUp();
+	$("#navTopics-sm").slideUp(); //this is the guy that shows a summary of the query params
 	//show form
-	$("#navTopics").show();
+	$("#navTopics").slideDown();
 }
 
 function submitMenu(tab) {
@@ -334,9 +334,9 @@ function submitMenu(tab) {
 //console.log($("#message").html());	
 	if (!$("#message").html()) {
 		//hide query
-		$("#navTopics").hide();
-		$("#queryresults").show();
-		$("#navTopics-sm").show(); //this is the guy that shows a summary of the query params
+		$("#navTopics").slideUp();
+		$("#queryresults").slideDown();
+		$("#navTopics-sm").slideDown(); //this is the guy that shows a summary of the query params
 	}
 }
 
