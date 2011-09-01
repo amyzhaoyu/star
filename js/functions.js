@@ -32,19 +32,22 @@ $(document).ready(function() {
 
 	$.data($("body").get(0), "orgSelect", $("#orgs").html());
 	$("#orgs").val("CHE");
-	$("#orgs").change(_.throttle(function() { chgSelects("topic"); }, 400));
-	$("#topics").change(_.throttle(function() { chgSelects("org"); }, 400));
-	$("#primary_topic").change(_.throttle(function() { chgSelects("org"); }, 400));
-	$("#leftOption3 select").change(_.throttle(function() { chgSelects("all"); }, 400)); // Make sure you don't overload Javascript!
-	chgSelects("topic");
+	 //NK - comment below out if you do not want to initialize the page showing the topics for some preselected items
+	//$("#orgs").change(_.throttle(function() { chgSelects("topic"); }, 400));
+	//$("#topics").change(_.throttle(function() { chgSelects("org"); }, 400));
+	//$("#primary_topic").change(_.throttle(function() { chgSelects("org"); }, 400));
+	//$("#leftOption3 select").change(_.throttle(function() { chgSelects("all"); }, 400)); // Make sure you don't overload Javascript!
+	//chgSelects("topic");
 
-	submitMenu();
+	//submitMenu();
 
 	// Tabs
 
 	$('#tabs').tabs({
 		select: function(event, ui) {
 			selTab = ["grant", "pi", "org", "divs", "topics_tab"][ui.index];
+//console.log(query_nsfDiv);			
+//console.log(query_topics);
 			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, selTab);
 		}
 	});
@@ -83,7 +86,7 @@ $(document).ready(function() {
 			{
 				this.src = "images/details_close.png";
 				oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[6] + "'></div>", 'details' );
-				$.getJSON('py/api.py/prop?id=' + aData[6], function(data) {
+				$.getJSON('http://readidata.nitrd.gov/star/py/api.py/prop?id=' + aData[6] + '&jsoncallback=?', function(data) {
 					$("#pid_" + aData[6]).hide()
 					$("#pid_" + aData[6]).html($("#propRender").tmpl(data["data"]));
 					$("#pid_" + aData[6]).slideDown()
@@ -108,7 +111,7 @@ $(document).ready(function() {
 			{
 				this.src = "images/details_close.png";
 				mTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'></div>", 'details' );
-				$.getJSON(('py/api.py/prop?id=' + pData[6]).split(' ').join(''), function(data) {
+				$.getJSON(('http://readidata.nitrd.gov/star/py/api.py/prop?id=' + pData[6]).split(' ').join('') + '&jsoncallback=?', function(data) {
 					$("#pid_" + pData[1]).hide()
 					// Use $.each() to get all grant details for each PI
 					$.each(data["data"], function(i, item){
@@ -137,7 +140,7 @@ $(document).ready(function() {
 				this.src = "images/details_close.png";
 				iTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[1] + "'></div>", 'details' );
 			
-				$.getJSON('py/api.py/org?id=' + orgData[1], function(data) {
+				$.getJSON('http://readidata.nitrd.gov/star/py/api.py/org?id=' + orgData[1] + '&jsoncallback=?', function(data) {
 					$("#oid_" + orgData[1]).hide()
 					$("#oid_" + orgData[1]).html($("#orgRender").tmpl(data["data"]));
 					$("#oid_" + orgData[1]).slideDown()

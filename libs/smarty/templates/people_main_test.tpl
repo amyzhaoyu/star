@@ -47,13 +47,13 @@
 {* JQuery UI - tabs *}
 <div id="tabs">
 	<ul>
-		<li><a href="#tabs-1">Grants</a></li>
-		<li><a href="#tabs-2">People</a></li>
+		<li><a href="#tabs-1">Proposals</a></li>
+		<li><a href="#tabs-2">Researchers</a></li>
 		<li><a href="#tabs-3">Institutions</a></li>
 		<li><a href="#tabs-4">Related Divisions</a></li>
 		<li><a href="#tabs-5">Topics</a></li>
-		<li><a href="#tabs-6">Patents (coming soon)</a></li>
-		<li><a href="#tabs-7">Publications (coming soon)</a></li>
+		<li><a href="#tabs-6">Patents (soon)</a></li>
+		<li><a href="#tabs-7">Publications (soon)</a></li>
 	</ul>
 	<div id="tabs-1"><div id="grants"></div> </div>
 	<div id="tabs-2"><div id="pi"></div> </div>
@@ -92,16 +92,18 @@ function renderJSON(query, tab)
 	query = query.substr(0, query.length-1);
 
 	if(tab == "topics_tab"){
-		$.getJSON('py/api.py/topic?' + query + '&summ=full', function(data){
+		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&summ=full&jsoncallback=?', function(data){
 			createTable(tab, data);		
 		});
 	}
 	// example: http://readidata.nitrd.gov/star/py/api.py/topic?year=2010-2010&t1=341,123&summ=full
 	else if (tab == "divs"){
-		alert('py/api.py/topic?' + query + '&summ=full')
+		//alert('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&summ=full&jsoncallback=?')
 	}
 	else{
-		$.getJSON('py/api.py/topic?' + query + '&page=' + tab, function(data) {
+//console.log(query);
+//console.log(tab);		
+		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&page=' + tab + '&jsoncallback=?', function(data) {
 			createTable(tab, data);		
 		});
 	}
@@ -117,7 +119,7 @@ function createTable(tab, data)
 		if (tab == "grant") {
 			{* BEGIN GRANTS TABLE *}
 			{* Render Grant DataTable *}
-			$("#grants").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable' style='width: 894px;'></table>");
+			$("#grants").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
 
 			aaData = _.map(data["data"], function(v) { 
 				return [
@@ -163,16 +165,16 @@ function createTable(tab, data)
 		} else if (tab == "pi") {			
 			{* BEGIN PI SECTION *}
 			/* Render PI DataTable - add in more detail for each PI*/
-			$("#pi").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable' style='width: 894px;'></table>");
+			$("#pi").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
 			
 
 
-			data["data"] = $.grep(data["data"], function(v) { return (v.inst != null); }); //removes the double not available
+			//data["data"] = $.grep(data["data"], function(v) { return (v.inst != null); }); //removes the double not available
 			aaData = _.map(data["data"], function(v) { 
 				return [
 					'<img src="images/details_open.png">',
 					v["nsf_id"], 
-					v["name"], 
+					keyExists("name", v, "Not Available"), 
 					keyExists("inst.name", v, "Not Available"),
 					keyExists("inst.dept", v, "Not Available"),
 					v["count"],
@@ -210,7 +212,7 @@ function createTable(tab, data)
 		}  else if (tab == "org") {			
 			{* BEGIN INSTITUTIONS SECTION *}
 			/* Render institutions DataTable */
-			$("#org").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable' style='width: 894px;'></table>");
+			$("#org").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
 			//data["data"] = $.grep(data["data"], function(v) { return (v.inst != null); }); //removes the double not available
 			aaData = _.map(data["data"], function(v) { 
 				return [
@@ -244,7 +246,7 @@ function createTable(tab, data)
 			});
 			 {* END OF INSTITUTIONS SECTION *}
 		} else if (tab == "topics_tab"){
-			$("#topics_tab").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable' style='width: 894px;'></table>");
+			$("#topics_tab").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
 			// API change needed: display topic text for summ when t1 is specified
 			aaData = _.map(data["data"], function(v) { 
 				return [
