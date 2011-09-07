@@ -5,7 +5,7 @@ $(document).ready(function() {
 						{
 							"sExtends": "copy",
 							"sButtonText": "Copy to Clipboard",
-							"bSelectedOnly": true,
+							"bSelectedOnly": true
 						},
 						/*{
 							"sExtends": "print",
@@ -17,11 +17,11 @@ $(document).ready(function() {
 							"aButtons": [
 								{
 									"sExtends": "csv", 
-									"bSelectedOnly": true,
+									"bSelectedOnly": true
 								},
 								{
 									"sExtends": "pdf",
-									"bSelectedOnly": true,
+									"bSelectedOnly": true
 								}	
 							]
 						},

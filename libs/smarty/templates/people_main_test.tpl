@@ -152,7 +152,7 @@ function createTable(tab, data)
 					{ "sWidth": "8%", "sTitle": "Date", "aTargets": [ 4 ] }, 
 					{ "sWidth": "8%", "sTitle": "Amount", "aTargets": [ 5 ] }, 
 					{ "sWidth": "8%", "sTitle": "Prop ID", "aTargets": [ 6 ] }, 
-					{ "sTitle": "Proposal Title", "aTargets": [ 7 ] }, 
+					{ "sTitle": "Proposal Title", "aTargets": [ 7 ] }
 				],
 				"aaData": aaData,
 				"aaSorting": [[4, 'desc'], [6, 'desc']],
@@ -198,7 +198,7 @@ function createTable(tab, data)
 					{ "sWidth": "30%", "sTitle": "Institution", "aTargets": [ 3 ] }, 
 					{ "sWidth": "30%", "sTitle": "Department", "aTargets": [ 4 ] },  
 					{ "sWidth": "5%", "sTitle": "Number of Grants", "aTargets": [ 5 ] },  
-					{ "sWidth": "20%", "sTitle": "Grants IDs", "aTargets": [ 6 ] },  
+					{ "sWidth": "20%", "sTitle": "Grants IDs", "aTargets": [ 6 ] }
 				],
 				"aaData": aaData,
 				"aaSorting": [[5, 'desc']],
@@ -239,7 +239,7 @@ function createTable(tab, data)
 					{ "sWidth": "15%", "sTitle": "Institution ID", "aTargets": [ 1 ] },
 					{ "sWidth": "60%", "sTitle": "Name", "aTargets": [ 2 ] }, 
 					{ "sWidth": "10%", "sTitle": "Number of Proposals", "aTargets": [ 3 ] }, 
-					{ "sWidth": "10%", "sTitle": "Number of PIs", "aTargets": [ 4 ] }, 
+					{ "sWidth": "10%", "sTitle": "Number of PIs", "aTargets": [ 4 ] }
 				],
 				"aaData": aaData,
 				"aaSorting": [[2, 'asc']]
@@ -268,7 +268,7 @@ function createTable(tab, data)
 				"aoColumnDefs": [
 					{ "sWidth": "15%", "sTitle": "Topic ID", "aTargets": [ 0 ] },
 					{ "sWidth": "70%", "sTitle": "Topic Description", "aTargets": [ 1 ] }, 
-					{ "sWidth": "15%", "sTitle": "Total Grants", "aTargets": [ 2 ] }, 
+					{ "sWidth": "15%", "sTitle": "Total Grants", "aTargets": [ 2 ] }
 				],
 				"aaData": aaData,
 				"aaSorting": [[2, 'desc']],

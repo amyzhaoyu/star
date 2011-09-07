@@ -175,9 +175,9 @@ function loadTopics(data) {
 				"sWidth": "150px",
 				"sTitle": "Funding", 
 				"aTargets": [ 5 ]
-			},
+			}
 		],
-		"aaSorting": [[3, 'desc']],
+		"aaSorting": [[3, 'desc']]
 	});
 	
 	//append the view toggle states after the filter
