@@ -119,7 +119,7 @@ function createTable(tab, data)
 		if (tab == "grant") {
 			{* BEGIN GRANTS TABLE *}
 			{* Render Grant DataTable *}
-			$("#grants").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
+			$("#grants").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable_grants'></table>");
 
 			aaData = _.map(data["data"], function(v) { 
 				return [
@@ -142,7 +142,6 @@ function createTable(tab, data)
 				"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',
 				"bDestroy": true,
 				"bProcessing": true,
-
 				"iDisplayLength": 50,
 				"aoColumnDefs": [
 					{ "bSortable": false, "aTargets": [ 0 ] },
@@ -165,7 +164,7 @@ function createTable(tab, data)
 		} else if (tab == "pi") {			
 			{* BEGIN PI SECTION *}
 			/* Render PI DataTable - add in more detail for each PI*/
-			$("#pi").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
+			$("#pi").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable_pi'></table>");
 			
 
 
@@ -186,7 +185,8 @@ function createTable(tab, data)
 				//TableTools - copy, csv, print, pdf
 				"bJQueryUI": true,
 				"sPaginationType": "full_numbers",					
-				"sDom": '<"H"lfr>t<"F"ip>',
+				//"sDom": 'T<"clear">lfrtip',
+				"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',
 				//"bDestroy": true,
 				"bProcessing": true,
 
@@ -212,7 +212,7 @@ function createTable(tab, data)
 		}  else if (tab == "org") {			
 			{* BEGIN INSTITUTIONS SECTION *}
 			/* Render institutions DataTable */
-			$("#org").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
+			$("#org").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable_org'></table>");
 			//data["data"] = $.grep(data["data"], function(v) { return (v.inst != null); }); //removes the double not available
 			aaData = _.map(data["data"], function(v) { 
 				return [
@@ -229,7 +229,7 @@ function createTable(tab, data)
 				"bJQueryUI": true,
 				"sPaginationType": "full_numbers",
 				//"sDom": 'T<"clear">lfrtip',
-				"sDom": '<"H"lfr>t<"F"ip>',
+				"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',
 				"bDestroy": true,
 				"bProcessing": true,
 
@@ -246,7 +246,7 @@ function createTable(tab, data)
 			});
 			 {* END OF INSTITUTIONS SECTION *}
 		} else if (tab == "topics_tab"){
-			$("#topics_tab").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable'></table>");
+			$("#topics_tab").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable_topics'></table>");
 			// API change needed: display topic text for summ when t1 is specified
 			aaData = _.map(data["data"], function(v) { 
 				return [
@@ -260,8 +260,8 @@ function createTable(tab, data)
 				//TableTools - copy, csv, print, pdf
 				"bJQueryUI": true,
 				"sPaginationType": "full_numbers",
-				"sDom": '<"clear">lfrtip',
-				//"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',
+				//"sDom": '<"clear">lfrtip',
+				"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',
 				"bDestroy": true,
 				"bProcessing": true,
 				"iDisplayLength": 50,
