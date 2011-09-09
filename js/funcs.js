@@ -1,3 +1,8 @@
+//global variable that holds proposal data for selected topics
+//when user first selects a topic read the data and store it in this array (indexed by topic id)
+//then use it to add/remove from the summary instead of retrieving it each time
+var proposalsbytopic = {};
+
 function setSelects() {
 	var numSelected = $("#orgs :selected").length;
 	var selValues = "";
@@ -9,10 +14,9 @@ function setSelects() {
 	selValues = $("#year_from").val()+' - '+$("#year_to").val();
 	$("#year_selected").html((selValues==null)?"":(selValues)); 
 	selValues = "";
-	$('#prop_status:checked').each(function() {
+	$('[id^="prop_status"]:checked').each(function() {
 		if (selValues!="") selValues += ", ";
-	    if ($(this).val()=='granted') selValues += 'Grants';
-		else selValues += $(this).val();
+		selValues += $(this).next().text();
 	});
 	$("#propstatus_selected").html(selValues); 
 	$("#primarytopic_selected").html($("#primary_topic").attr("checked")?"Primary Topic Only":"All Topics");
@@ -25,8 +29,14 @@ function chgSelects(selector) {
 	if (selector == "topic" || selector == "all") {
 		var selTopics = $("#topics").val(); //PREVIOUSLY SELECTED
 		if ($("#orgs").val() != null) {
-			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val()
-			$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + params + '&summ&jsoncallback=?', function(data) {
+			var type = [];
+			$('input[name=prop_status]:checked').each(function() {
+				type.push($(this).val());
+			});
+			//but we need a string
+			type = type.join(',');
+			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "type=" + type;
+			$.getJSON(apiurl + 'topic?' + params + '&summ&jsoncallback=?', function(data) {
 				//populate table
 				loadTopics(data);
 			}); 
@@ -68,8 +78,8 @@ function loadTopics(data) {
 	var aaData = _.map(data["data"], function(v) { 
 		//the random columns generate a number to use to generate an image of a graph from a list of graph images img1-img10
 		//the last column is a dummy number between 
-		var fundMax = 20;
-		var fundMin = 1;
+//		var fundMax = 20;
+//		var fundMin = 1;
 		var imgMax = 10;
 		var imgMin = 1;
 		return [
@@ -78,13 +88,13 @@ function loadTopics(data) {
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
 			v["count"],
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
-			(Math.random() * (fundMax - fundMin) + fundMin).toFixed(2),
+			v["awarded_dollar"],
+			keyExists("requested_dollar",v,null),
 		]; 
 	});
 
 	$("#topics_total").html(aaData.length);
 
-	
 //console.log(aaData);
 	//before we do anything figure out the max number of proposals
 	//we need this for the "bar graphs"
@@ -92,9 +102,17 @@ function loadTopics(data) {
 	var maxAwardCount = 0;
 	for (var i=0;i<aaData.length;i++) {
 		if (aaData[i][3]>maxProposalCount) maxProposalCount = aaData[i][3];
-		if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
+		if (aaData[i][6]) {
+			//if no requested dollar amount available use awarded dollar for total funding numbers (public vs. private access)
+			if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
+		} else {
+			if (aaData[i][6]>maxAwardCount) maxAwardCount = aaData[i][6];
+		}
 	}
 //alert(maxProposalCount);	
+
+	//set the number of orgs selected
+	$("#orgs_selected_right").html($("#orgs :selected").length);
 
 	var oTable = $('#topics_table').dataTable({
 		//TableTools - copy, csv, print, pdf
@@ -143,7 +161,12 @@ function loadTopics(data) {
 					//it is relative to the maxCount and the size of this column - 150px
 					var numPixels = 0;
 					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[3]);
-					return '<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">'+oObj.aData[3]+'</span></span></strong>';
+					var numProposals = oObj.aData[3];
+					if (oObj.aData[6]) {
+						var tmp = ((oObj.aData[5]/oObj.aData[6])*100).toFixed(2);
+						numProposals += ' / '+tmp+'%';
+					}
+					return '<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number numproposals">'+numProposals+'</span></span></strong>';
 				},
 				"bSearchable": false,
 				"bUseRendered": false,
@@ -167,14 +190,33 @@ function loadTopics(data) {
 					//calculate the width of the "bar" for this row
 					//it is relative to the maxCount and the size of this column - 150px
 					var numPixels = 0;
-					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[5]);
-					return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+oObj.aData[5]+'M</span></span></strong>';
+					var formattedAwarded_Dollar = (oObj.aData[5]/1000000).toFixed(2);
+					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*formattedAwarded_Dollar);
+					return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+formattedAwarded_Dollar+'M</span></span></strong>';
 				},
 				"bSearchable": false,
 				"bUseRendered": false,
 				"sWidth": "150px",
 				"sTitle": "Funding", 
 				"aTargets": [ 5 ]
+			},
+			{
+				"fnRender": function ( oObj ) {
+					//calculate the width of the "bar" for this row
+					//it is relative to the maxCount and the size of this column - 150px
+					if (oObj.aData[6]) {
+						var numPixels = 0;
+						var formattedAwarded_Dollar = (oObj.aData[6]/1000000).toFixed(2);
+						if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*formattedAwarded_Dollar);
+						return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+formattedAwarded_Dollar+'M</span></span></strong>';						
+					}
+				},
+				"bSearchable": false,
+				"bUseRendered": false,
+				"sWidth": "150px",
+				"sTitle": "Request Funding", 
+				"bVisible": false,
+				"aTargets": [ 6 ]
 			}
 		],
 		"aaSorting": [[3, 'desc']]
@@ -226,15 +268,62 @@ function loadTopics(data) {
 			//set the row on
 			$(this).parent().parent().addClass('selected');
 			numTopicsSelected++; 
-			numProposalsSelected += parseInt($(this).parent().parent().find('span.number').html());
+			numProposalsSelected += parseInt($(this).parent().parent().find('span.numproposals').html());
 		} else {
 			//set the row off
 			$(this).parent().parent().removeClass('selected');
 			numTopicsSelected--;
-			numProposalsSelected -= parseInt($(this).parent().parent().find('span.number').html());
+			numProposalsSelected -= parseInt($(this).parent().parent().find('span.numproposals').html());
 		}
 		$("#topics_selected").html(numTopicsSelected);
 		$("#proposals_selected").html(numProposalsSelected);
+
+//console.log(proposalsbytopic);	
+		var topicid = $(this).attr('value');
+//console.log(topicid);			
+//console.log(proposalsbytopic[topicid]);	
+		//now pull proposal information for selected topic
+		if (proposalsbytopic[topicid]!== undefined) {
+//console.log('retrieving from cache');			
+			updateTopicSummary($(this).attr('checked'),proposalsbytopic[topicid]);
+		} else {
+			//first get the data
+			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&summ=full";
+			var checked = $(this).attr('checked');
+			$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
+				//what we get back is a list of topics per year
+				//create the compiled data once for quick access
+				var totalfunding = 0;
+				var max_year = null;
+				var min_year = null;
+				for (var i=0;i<data["data"].length;i++) {
+					//total funding
+					totalfunding += parseInt(data["data"][i]["awarded_dollar"]);
+					var year = data["data"][i]["year"];
+					//max year
+					if (!max_year) max_year = year;
+					else if (year > max_year) {
+						max_year = year;
+					}
+					//min year
+					if (!min_year) min_year = year;
+					else if (year < min_year) {
+						min_year = year;
+					}
+				}				
+				var compileddata = [];
+				var tmp = {};
+				//save it
+				tmp['summary_totalfunding'] = totalfunding;
+				tmp['max_year'] = max_year;
+				tmp['min_year'] = min_year;
+				compileddata.push(tmp);
+				//save it
+				proposalsbytopic[topicid] = compileddata;
+				//populate table
+				updateTopicSummary(checked,compileddata);
+			}); 
+		}
 		
 		//do it on the right side too
 		$("#topics_selected_right").html(numTopicsSelected);	
@@ -248,6 +337,19 @@ function loadTopics(data) {
 	$("#navDivisions").slideUp();
 	$("#navDivisions-sm").slideDown();
 	$("#navTopics").slideDown();
+}
+
+function updateTopicSummary(checked,data) {
+//console.log(checked);
+console.log(data);
+	var curr_summary_totalfunding = parseInt($("#summary_totalfunding").html());
+	var summary_totalfunding = 0;
+	for (var i=0;i<data.length;i++) {
+		summary_totalfunding += data[i]['summary_totalfunding'];
+	}
+	if (checked) curr_summary_totalfunding += summary_totalfunding;
+	else curr_summary_totalfunding -= summary_totalfunding;
+	$("#summary_totalfunding").html(curr_summary_totalfunding);
 }
 
 function validateMsg(text) {

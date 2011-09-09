@@ -26,6 +26,17 @@
 	var query_yearTo = 2010;
 	var query_topics = "";
 	var query_primtopic = true;
+	
+	//initialize the access status and api url
+	{php}
+	if (isProposalAccessAllowed()) {
+		print 'var proposalaccessallowed = true;'."\n";
+		print 'var apiurl = "http://128.150.10.70/py/api.py/";';
+	} else {
+		print 'var proposalaccessallowed = false;'."\n";
+		print 'var apiurl = "http://readidata.nitrd.gov/star/py/api.py/";';		
+	}
+	{/php}
 
 	$.fn.serializeObject = function()
 	{

@@ -21,7 +21,7 @@
 	float: left;
 	margin: 0;
 	padding: 0;
-	background: transparent url(images/sm-nav-bkgd-blue.jpg) top left no-repeat;
+	background: transparent url(../images/sm-nav-bkgd-blue.jpg) top left no-repeat;
 }
 
 .mainNav.horizontal ul li a {
