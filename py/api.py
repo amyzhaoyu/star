@@ -22,6 +22,7 @@ from objectClasses import *
 ###########################
 
 full = False
+server = "readidata"
 
 ###########################
 
@@ -133,5 +134,11 @@ def topic(req):
 def formatJson(data, info):
     if('jsoncallback' in info):
 	return info['jsoncallback'] + "(" + data + ")"
+    elif('callback' in info):
+	return info['callback'] + "(" + data + ")"
     else:
     	return data
+
+def access(req):
+    info = req.form
+    return formatJson(json.dumps({"access":server}), info)
