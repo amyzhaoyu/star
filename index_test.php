@@ -1,4 +1,5 @@
 <?php
+require('libs/app/functions.php');
 require('libs/smarty/Smarty.class.php');
 
 $smarty = new Smarty;
@@ -8,6 +9,7 @@ $smarty->setCacheDir(    'libs/smarty/cache');
 $smarty->setConfigDir(   'libs/smarty/configs');
 
 $smarty->force_compile = true;
+$smarty->allow_php_tag = true;
 //$smarty->debugging = true;
 $smarty->caching = true;
 $smarty->cache_lifetime = 120;
