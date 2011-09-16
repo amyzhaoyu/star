@@ -70,30 +70,7 @@ $(document).ready(function() {
 		});
 	});
 
-	/* Detail for Grant Details */
-	$('#grants #dtable tbody td img').live('click', function () {
-		var nTr = $(this).parent().parent().get(0);
-		if (nTr != null) {
-			var aData = oTable.fnGetData(nTr);
-			if ( this.src.match('details_close') )
-			{
-				this.src = "images/details_open.png";
-				$("#pid_" + aData[6]).slideUp(function() {
-					oTable.fnClose(nTr);
-				});
-			}
-			else
-			{
-				this.src = "images/details_close.png";
-				oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[6] + "'></div>", 'details' );
-				$.getJSON('http://readidata.nitrd.gov/star/py/api.py/prop?id=' + aData[6] + '&jsoncallback=?', function(data) {
-					$("#pid_" + aData[6]).hide()
-					$("#pid_" + aData[6]).html($("#propRender").tmpl(data["data"]));
-					$("#pid_" + aData[6]).slideDown()
-				});
-			}
-		}
-	});
+
 
 	/* Detail for PI Details */
 	$('#pi #dtable_pi tbody td img').live('click', function () {
@@ -123,31 +100,7 @@ $(document).ready(function() {
 		}
 	});
 
-	/* Detail for org Details */
-	$('#org #dtable tbody td img').live('click', function () {
-		var org_node = $(this).parent().parent().get(0);
-		if (org_node != null) {
-			var orgData = iTable.fnGetData(org_node);
-			if ( this.src.match('details_close') )
-			{
-				this.src = "images/details_open.png";
-				$("#oid_" + orgData[1]).slideUp(function() {
-					iTable.fnClose(org_node);
-				});
-			}
-			else
-			{
-				this.src = "images/details_close.png";
-				iTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[1] + "'></div>", 'details' );
-			
-				$.getJSON('http://readidata.nitrd.gov/star/py/api.py/org?id=' + orgData[1] + '&jsoncallback=?', function(data) {
-					$("#oid_" + orgData[1]).hide()
-					$("#oid_" + orgData[1]).html($("#orgRender").tmpl(data["data"]));
-					$("#oid_" + orgData[1]).slideDown()
-				});
-			}
-		}
-	});
+
 
 
 
