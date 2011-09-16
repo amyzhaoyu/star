@@ -1,5 +1,4 @@
 <?php
-require('libs/app/functions.php');
 require('libs/smarty/Smarty.class.php');
 
 $smarty = new Smarty;
