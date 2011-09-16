@@ -1,7 +1,7 @@
 //global variable that holds proposal data for selected topics
 //when user first selects a topic read the data and store it in this array (indexed by topic id)
 //then use it to add/remove from the summary instead of retrieving it each time
-var proposalsbytopic = {};
+var topicsummarydata = {};
 
 function setSelects() {
 	var numSelected = $("#orgs :selected").length;
@@ -29,13 +29,13 @@ function chgSelects(selector) {
 	if (selector == "topic" || selector == "all") {
 		var selTopics = $("#topics").val(); //PREVIOUSLY SELECTED
 		if ($("#orgs").val() != null) {
-			var type = [];
+			var status = [];
 			$('input[name=prop_status]:checked').each(function() {
-				type.push($(this).val());
+				status.push($(this).val());
 			});
 			//but we need a string
-			type = type.join(',');
-			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "type=" + type;
+			status = status.join(',');
+			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "status=" + status;
 			$.getJSON(apiurl + 'topic?' + params + '&summ&jsoncallback=?', function(data) {
 				//populate table
 				loadTopics(data);
@@ -49,7 +49,7 @@ function chgSelects(selector) {
 		}
 		var params = topicStr + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val()
 		prevSelOrgs = $("#orgs").val(); //PREVIOUSLY SELECTED 
-		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + params + '&summ&jsoncallback=?', function(data) {
+		$.getJSON(apiurl+'topic?' + params + '&summ&jsoncallback=?', function(data) {
 			//populate table
 			loadTopics(data);
 			
@@ -278,56 +278,93 @@ function loadTopics(data) {
 		$("#topics_selected").html(numTopicsSelected);
 		$("#proposals_selected").html(numProposalsSelected);
 
-//console.log(proposalsbytopic);	
+//console.log(topicsummarydata);	
 		var topicid = $(this).attr('value');
+		var checked = $(this).attr('checked');
 //console.log(topicid);			
-//console.log(proposalsbytopic[topicid]);	
+//console.log(topicsummarydata[topicid]);	
 		//now pull proposal information for selected topic
-		if (proposalsbytopic[topicid]!== undefined) {
+		if (topicsummarydata[topicid]!== undefined) {
 //console.log('retrieving from cache');			
-			updateTopicSummary($(this).attr('checked'),proposalsbytopic[topicid]);
+			updateTopicSummary($(this).attr('checked'),topicsummarydata[topicid]);
 		} else {
 			//first get the data
 			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&summ=full";
-			var checked = $(this).attr('checked');
 			$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
-				//what we get back is a list of topics per year
+				//what we get back is a list of topics per year, per org, per status
 				//create the compiled data once for quick access
+				var count = 0;
 				var totalfunding = 0;
 				var max_year = null;
 				var min_year = null;
+				var status = {};
+				var org = {};
+				var year = {};
 				for (var i=0;i<data["data"].length;i++) {
+					//count
+					count += parseInt(data["data"][i]["count"]);
 					//total funding
 					totalfunding += parseInt(data["data"][i]["awarded_dollar"]);
-					var year = data["data"][i]["year"];
+					var tmp = data["data"][i]["year"];
 					//max year
-					if (!max_year) max_year = year;
-					else if (year > max_year) {
-						max_year = year;
+					if (!max_year) max_year = tmp;
+					else if (tmp > max_year) {
+						max_year = tmp;
 					}
 					//min year
-					if (!min_year) min_year = year;
-					else if (year < min_year) {
-						min_year = year;
+					if (!min_year) min_year = tmp;
+					else if (tmp < min_year) {
+						min_year = tmp;
 					}
+					//gather counts by status
+					if (status[data["data"][i]["status"]]) status[data["data"][i]["status"]] += parseInt(data["data"][i]["count"]);
+					else status[data["data"][i]["status"]] = parseInt(data["data"][i]["count"]);
+					//gather counts by year
+					if (year[data["data"][i]["year"]]) year[data["data"][i]["year"]] += parseInt(data["data"][i]["count"]);
+					else year[data["data"][i]["year"]] = parseInt(data["data"][i]["count"]);					
+					//gather counts by org
+					if (org[data["data"][i]["org"]]) org[data["data"][i]["org"]] += parseInt(data["data"][i]["count"]);
+					else org[data["data"][i]["org"]] = parseInt(data["data"][i]["count"]);					
 				}				
-				var compileddata = [];
-				var tmp = {};
+				var compileddata = {};
 				//save it
-				tmp['summary_totalfunding'] = totalfunding;
-				tmp['max_year'] = max_year;
-				tmp['min_year'] = min_year;
-				compileddata.push(tmp);
+				compileddata['summary_count'] = count;
+				compileddata['summary_totalfunding'] = totalfunding;
+				compileddata['summary_maxyear'] = max_year;
+				compileddata['summary_minyear'] = min_year;
+				compileddata['summary_status'] = status;
+				compileddata['summary_year'] = year;
+				compileddata['summary_org'] = org;
 				//save it
-				proposalsbytopic[topicid] = compileddata;
+				topicsummarydata[topicid] = compileddata;
 				//populate table
-				updateTopicSummary(checked,compileddata);
+				updateTopicSummary(checked,compileddata);				
 			}); 
 		}
 		
 		//do it on the right side too
 		$("#topics_selected_right").html(numTopicsSelected);	
 		$("#proposals_selected_right").html(numProposalsSelected);	
+
+		//get count of institutions - we're not caching these for now
+		var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&page=org";
+		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
+			var curr_inst_count = parseInt($("#inst_selected_right").html());
+			if (checked) curr_inst_count += parseInt(data["count"]);
+			else curr_inst_count -= parseInt(data["count"]);
+			$("#inst_selected_right").html(curr_inst_count);
+			$("#inst_selected").html(curr_inst_count);
+		});
+		
+		//get count of researchers - we're not caching these for now
+		var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&page=pi";
+		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
+			var curr_pi_count = parseInt($("#pi_selected_right").html());
+			if (checked) curr_pi_count += parseInt(data["count"]);
+			else curr_pi_count -= parseInt(data["count"]);
+			$("#pi_selected_right").html(curr_pi_count);
+			$("#pi_selected").html(curr_pi_count);
+		});		
 		
 		//and lastly, if none checked, hide view results button - you can only do this after selecting a topic
 		if (numTopicsSelected==0) $(".button_view_results").hide();
@@ -341,15 +378,191 @@ function loadTopics(data) {
 
 function updateTopicSummary(checked,data) {
 //console.log(checked);
-console.log(data);
-	var curr_summary_totalfunding = parseInt($("#summary_totalfunding").html());
-	var summary_totalfunding = 0;
-	for (var i=0;i<data.length;i++) {
-		summary_totalfunding += data[i]['summary_totalfunding'];
-	}
+//console.log(data);
+
+	//extract the selected items out of the cached list
+	//current checked items
+	var checkedtopics = $('#topics_table input:checked[name="topic[]"]').map(function() {
+		var tmp = topicsummarydata[$(this).val()];
+		//add the topic id
+		tmp['id'] = $(this).val();
+		return tmp;
+		//return parseInt($(this).val());
+	}); //.get().join()
+	
+	//total funding
+	var curr_summary_totalfunding = parseInt(removeNumberFormatting($("#summary_totalfunding").html()));
+	var summary_totalfunding = data['summary_totalfunding'];
 	if (checked) curr_summary_totalfunding += summary_totalfunding;
 	else curr_summary_totalfunding -= summary_totalfunding;
+	curr_summary_totalfunding = addCommas(curr_summary_totalfunding);
+	if (curr_summary_totalfunding) curr_summary_totalfunding = '$'+curr_summary_totalfunding; 
 	$("#summary_totalfunding").html(curr_summary_totalfunding);
+	//max year
+	var curr_summary_maxyear = $("#summary_maxyear").html();
+	var summary_maxyear = data['summary_maxyear'];
+	//if the max year is not set this is the max year
+	if (!curr_summary_maxyear) curr_summary_maxyear = summary_maxyear;
+	//if the max year is set and 
+	else {
+		//we are checking
+		if (checked) {
+			//this year is more than the curr max year update curr max year
+			if (summary_maxyear>parseInt(curr_summary_maxyear)) curr_summary_maxyear = summary_maxyear;
+		} else {
+			//if we are unchecking
+			//if nothing currently checked reset
+			if (checkedtopics.length==0) curr_summary_maxyear = null;
+			else {
+				//this year is not the same as curr max year
+				if (summary_maxyear!=parseInt(curr_summary_maxyear)) {
+					//reset to the "previous" max - we get previous max by looping through the list of cached topcis (excluding this one) and finding the max year
+					summary_maxyear = 0;
+					for (var i in checkedtopics) {
+						if (checkedtopics[i]['summary_maxyear']>summary_maxyear) summary_maxyear = checkedtopics[i]['summary_maxyear'];
+					}
+					curr_summary_maxyear = summary_maxyear;			
+				}				
+			}
+		}
+	}
+	$("#summary_maxyear").html(curr_summary_maxyear);	
+	//min year
+	var curr_summary_minyear = $("#summary_minyear").html();
+	var summary_minyear = data['summary_minyear'];
+	//if the min year is not set this is the min year
+	if (!curr_summary_minyear) curr_summary_minyear = summary_minyear;
+	//if the min year is set and 
+	else {
+		//we are checking
+		if (checked) {
+			//this year is less than the curr min year update curr min year
+			if (summary_minyear>parseInt(curr_summary_minyear)) curr_summary_minyear = summary_minyear;
+		} else {
+			//if we are unchecking
+			//if nothing currently checked reset
+			if (checkedtopics.length==0) curr_summary_minyear = null;
+			else {
+				//this year is the not same as curr min year
+				if (summary_minyear!=parseInt(curr_summary_minyear)) {
+					//reset to the "previous" max - we get previous max by looping through the list of cached topcis (excluding this one) and finding the min year
+					summary_minyear = 0;
+					for (var i in checkedtopics) {
+						if (!summary_minyear) summary_minyear = checkedtopics[i]['summary_minyear'];
+						else {
+							if (checkedtopics[i]['summary_minyear']<summary_minyear) summary_minyear = checkedtopics[i]['summary_minyear'];							
+						}
+					}
+					curr_summary_minyear = summary_minyear;			
+				}				
+			}
+		}
+	}
+	$("#summary_minyear").html(curr_summary_minyear);
+//console.log(checkedtopics);	
+	//now collate by status
+	var status = {};
+	var org = {};
+	var year = {};
+	for (var i in checkedtopics) {
+		var summary_status = checkedtopics[i]["summary_status"];
+		//gather counts by status
+		for (var topic_status in summary_status) {
+			if (status[topic_status]) status[topic_status] += summary_status[topic_status];
+			else status[topic_status] = summary_status[topic_status];
+		}
+		//gather counts by year
+		var summary_year = checkedtopics[i]["summary_year"];
+		//gather counts by year
+		for (var topic_year in summary_year) {
+			if (year[topic_year]) year[topic_year] += summary_year[topic_year];
+			else year[topic_year] = summary_year[topic_year];
+		}
+		//gather counts by org
+		var summary_org = checkedtopics[i]["summary_org"];
+		//gather counts by org
+		for (var topic_org in summary_org) {
+			if (org[topic_org]) org[topic_org] += summary_org[topic_org];
+			else org[topic_org] = summary_org[topic_org];
+		}
+	}
+	//got them all, now display
+	var status_html = '';
+	for (var i in status) {
+		status_html += '<tr>';
+		status_html += '<td class="label">';
+		if (i=='award') status_html+='Awarded';
+		else if (i=='propose') status_html+='Proposed';
+		else if (i=='decline') status_html+='Declined';
+		status_html += '</td>';
+		status_html += '<td class="value">'+status[i]+'</td>';
+		status_html += '</tr>';
+	}
+	var year_html = '';
+	//we want to sort
+	//currently an associative array - so first have to sort keys - bit icky but quick and dirty for now
+	var sortedKeys = new Array();
+	var sortedObj = {};	
+	// Separate keys and sort them
+	for (var i in year){
+		sortedKeys.push(i);
+	}
+	sortedKeys.sort();		 
+	// Reconstruct sorted obj based on keys
+	for (var i in sortedKeys){
+		sortedObj[sortedKeys[i]] = year[sortedKeys[i]];
+	}
+	for (var i in sortedObj) {
+		year_html += '<tr>';
+		year_html += '<td class="label">'+i+'</td>';
+		year_html += '<td class="value">'+sortedObj[i]+'</td>';
+		year_html += '</tr>';
+	}
+	var org_html = '';
+	for (var i in org) {
+		org_html += '<tr>';
+		org_html += '<td class="label">'+i+'</td>';
+		org_html += '<td class="value">'+org[i]+'</td>';
+		org_html += '</tr>';
+	}
+	var html = '';
+	html += status_html;
+	if (org_html) {
+		html += '<tr><td class="label">&nbsp;</td><td>&nbsp;</td></tr>';
+		html += org_html;
+	}
+	if (year_html) {
+		html += '<tr><td class="label">&nbsp;</td><td>&nbsp;</td></tr>';
+		html += year_html;
+	}
+	$("#summary_breakdown").html(html);
+	//now for the topic rankings
+	//first by number of grants
+	//sort the summaries list - descending by count
+	checkedtopics.sort(function(a,b) {return (a.summary_count > b.summary_count) ? -1 : ((b.summary_count > a.summary_count) ? 1 : 0);} );	
+	//now select the top 3 out of the summaries list
+	for (var i=0;i<3;i++) {
+		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
+		$("#summary_rankedtopics_bycount_"+(i+1)).html(null);	
+		if (checkedtopics[i]) {
+			//we found one, add it to the summary
+			$("#summary_rankedtopics_bycount_"+(i+1)).html(checkedtopics[i]['id']+' ('+checkedtopics[i]['summary_count']+')');				
+		}
+	}
+	//do the funding rankings
+	//sort the summaries list - descending by totalfunding
+	checkedtopics.sort(function(a,b) {return (a.summary_totalfunding > b.summary_totalfunding) ? -1 : ((b.summary_totalfunding > a.summary_totalfunding) ? 1 : 0);} );	
+	//now select the top 3 out of the summaries list
+	for (var i=0;i<3;i++) {
+		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
+		$("#summary_rankedtopics_byfunding_"+(i+1)).html(null);	
+		if (checkedtopics[i]) {
+			//we found one, add it to the summary
+			var totalfunding = addCommas(checkedtopics[i]['summary_totalfunding']);
+			if (totalfunding) totalfunding = '$'+totalfunding;
+			$("#summary_rankedtopics_byfunding_"+(i+1)).html(checkedtopics[i]['id']+' ('+totalfunding+')');	
+		}
+	}
 }
 
 function validateMsg(text) {
@@ -482,10 +695,10 @@ function renderIt(org, year_from, year_to, topic, prim, tab) {
 	else
 	{
 //		if ($smarty.get.alert=="amy") {
-//			alert('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&jsoncallback=?');
+//			alert(apiurl+'topic?' + query + '&jsoncallback=?');
 //		}
 		renderJSON(query, tab);
-/*		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&jsoncallback=?', function(data) {
+/*		$.getJSON(apiurl+'topic?' + query + '&jsoncallback=?', function(data) {
 			if (data["Error"] != undefined){
 				validateMsg(data["Error"]);
 				$("#loader").hide();
@@ -510,4 +723,3 @@ function padding_left(s, c, n) {
 
     return s;
 }
-

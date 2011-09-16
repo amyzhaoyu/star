@@ -148,7 +148,7 @@
       <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
       <td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
       <td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>
-      <td align="right"><input class="buttonGreen-sm" type="submit" value="Edit" onClick="editQuery();" /></td>
+      <td align="right"><input class="buttonGreen-sm" type="submit" value="Change Selection" onClick="editQuery();" /></td>
     </tr>
   </table>
 </div>
@@ -166,10 +166,10 @@
           selected on the left. Click the links below to 
           analyze your Topic selection deeper.        </p>
           
-        <table class="topic-selection-summary-table">
+        <table id="topic_summary" class="topic-selection-summary-table">
           <tr class="heading">
             <td class="label"><strong>Divisions/Topics</strong></td>
-            <td><div class="header-row-wrap"><strong><span id="orgs_selected_right">0</span>/<span id="topics_selected_right">0</span></strong><!--<input class="buttonGreen button_view_results" type="button" value="Analyze" onclick="submitMenu();" style="display: none;" />--></div></td>
+            <td><div class="header-row-wrap"><strong><span id="orgs_selected_right">0</span>/<span id="topics_selected_right">0</span></strong><!--<input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu();" style="display: none;" />--></div></td>
           </tr>
           <tr>
             <td>&nbsp;</td>
@@ -177,32 +177,96 @@
           </tr>
           <tr class="heading">
             <td class="label"><strong>Proposals</strong></td>
-            <td><div class="header-row-wrap"><strong><span id="proposals_selected_right">0</span></strong><input class="buttonGreen button_view_results" type="button" value="Analyze" onclick="submitMenu('grant');" style="display: none;" /></div></td>
+            <td><div class="header-row-wrap"><strong><span id="proposals_selected_right">0</span></strong><input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu('grant');" style="display: none;" /></div></td>
           </tr>
           <tr>
             <td class="label">Funded</td>
             <td class="value" id="summary_totalfunding">0</td>
           </tr>
           <tr>
-            <td class="label">Total Awards</td>
-            <td class="value">[#]</td>
-          </tr>
-          <tr>
             <td class="label">Date first</td>
-            <td class="value">[#]</td>
+            <td class="value" id="summary_minyear"></td>
           </tr>
           <tr>
             <td class="label">Date last</td>
+            <td class="value" id="summary_maxyear"></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="label">Top Topic (#)</td>
+            <td class="value" id="summary_rankedtopics_bycount_1"></td>
+          </tr>
+          <tr>
+            <td class="label">2nd Topic</td>
+            <td class="value" id="summary_rankedtopics_bycount_2"></td>
+          </tr>
+          <tr>
+            <td class="label">3rd Topic</td>
+            <td class="value" id="summary_rankedtopics_bycount_3"></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="label">Top Topic ($)</td>
+            <td class="value" id="summary_rankedtopics_byfunding_1"></td>
+          </tr>
+          <tr>
+            <td class="label">2nd Topic</td>
+            <td class="value" id="summary_rankedtopics_byfunding_2"></td>
+          </tr>
+          <tr>
+            <td class="label">3rd Topic</td>
+            <td class="value" id="summary_rankedtopics_byfunding_3"></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+		  <tr>
+			<td colspan="2">
+				<table id="summary_breakdown" class="topic-selection-summary-table">
+				</table>
+			</td>
+		  </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr class="heading">
+            <td class="label"><strong>Researchers</strong></td>
+            <td><div class="header-row-wrap"><span class="num-lg" id="pi_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu('pi');" style="display: none;" /></div></td>
+          </tr>
+		<!--
+          <tr>
+            <td class="label">Top Researcher</td>
             <td class="value">[#]</td>
           </tr>
+          <tr>
+            <td class="label">Researcher 2</td>
+            <td class="value">[#]</td>
+          </tr>
+          <tr>
+            <td class="label">Researcher 3</td>
+            <td class="value">[#]</td>
+          </tr>
+          <tr>
+            <td class="label">Researcher 4</td>
+            <td class="value">[#]</td>
+          </tr> -->
           <tr>
             <td class="label">&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr class="heading">
             <td class="label"><strong>Institutions</strong></td>
-            <td><div class="header-row-wrap"><span class="num-lg">#</span><input class="buttonGreen button_view_results" type="button" value="Analyze" onclick="submitMenu('org');" style="display: none;" /></div></td>
+            <td><div class="header-row-wrap"><span class="num-lg" id="inst_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu('org');" style="display: none;" /></div></td>
           </tr>
+		<!--
           <tr>
             <td class="label">Total # of States</td>
             <td class="value">[#]</td>
@@ -226,51 +290,7 @@
           <tr>
             <td class="label">&nbsp;</td>
             <td>[#] more</td>
-          </tr>
-          <tr>
-            <td class="label">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr class="heading">
-            <td class="label"><strong>Researchers</strong></td>
-            <td><div class="header-row-wrap"><span class="num-lg">#</span><input class="buttonGreen button_view_results" type="button" value="Analyze" onclick="submitMenu('pi');" style="display: none;" /></div></td>
-          </tr>
-          <tr>
-            <td class="label">Top Researcher</td>
-            <td class="value">[#]</td>
-          </tr>
-          <tr>
-            <td class="label">Researcher 2</td>
-            <td class="value">[#]</td>
-          </tr>
-          <tr>
-            <td class="label">Researcher 3</td>
-            <td class="value">[#]</td>
-          </tr>
-          <tr>
-            <td class="label">Researcher 4</td>
-            <td class="value">[#]</td>
-          </tr>
-<!--          <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td><strong>Patents</strong></td>
-            <td><strong>(soon)</strong></td>
-          </tr>
-          <tr>
-            <td class="label">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr>
-            <td><strong>Publications</strong></td>
-            <td><strong>(soon)</strong></td>
-          </tr>
-          <tr>
-            <td class="label">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>-->
+          </tr> -->
         </table>
         </div><!-- /topic-selection-summary-wrap -->
         </td>
@@ -289,17 +309,17 @@
         <span class="values" id="topics_selected">0</span>/<span class="values" id="topics_total">[count total]</span></td>
       <td>Proposals: <br />
         <span class="values" id="proposals_selected">0</span></td>
-      <td>Funded Proposals: <br />
-        <span class="values">[count]</span></td>
-      <td>Institutions: <br />
-        <span class="values">[count]</span></td>
+<!--      <td>Funded Proposals: <br />
+        <span class="values">[count]</span></td> -->
       <td>Researchers: <br />
-        <span class="values">[count]</span></td>
+        <span class="values" id="pi_selected">0</span></td>
+      <td>Institutions: <br />
+        <span class="values" id="inst_selected">0</span></td>
       <td><span class="values">Patents<br />
         (soon)</span></td>
       <td><span class="values">Publications<br />
 (soon)</span></td>
-      <td align="right"><input class="buttonGreen-sm" type="submit" value="Edit" onClick="editTopics();" /></td>
+      <td align="right"><input class="buttonGreen-sm" type="submit" value="Change Selection" onClick="editTopics();" /></td>
     </tr>
   </table>
 </div>

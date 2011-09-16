@@ -106,9 +106,6 @@ vertical-align: middle;
 }
 #navTopics {
 	padding: 0;
-	font-family: "Lucida Grande", "Lucida Sans", Arial, Helvetica, sans-serif;
-	color: #272b3d;
-	font-size: 11px;
 	margin: 0px auto;
 }
 #navTopics h2 {
@@ -247,6 +244,12 @@ padding: 10px 5px;
 
 .dataTables_wrapper tr {
 border-bottom: 1px solid #CED2D5;
+}
+
+#container td {
+	font-family: "Lucida Grande", "Lucida Sans", Arial, Helvetica, sans-serif;
+	color: #272b3d;
+	font-size: 11px;	
 }
 
 #container tr.odd,
