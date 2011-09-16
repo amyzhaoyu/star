@@ -114,12 +114,12 @@
           <td><h3>Show</h3></td>
           <td>
          	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded</label></p>
-{php}
-			if (isProposalAccessAllowed()) {
-				print '<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>';
-				print '<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined</label></p>';
+<script>
+			if (proposalaccessallowed()) {
+				document.write('<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>');
+				document.write('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined</label></p>');
 			}
-{/php}			
+</script>			
           </td>
         </tr>
         <tr>
