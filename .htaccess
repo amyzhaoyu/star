@@ -449,6 +449,8 @@ AddCharset utf-8 .html .css .js .xml .json .rss
 # Block access to "hidden" directories whose names begin with a period. This
 # includes directories used by version control systems such as Subversion or Git.
 <IfModule mod_rewrite.c>
+  #RewriteEngine On
+  #RewriteRule rest.php http://readidata.nitrd.gov/star/index.php [L]
   RewriteRule "(^|/)\." - [F]
 </IfModule>
 
