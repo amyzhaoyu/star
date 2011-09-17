@@ -8,25 +8,176 @@
 {* templates *}
 <script id="personRender" type="text/x-jquery-tmpl"> 
 	{literal}
-		<b>Grant ${nsf_id}:</b>
-		<p>${title}</p>
-		<p>NSF Division: ${org.full} (${org.name})</p>
-		<p>Program Element: ${pge.full} (${pge.code})</p>
+		<h3><strong>${name}:</strong></h3>
+		<p>${email}<br />
+		${phone}</p>
+		<p>${inst.dept}<br />
+		${inst.name}</p>
+	{/literal}
+</script>
+<script id="copiRender" type="text/x-jquery-tmpl"> 
+	{literal}
+		<p>${name} (${count})</p>
+	{/literal}
+</script>
+<script id="propRender" type="text/x-jquery-tmpl"> 
+	{literal}
+		<p>Awards: ${awardcount}<br /><br />
+		Date First: ${mindate}<br />
+		Date Last: ${maxdate}<br /><br />
+		Total Funding: ${requestfunding}<br />
+		Award Funding: ${awardfunding}<br />
+		Award Avg.: ${avgawardfunding}<br />
+		</p>
 	{/literal}
 </script>
 
 
 {* html *}
-<h1> Query results: </h1>
-<h3> Click on individual rows to select data. Drill down into each line item by clicking on the "+" button. </h3>
-{* JQuery UI - tabs *}
-<div id="tabs">
-	<ul>
-		<li><a href="#tabs-2">Researchers</a></li>
-	</ul>
-	<div id="tabs-2"><div id="pi"></div> </div>
+<table class="topics-table-wrap">
+  <tr valign="top">
+    <td class="topics-table-cell">
+	<h1> Query results: </h1>
+	<h3> Click on individual rows to select data. Drill down into each line item by clicking on the "+" button. </h3>
+	{* JQuery UI - tabs *}
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-2">Researchers</a></li>
+		</ul>
+		<div id="tabs-2"><div id="pi"></div> </div>
 
-</div>
+	</div>
+   </td>
+   <td><div class="topic-selection-summary-wrap">
+
+     <h3>Selection Summary</h3>
+       <p>The below reflects a summary of the items you 
+         selected on the left.</p>
+
+       <table id="grant-selection-summary-table" class="topic-selection-summary-table">
+       <table id="pi-selection-summary-table" class="topic-selection-summary-table">
+         <tr class="heading">
+           <td class="label"><strong>Researchers Selected</strong></td>
+           <td><div class="header-row-wrap"><strong><span id="summary_pis">0</span></strong></div></td>
+         </tr>
+         <tr>
+           <td class="label">&nbsp;</td>
+           <td>&nbsp;</td>
+         </tr>
+         <tr>
+           <td class="label" colspan="2"><strong>Total Proposals Submitted by Researcher</strong></td>
+         </tr>
+         <tr>
+           <td class="label">1st</td>
+           <td class="value" id="summary_rankedpis_bypropcount_1"></td>
+         </tr>
+         <tr>
+           <td class="label">2nd</td>
+           <td class="value" id="summary_rankedpis_bypropcount_2"></td>
+         </tr>
+         <tr>
+           <td class="label">3rd</td>
+           <td class="value" id="summary_rankedpis_bypropcount_3"></td>
+         </tr>
+         <tr>
+           <td class="label">4th</td>
+           <td class="value" id="summary_rankedpis_bypropcount_4"></td>
+         </tr>
+         <tr>
+           <td class="label">5th</td>
+           <td class="value" id="summary_rankedpis_bypropcount_5"></td>
+         </tr>
+         <tr>
+           <td class="label">&nbsp;</td>
+           <td>&nbsp;</td>
+         </tr>
+         <tr>
+           <td class="label" colspan="2"><strong>Proposals Awarded (qty.) by Researcher</strong></td>
+         </tr>
+         <tr>
+           <td class="label">1st</td>
+           <td class="value" id="summary_rankedpis_byawardcount_1"></td>
+         </tr>
+         <tr>
+           <td class="label">2nd</td>
+           <td class="value" id="summary_rankedpis_byawardcount_2"></td>
+         </tr>
+         <tr>
+           <td class="label">3rd</td>
+           <td class="value" id="summary_rankedpis_byawardcount_3"></td>
+         </tr>
+         <tr>
+           <td class="label">4th</td>
+           <td class="value" id="summary_rankedpis_byawardcount_4"></td>
+         </tr>
+         <tr>
+           <td class="label">5th</td>
+           <td class="value" id="summary_rankedpis_byawardcount_5"></td>
+         </tr>
+         <tr>
+           <td class="label">&nbsp;</td>
+           <td>&nbsp;</td>
+         </tr>
+         <tr>
+           <td class="label" colspan="2"><strong>Proposals Awarded ($) by Researcher</strong></td>
+         </tr>
+         <tr>
+           <td class="label">1st</td>
+           <td class="value" id="summary_rankedpis_byawardfunding_1"></td>
+         </tr>
+         <tr>
+           <td class="label">2nd</td>
+           <td class="value" id="summary_rankedpis_byawardfunding_2"></td>
+         </tr>
+         <tr>
+           <td class="label">3rd</td>
+           <td class="value" id="summary_rankedpis_byawardfunding_3"></td>
+         </tr>
+         <tr>
+           <td class="label">4th</td>
+           <td class="value" id="summary_rankedpis_byawardfunding_4"></td>
+         </tr>
+         <tr>
+           <td class="label">5th</td>
+           <td class="value" id="summary_rankedpis_byawardfunding_5"></td>
+         </tr>
+         <tr>
+           <td class="label">&nbsp;</td>
+           <td>&nbsp;</td>
+         </tr>
+         <tr>
+           <td class="label" colspan="2"><strong>Avg. Award/Grant by Researcher</strong></td>
+         </tr>
+         <tr>
+           <td class="label">1st</td>
+           <td class="value" id="summary_rankedpis_byavgawardfunding_1"></td>
+         </tr>
+         <tr>
+           <td class="label">2nd</td>
+           <td class="value" id="summary_rankedpis_byavgawardfunding_2"></td>
+         </tr>
+         <tr>
+           <td class="label">3rd</td>
+           <td class="value" id="summary_rankedpis_byavgawardfunding_3"></td>
+         </tr>
+         <tr>
+           <td class="label">4th</td>
+           <td class="value" id="summary_rankedpis_byavgawardfunding_4"></td>
+         </tr>
+         <tr>
+           <td class="label">5th</td>
+           <td class="value" id="summary_rankedpis_byavgawardfunding_5"></td>
+         </tr>
+         <tr>
+           <td class="label">&nbsp;</td>
+           <td>&nbsp;</td>
+         </tr>
+       </table>
+
+       </div><!-- /topic-selection-summary-wrap -->
+     </td>
+  </tr>
+</table>
 
 {* scripts *}
 <script>

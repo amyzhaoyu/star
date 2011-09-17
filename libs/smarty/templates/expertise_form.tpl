@@ -64,7 +64,6 @@
 	         	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded</label></p>
 	<script>
 				if (proposalaccessallowed) {
-	console.log('hello');				
 					document.write('<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>');
 					document.write('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined</label></p>');
 				}
@@ -77,11 +76,8 @@
 	        </tr>
 	      </table></td>
 	      <td align="left">
-	        <input class="buttonGreen" type="button" value="View Topics" onclick="getTopics();" />
-	        <br /><br />To begin: choose one or more divisions <br />
-	          and other search criteria. Then click <br />
-	          'View Topics' to  
-	        view applicable topics.<br /><br />
+	        <input class="buttonGreen" type="button" value="Filter Topics" onclick="getTopics();" />
+				<br /><br />
 				<div id="message"></div>
 			</td>
 	      </tr>
@@ -96,13 +92,18 @@
             <td class="label"><strong>Topic(s) Selected</strong></td>
             <td><div class="header-row-wrap"><strong><span id="topics_selected_right">0</span></strong></div></td>
           </tr>
+		  <tr>
+			<td colspan="2">
+				<ul id="topics_selected_list" style="list-style: none;"></li>
+			</td>
+		  </tr>
           <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
           <tr class="heading">
             <td class="label"><strong>Researchers</strong></td>
-            <td><div class="header-row-wrap"><input class="buttonGreen button_view_results" type="button" value="Show Researchers" onclick="submitMenu('pi');" style="display: none;" /></div></td>
+            <td><div class="header-row-wrap"><span class="num-lg" id="pi_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Show" onclick="submitMenu('pi');" style="display: none;" /></div></td>
           </tr>
         </table>
         </div><!-- /topic-selection-summary-wrap -->
@@ -115,35 +116,18 @@
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr valign="middle">
       <td align="left"><h3>
-        <label>Viewing:</label>
-      </h3></td>
-      <td align="left">Divisions: <span class="values" id="orgs_selected">[count] [values]</span></td>
+        <label>Filtered By:</label>
+        </h3></td>
       <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
       <td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
       <td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>
-      <td align="right"><input class="buttonGreen-sm" type="submit" value="Edit" onClick="editQuery();" /></td>
     </tr>
-  </table>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr valign="middle">
       <td align="left"><h3>
-        <font color="#C7D3DF">
         <label>Viewing:</label>
-        </font></h3></td>
-      <td align="left">Topics: <br />
-        <span class="values" id="topics_selected">0</span>/<span class="values" id="topics_total">[count total]</span></td>
-      <td>Proposals: <br />
-        <span class="values" id="proposals_selected">0</span></td>
-      <td>Funded Proposals: <br />
-        <span class="values">[count]</span></td>
-      <td>Institutions: <br />
-        <span class="values">[count]</span></td>
-      <td>Researchers: <br />
-        <span class="values">[count]</span></td>
-      <td><span class="values">Patents<br />
-        (soon)</span></td>
-      <td><span class="values">Publications<br />
-(soon)</span></td>
+        </h3></td>
+      <td align="left">Topics: <span class="values" id="topics_selected">0</span>/<span class="values" id="topics_total">[count total]</span></td>
+      <td>Researchers: <span class="values" id="pi_selected">0</span></td>
       <td align="right"><input class="buttonGreen-sm" type="submit" value="Edit" onClick="editTopics();" /></td>
     </tr>
   </table>

@@ -217,28 +217,46 @@ function loadTopics(data) {
 	});*/
 	
 	$('#topics_table input[name="topic[]"]').live('click',function(event) {
+		var oTable = $('#topics_table').dataTable();		
+		/* Get the position of the current data from the node */
+		var aPos = oTable.fnGetPosition( $(this).parent().parent().get(0) );
+		/* Get the data array for this row */
+		var aData = oTable.fnGetData( aPos );
+
+		var topicid = $(this).attr('value');
+		var checked = $(this).attr('checked');
+		
 		//trap topic selection
 		var numTopicsSelected = $("#topics_selected").html();
-		var numProposalsSelected = parseInt($("#proposals_selected").html());
-		if ($(this).attr('checked')) {
+		if (checked) {
 			//set the row on
 			$(this).parent().parent().addClass('selected');
-			alert($(this).parent().parent());
+//alert($(this).parent().parent());
 			numTopicsSelected++; 
-			numProposalsSelected += parseInt($(this).parent().parent().find('span.number').html());
+			//update list of selected topics (id and description)
+			$("#topics_selected_list").append('<li id="selected_topic_'+topicid+'"><strong>'+topicid+'</strong>: '+aData[1].substr(0,20)+'...</li>');
 		} else {
 			//set the row off
 			$(this).parent().parent().removeClass('selected');
 			numTopicsSelected--;
-			numProposalsSelected -= parseInt($(this).parent().parent().find('span.number').html());
+			//update list of selected topics (id and description)
+			$('li[id="selected_topic_'+topicid+'"]').remove();
 		}
 		$("#topics_selected").html(numTopicsSelected);
-		$("#proposals_selected").html(numProposalsSelected);
 		
 		//do it on the right side too
-		$("#topics_selected_right").html(numTopicsSelected);	
-		$("#proposals_selected_right").html(numProposalsSelected);	
+		$("#topics_selected_right").html(numTopicsSelected);
 		
+		//get count of researchers - we're not caching these for now
+		var params = "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&page=pi";
+		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
+			var curr_pi_count = parseInt($("#pi_selected_right").html());
+			if (checked) curr_pi_count += parseInt(data["count"]);
+			else curr_pi_count -= parseInt(data["count"]);
+			$("#pi_selected_right").html(curr_pi_count);
+			$("#pi_selected").html(curr_pi_count);
+		});		
+
 		//and lastly, if none checked, hide view results button - you can only do this after selecting a topic
 		if (numTopicsSelected==0) $(".button_view_results").hide();
 		else $(".button_view_results").show();

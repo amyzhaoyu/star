@@ -289,7 +289,14 @@ function loadTopics(data) {
 			updateTopicSummary($(this).attr('checked'),topicsummarydata[topicid]);
 		} else {
 			//first get the data
-			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&summ=full";
+			//use status
+			var propstatus = [];
+			$('input[name=prop_status]:checked').each(function() {
+				propstatus.push($(this).val());
+			});
+			//but we need a string
+			propstatus = propstatus.join(',');			
+			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&summ=full";
 			$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
 				//what we get back is a list of topics per year, per org, per status
 				//create the compiled data once for quick access

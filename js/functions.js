@@ -436,10 +436,11 @@ $(document).ready(function() {
 			//now load the data for each propid if it is not already loaded
 			var params = '';
 			for (var i in propids) {
+				var propid = jQuery.trim(propids[i]);
 				//if not previously loaded and cached, load it
-				if (!propsummarydata[propids[i]]) {
+				if (!propsummarydata[propid]) {
 					if (params) params += ',';
-					params += jQuery.trim(propids[i]);
+					params += propid;
 				}
 			}
 			if (params) {
@@ -567,10 +568,11 @@ $(document).ready(function() {
 			//now load the data for each propid if it is not already loaded
 			var params = '';
 			for (var i in propids) {
+				var propid = jQuery.trim(propids[i]);
 				//if not previously loaded and cached, load it
-				if (!propsummarydata[propids[i]]) {
+				if (!propsummarydata[propid]) {
 					if (params) params += ',';
-					params += jQuery.trim(propids[i]);
+					params += propid;
 				}
 			}
 			if (params) {
@@ -673,9 +675,8 @@ function summarizePI() {
 					awardcount++;
 					if (propsummarydata[propid]["awarded"]["dollar"])
 						awardfunding += parseInt(propsummarydata[propid]["awarded"]["dollar"]);
-				} else {
-					requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 				}
+				requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 			}
 		}
 		tmp['awardcount'] = awardcount;
@@ -811,9 +812,8 @@ function summarizeOrg() {
 					awardcount++;
 					if (propsummarydata[propid]["awarded"]["dollar"])
 						awardfunding += parseInt(propsummarydata[propid]["awarded"]["dollar"]);
-				} else {
-					requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 				}
+				requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 			}
 		}
 		tmp['awardcount'] = awardcount;
