@@ -54,7 +54,7 @@ function renderJSON(query, tab)
 		tab = "pi";
 	query = query.substr(0, query.length-1);
 
-	$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&page=' + tab + '&jsoncallback=?', function(data) {
+	$.getJSON(apiurl+'topic?' + query + '&page=' + tab + '&jsoncallback=?', function(data) {
 		createTable(tab, data);		
 	});
 

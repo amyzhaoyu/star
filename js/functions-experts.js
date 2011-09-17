@@ -1,4 +1,6 @@
 $(document).ready(function() {
+	//load all topics to start
+	getTopics();
 
 	// TableTools defaults
 	TableTools.DEFAULTS.aButtons = [
@@ -88,7 +90,7 @@ $(document).ready(function() {
 			{
 				this.src = "images/details_close.png";
 				mTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'></div>", 'details' );
-				$.getJSON(('http://readidata.nitrd.gov/star/py/api.py/prop?id=' + pData[6]).split(' ').join('') + '&jsoncallback=?', function(data) {
+				$.getJSON((apiurl+'prop?id=' + pData[6]).split(' ').join('') + '&jsoncallback=?', function(data) {
 					$("#pid_" + pData[1]).hide()
 					// Use $.each() to get all grant details for each PI
 					$.each(data["data"], function(i, item){

@@ -22,10 +22,35 @@
 	<link rel="stylesheet" href="css/starMetrics-css.css" rel="stylesheet" />	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
+	<script>
+
+	/* 	var proposalaccessallowed = false;
+		var apiurl = "http://readidata.nitrd.gov/py/api.py/";
+		//initialize the access status and api url
+		$.ajax({
+			async: false,
+	        url: 'http://readidata.nitrd.gov/star/fetch.html?jsonpcallback=?',
+	        success: function(data) {
+	console.log(data);	
+	  //          var proposalaccessallowed = true;
+	//			var apiurl = "http://128.150.10.70/py/api.py/";
+	        }
+	    });
+	*/
+	
+	//initialize the access status and api url
+	//inside the network
+	//var proposalaccessallowed = true;
+	//var apiurl = "http://128.150.10.70/py/api.py/";
+	//outside the network
+	var proposalaccessallowed = false;
+	var apiurl = "http://readidata.nitrd.gov/star/py/api.py/";
+	
+	</script>
 
 <!--        <div class="globalnav">
             <ul>
-		<li class="active"><a href="/star/index_test.php" title="Query & Download Data">Queries</a></li>
+		<li class="active"><a href="/star/portfolio_viewer.php" title="Query & Download Data">Queries</a></li>
 		<li><a href="#" title="Topic Analysis & Exploration">Topics</a></li>
 		<li><a href="#" title="Data Visualization">Visuals</a></li>
 		<li><a href="#" title="API Documentation">API</a></li>

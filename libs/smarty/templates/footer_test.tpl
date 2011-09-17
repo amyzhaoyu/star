@@ -27,24 +27,6 @@
 	var query_topics = "";
 	var query_primtopic = true;
 	
-	/* 	var proposalaccessallowed = false;
-		var apiurl = "http://readidata.nitrd.gov/py/api.py/";
-		//initialize the access status and api url
-		$.ajax({
-			async: false,
-	        url: 'http://readidata.nitrd.gov/star/fetch.html?jsonpcallback=?',
-	        success: function(data) {
-	console.log(data);	
-	  //          var proposalaccessallowed = true;
-	//			var apiurl = "http://128.150.10.70/py/api.py/";
-	        }
-	    });
-	*/
-	
-	//initialize the access status and api url
-	var proposalaccessallowed = true; //set to false for outside the network
-	var apiurl = "http://128.150.10.70/py/api.py/"; //set to http://readidata.nitrd.gov/star/py/api.py/ for outside the network
-	
 	$.fn.serializeObject = function()
 	{
 		var o = {};

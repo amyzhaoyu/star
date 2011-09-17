@@ -1,11 +1,11 @@
 function setSelects() {
-	var numSelected = $("#orgs :selected").length;
+/*	var numSelected = $("#orgs :selected").length;
 	var selValues = "";
 	$.each($("#orgs").val(),function(key,value) {
 		if (selValues!="") selValues += ", ";
 		selValues += value;
 	});
-	$("#orgs_selected").html((selValues==null)?"":(selValues)); 
+	$("#orgs_selected").html((selValues==null)?"":(selValues)); */
 	selValues = $("#year_from").val()+' - '+$("#year_to").val();
 	$("#year_selected").html((selValues==null)?"":(selValues)); 
 	selValues = "";
@@ -24,8 +24,18 @@ function chgSelects(selector) {
 	
 	if (selector == "topic" || selector == "all") {
 		var selTopics = $("#topics").val(); //PREVIOUSLY SELECTED
-		var params = "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val()
-		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + params + '&summ&jsoncallback=?', function(data) {
+		var status = [];
+		$('input[name=prop_status]:checked').each(function() {
+			status.push($(this).val());
+		});
+		//but we need a string
+		status = status.join(',');
+		var params = "";
+		params += "org=AST,CHE,DMR,DMS,PHY,BIO,MCB,DBI,IOS,DEB,EF,CISE,CCF,CNS,IIS,EHR,DRL,DGE,HRD,DUE,ENG,CBET,CMMI,ECCS,EEC,EFRI,IIP,GEO,AGS,EAR,OCE,SBE,SES,BCS,NCSE,SMA,BFA,BD,DACS,DFM,DGA,DIAS,OIRM,HRM,DIS,DAS";
+		params += "&year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val();
+		if (status) params += "&" + "status=" + status;		
+//console.log(apiurl+'topic?' + params + '&summ&jsoncallback=?');		
+		$.getJSON(apiurl+'topic?' + params + '&summ&jsoncallback=?', function(data) {
 			//populate table
 			loadTopics(data);
 		}); 
@@ -36,7 +46,7 @@ function chgSelects(selector) {
 			topicStr = "t" + ($("#primary_topic").attr("checked")?"1":"") + "=" + $("#topics").val() + "&";
 		}
 		var params = topicStr + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val()
-		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + params + '&summ&jsoncallback=?', function(data) {
+		$.getJSON(apiurl+'topic?' + params + '&summ&jsoncallback=?', function(data) {
 			//populate table
 			loadTopics(data);			
 		}); 
@@ -45,7 +55,7 @@ function chgSelects(selector) {
 }
 
 function fullTopics(){
-	$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?&summ&jsoncallback=?', function(data) {
+	$.getJSON(apiurl+'topic?&summ&jsoncallback=?', function(data) {
 		//populate table
 		loadTopics(data);
 	}); 
@@ -170,7 +180,7 @@ function loadTopics(data) {
 	
 	//append the view toggle states after the filter
 //console.log($('#topics_table_wrapper #topics_table_filter').html());
-	$('#topics_table_wrapper #topics_table_filter').before( '<div id="topics_table_views" class="dataTables_filter"><a href="#" id="topics_tables_views_text"><img src="images/btn-query-topic-text_on.gif" /></a><a href="#" id="topics_tables_views_graph"><img src="images/btn-query-topic-graph_off.gif" /></a></div>' );
+	//$('#topics_table_wrapper #topics_table_filter').before( '<div id="topics_table_views" class="dataTables_filter"><a href="#" id="topics_tables_views_text"><img src="images/btn-query-topic-text_on.gif" /></a><a href="#" id="topics_tables_views_graph"><img src="images/btn-query-topic-graph_off.gif" /></a></div>' );
 	
 	//trap views links
 	//text
@@ -234,8 +244,6 @@ function loadTopics(data) {
 		else $(".button_view_results").show();
 	});	
 	
-	$("#navDivisions").slideUp();
-	$("#navDivisions-sm").slideDown();
 	$("#navTopics").slideDown();
 }
 
@@ -260,15 +268,6 @@ function getTopics() {
 	}
 	
 	chgSelects('topic');
-}
-
-function editQuery() {
-	$("#queryresults").slideUp();
-	$("#navDivisions-sm").slideUp(); //this is the guy that shows a summary of the query params
-	$("#navTopics-sm").slideUp(); //this is the guy that shows a summary of the query params
-	$("#navTopics").slideUp();
-	//show form
-	$("#navDivisions").slideDown();
 }
 
 function editTopics() {
@@ -370,7 +369,7 @@ function renderIt(org, year_from, year_to, topic, prim, tab) {
 	{
 
 		renderJSON(query, tab);
-/*		$.getJSON('http://readidata.nitrd.gov/star/py/api.py/topic?' + query + '&jsoncallback=?', function(data) {
+/*		$.getJSON(apiurl+'topic?' + query + '&jsoncallback=?', function(data) {
 			if (data["Error"] != undefined){
 				validateMsg(data["Error"]);
 				$("#loader").hide();
