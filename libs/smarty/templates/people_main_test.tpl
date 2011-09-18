@@ -494,7 +494,7 @@ function createTable(tab, data)
 					v["pge"]["code"], 
 					v["org"]["name"],
 					v["topic"]["id"].join(", "), 
-					//v["status"]["name"],
+					v["status"]["name"],
 				]; 
 			});
 
@@ -536,7 +536,7 @@ function createTable(tab, data)
 					{ "sTitle": "Prg. Elem. Code", "aTargets": [ 3 ] }, 
 					{ "sTitle": "Division", "aTargets": [ 4 ] }, 
 					{ "sTitle": "Topics", "aTargets": [ 5 ] }
-					//{ "sTitle": "Status", "aTargets": [ 6 ] },
+					{ "sTitle": "Status", "aTargets": [ 6 ] },
 				],
 				"aaData": aaData,
 				"aaSorting": [[2, 'desc'], [0, 'desc']],

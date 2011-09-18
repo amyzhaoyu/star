@@ -665,10 +665,14 @@ function submitMenu(tab) {
 	if (selectedstatus.length==1 && selectedstatus[0]=="award") {
 		$("#tab-prop").hide();
 		$("#tab-grant").show();
-	} else {		
+	} else {
+console.log(selectedstatus);				
 		$("#tab-prop").hide();
 		$("#tab-grant").hide();
-		if ("propose" in selectedstatus || "decline" in selectedstatus) $("#tab-prop").show();
+		if ("propose" in selectedstatus || "decline" in selectedstatus) {
+console.log('showing tab');			
+			$("#tab-prop").show();
+		}
 		if ("award" in selectedstatus) $("#tab-grant").show();
 	}
 	
