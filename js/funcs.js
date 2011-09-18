@@ -89,7 +89,7 @@ function loadTopics(data) {
 			v["count"],
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
 			v["awarded_dollar"],
-			keyExists("requested_dollar",v,null),
+			keyExists("request_dollar",v,null),
 		]; 
 	});
 
