@@ -99,8 +99,8 @@ $(document).ready(function() {
 			selTab = ["prop", "grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
-			if (tab=="grant") query_status = "award";
-			else if (tab=="prop") {
+			if (selTab=="grant") query_status = "award";
+			else if (selTab=="prop") {
 				//only award or decline depending on what was selected
 				var tmp = "";
 				if ("propose" in query_status.split(',')) tmp = "propose";

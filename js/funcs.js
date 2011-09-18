@@ -649,9 +649,21 @@ function submitMenu(tab) {
 	}
 	
 	//now put in a little intelligence here
+	var showawards = false;
+	var showprop = false;
 	var selectedstatus = query_status.split(',');
+console.log(selectedstatus);
+	for (var i in selectedstatus) {
+		if (selectedstatus[i]=="award") {
+			//if award is any one of the items selected tab is always grant
+			showawards = true;
+		} else {
+			showprop = true;
+		}
+	}
+
 	//if requested tab is grant but propose or decline checked then default is prop
-	if ("propose" in selectedstatus || "decline" in selectedstatus) tab = "prop";
+	if (tab=="grant" && !showawards) tab = "prop";		
 	
 //	if ($smarty.get.alert=="amy") {
 //		alert(JSON.stringify(input));
@@ -666,8 +678,9 @@ console.log('tab:'+tab);
 	//if only award selected, hide prop tab
 	$("#tab-prop").hide();
 	$("#tab-grant").hide();
-console.log(selectedstatus);				
-	if (selectedstatus.length==1) {
+	if (showawards) $("#tab-grant").show();
+	if (showprop) $("#tab-prop").show();
+/*	if (selectedstatus.length==1) {
 		if (selectedstatus[0]=="award") {
 			$("#tab-grant").show();	
 		} else {
@@ -677,7 +690,7 @@ console.log('showing prop tab');
 	} else {
 		if ("propose" in selectedstatus || "decline" in selectedstatus) $("#tab-prop").show();
 		if ("award" in selectedstatus) $("#tab-grant").show();
-	}
+	}*/
 	
 	//activate tab
 	if (tab=='prop') {
