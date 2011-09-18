@@ -281,6 +281,15 @@ function loadTopics(data) {
 //console.log(topicsummarydata);	
 		var topicid = $(this).attr('value');
 		var checked = $(this).attr('checked');
+		
+		//we need status to filter by - get it here
+		var propstatus = [];
+		$('input[name=prop_status]:checked').each(function() {
+			propstatus.push($(this).val());
+		});
+		//but we need a string
+		propstatus = propstatus.join(',');			
+		
 //console.log(topicid);			
 //console.log(topicsummarydata[topicid]);	
 		//now pull proposal information for selected topic
@@ -289,13 +298,6 @@ function loadTopics(data) {
 			updateTopicSummary($(this).attr('checked'),topicsummarydata[topicid]);
 		} else {
 			//first get the data
-			//use status
-			var propstatus = [];
-			$('input[name=prop_status]:checked').each(function() {
-				propstatus.push($(this).val());
-			});
-			//but we need a string
-			propstatus = propstatus.join(',');			
 			var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&summ=full";
 			$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
 				//what we get back is a list of topics per year, per org, per status
@@ -354,7 +356,7 @@ function loadTopics(data) {
 		$("#proposals_selected_right").html(numProposalsSelected);	
 
 		//get count of institutions - we're not caching these for now
-		var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&page=org";
+		var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&page=org";
 		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
 			var curr_inst_count = parseInt($("#inst_selected_right").html());
 			if (checked) curr_inst_count += parseInt(data["count"]);
@@ -364,7 +366,7 @@ function loadTopics(data) {
 		});
 		
 		//get count of researchers - we're not caching these for now
-		var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&page=pi";
+		var params = "org=" + $("#orgs").val() + "&" + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&page=pi";
 		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
 			var curr_pi_count = parseInt($("#pi_selected_right").html());
 			if (checked) curr_pi_count += parseInt(data["count"]);
@@ -632,11 +634,23 @@ function submitMenu(tab) {
 		query_topics = tmp;
 	}
 	query_primtopic = input.primary_topic;
+	//use status
+	var tmp = input.prop_status;
+	query_status = "";
+	if( Object.prototype.toString.call( tmp ) === '[object Array]' ) {
+		//cheaper than a jquery map for this simple thing
+		for(var i = 0, l = tmp.length; i < l; i++) {
+			if (query_status) query_status += ",";
+		    query_status += tmp[i];
+		}		
+	} else {
+		query_status = tmp;
+	}
 
 //	if ($smarty.get.alert=="amy") {
 //		alert(JSON.stringify(input));
 //	}
-	renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, tab);
+	renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, tab);
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "grant");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
@@ -662,7 +676,7 @@ function submitMenu(tab) {
 	}
 }
 
-function renderIt(org, year_from, year_to, topic, prim, tab) {
+function renderIt(org, year_from, year_to, status, topic, prim, tab) {
 	var year = "";
 	if(year_from > year_to) {
 		validateMsg("Please enter a valid date range!");
@@ -691,6 +705,9 @@ function renderIt(org, year_from, year_to, topic, prim, tab) {
 		else{
 			query = query + "t=" + topic + "&";
 		}
+	}
+	if (status != undefined){
+		query = query + "status=" + status + "&";
 	}
 //console.log(query);
 

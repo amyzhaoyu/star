@@ -246,9 +246,16 @@ function loadTopics(data) {
 		
 		//do it on the right side too
 		$("#topics_selected_right").html(numTopicsSelected);
-		
+
+		//we need status to filter by - get it here
+		var propstatus = [];
+		$('input[name=prop_status]:checked').each(function() {
+			propstatus.push($(this).val());
+		});
+		//but we need a string
+		propstatus = propstatus.join(',');					
 		//get count of researchers - we're not caching these for now
-		var params = "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&page=pi";
+		var params = "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&page=pi";
 		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
 			var curr_pi_count = parseInt($("#pi_selected_right").html());
 			if (checked) curr_pi_count += parseInt(data["count"]);
@@ -316,11 +323,23 @@ function submitMenu(tab) {
 		query_topics = tmp;
 	}
 	query_primtopic = input.primary_topic;
+	//use status
+	var tmp = input.prop_status;
+	query_status = "";
+	if( Object.prototype.toString.call( tmp ) === '[object Array]' ) {
+		//cheaper than a jquery map for this simple thing
+		for(var i = 0, l = tmp.length; i < l; i++) {
+			if (query_status) query_status += ",";
+		    query_status += tmp[i];
+		}		
+	} else {
+		query_status = tmp;
+	}
 
 //	if ($smarty.get.alert=="amy") {
 //		alert(JSON.stringify(input));
 //	}
-	renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, tab);
+	renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, tab);
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "grant");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
@@ -346,7 +365,7 @@ function submitMenu(tab) {
 	}
 }
 
-function renderIt(org, year_from, year_to, topic, prim, tab) {
+function renderIt(org, year_from, year_to, status, topic, prim, tab) {
 	var year = "";
 	if(year_from > year_to) {
 		validateMsg("Please enter a valid date range!");
@@ -375,6 +394,9 @@ function renderIt(org, year_from, year_to, topic, prim, tab) {
 		else{
 			query = query + "t=" + topic + "&";
 		}
+	}
+	if (status != undefined){
+		query = query + "status=" + status + "&";
 	}
 //console.log(query);
 

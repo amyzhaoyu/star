@@ -69,7 +69,7 @@ $(document).ready(function() {
 			selTab = ["grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
-			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, selTab);
+			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, selTab);
 		}
 	});
 

@@ -26,6 +26,7 @@
 	var query_yearTo = 2010;
 	var query_topics = "";
 	var query_primtopic = true;
+	var query_status = "";
 
 	$.fn.serializeObject = function()
 	{
