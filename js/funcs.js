@@ -646,7 +646,12 @@ function submitMenu(tab) {
 	} else {
 		query_status = tmp;
 	}
-
+	
+	//now put in a little intelligence here
+	var selectedstatus = query_status.split(',');
+	//if requested tab is grant but propose or decline checked then default is prop
+	if ("propose" in selectedstatus || "decline" in selectedstatus) tab = "prop";
+	
 //	if ($smarty.get.alert=="amy") {
 //		alert(JSON.stringify(input));
 //	}
@@ -655,15 +660,30 @@ function submitMenu(tab) {
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
 
-	//activate tab
-	if (tab=='grant') {
-		$('#tabs').tabs('select','tabs-1');
-	} else if (tab=='pi') {
-		$('#tabs').tabs('select','tabs-2');			
-	} else if (tab=='org') {
-		$('#tabs').tabs('select','tabs-3');
+	//show/hide relevant tabs
+	//if only award selected, hide prop tab
+	if (selectedstatus.length==1 && selectedstatus[0]=="award") {
+		$("#tab-prop").hide();
+		$("#tab-grant").show();
+	} else {		
+		$("#tab-prop").hide();
+		$("#tab-grant").hide();
+		if ("propose" in selectedstatus || "decline" in selectedstatus) $("#tab-prop").show();
+		if ("award" in selectedstatus) $("#tab-grant").show();
 	}
 	
+	
+	//activate tab
+	if (tab=='prop') {
+		$('#tabs').tabs('select','tabs-1');
+	} else if (tab=='grant') {
+		$('#tabs').tabs('select','tabs-2');
+	} else if (tab=='pi') {
+		$('#tabs').tabs('select','tabs-3');			
+	} else if (tab=='org') {
+		$('#tabs').tabs('select','tabs-4');
+	}
+
 	//now either show the results or in case an error occurred, don't show them
 	//we check error by seeing if there is anything in the message div - not the best way but quick for now
 	//chgSelects above resets the div before a call

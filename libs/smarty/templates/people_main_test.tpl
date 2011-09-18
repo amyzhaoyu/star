@@ -49,21 +49,23 @@
 	{* JQuery UI - tabs *}
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-1">Funding</a></li>
-			<li><a href="#tabs-2">Researchers</a></li>
-			<li><a href="#tabs-3">Institutions</a></li>
+			<li id="tab-prop"><a href="#tabs-1">Proposals</a></li>
+			<li id="tab-grant"><a href="#tabs-2">Funding</a></li>
+			<li><a href="#tabs-3">Researchers</a></li>
+			<li><a href="#tabs-4">Institutions</a></li>
 	<!--		<li><a href="#tabs-4">Related Divisions</a></li>-->
 			<li><a href="#tabs-5">Topics</a></li>
-			<li><a href="#tabs-6">Patents (soon)</a></li>
-			<li><a href="#tabs-7">Publications (soon)</a></li>
+			<li><a href="#tabs-6">Patents</a></li>
+			<li><a href="#tabs-7">Publications</a></li>
 		</ul>
-		<div id="tabs-1"><div id="grants"></div> </div>
-		<div id="tabs-2"><div id="pi"></div> </div>
-		<div id="tabs-3"><div id="org"></div></div>
+		<div id="tabs-1"><div id="props"></div> </div>
+		<div id="tabs-2"><div id="grants"></div> </div>
+		<div id="tabs-3"><div id="pi"></div> </div>
+		<div id="tabs-4"><div id="org"></div></div>
 	<!--	<div id="tabs-4"><div id="divs"></div></div>-->
 		<div id="tabs-5"><div id = "topics_tab"></div></div>
-		<div id="tabs-6"><div id = "patents"></div></div>
-		<div id="tabs-7"><div id = "publications"></div></div>
+		<div id="tabs-6"><div id = "patents"><p>Coming Soon</p></div></div>
+		<div id="tabs-7"><div id = "publications"><p>Coming Soon</p></div></div>
    </div>
    </td>
    <td><div class="topic-selection-summary-wrap">
@@ -71,6 +73,61 @@
      <h3>Selection Summary</h3>
        <p>The below reflects a summary of the items you 
          selected on the left.</p>
+
+		<table id="prop-selection-summary-table" class="topic-selection-summary-table">
+		  <tr class="heading">
+		    <td class="label"><strong>Proposals Selected</strong></td>
+		    <td><div class="header-row-wrap"><strong><span id="summary_props">0</span></strong></div></td>
+		  </tr>
+		  <tr>
+		    <td class="label">Date first</td>
+		    <td class="value" id="summary_prop_datefirst"></td>
+		  </tr>
+		  <tr>
+		    <td class="label">Date last</td>
+		    <td class="value" id="summary_prop_datelast"></td>
+		  </tr>
+		  <tr>
+		    <td class="label">&nbsp;</td>
+		    <td>&nbsp;</td>
+		  </tr>
+		  <tr>
+		    <td class="label">Total Selection Request</td>
+		    <td class="value" id="summary_prop_funding_total">0</td>
+		  </tr>
+		  <tr>
+		    <td class="label">&nbsp;</td>
+		    <td>&nbsp;</td>
+		  </tr>
+		  <tr>
+		    <td class="label">Top Request ($)</td>
+		    <td class="value" id="summary_rankedprops_byfunding_1"></td>
+		  </tr>
+		  <tr>
+		    <td class="label">2nd</td>
+		    <td class="value" id="summary_rankedprops_byfunding_2"></td>
+		  </tr>
+		  <tr>
+		    <td class="label">3rd</td>
+		    <td class="value" id="summary_rankedprops_byfunding_3"></td>
+		  </tr>
+		  <tr>
+		    <td class="label">4th</td>
+		    <td class="value" id="summary_rankedprops_byfunding_4"></td>
+		  </tr>
+		  <tr>
+		    <td class="label">&nbsp;</td>
+		    <td>&nbsp;</td>
+		  </tr>
+		  <tr>
+		    <td class="label">Smallest Request</td>
+		    <td class="value" id="summary_funding_min"></td>
+		  </tr>
+		  <tr>
+		    <td class="label">&nbsp;</td>
+		    <td>&nbsp;</td>
+		  </tr>
+		</table>
 
        <table id="grant-selection-summary-table" class="topic-selection-summary-table">
          <tr class="heading">
@@ -407,8 +464,11 @@ function renderJSON(query, tab)
 	}
 	else{
 //console.log(query);
-//console.log(tab);		
-		$.getJSON(apiurl+'topic?' + query + '&page=' + tab + '&jsoncallback=?', function(data) {
+//console.log(tab);	
+		//do some checking here for tab
+		if (tab=="prop") var page = "grant";
+		else var page = tab;		
+		$.getJSON(apiurl+'topic?' + query + '&page=' + page + '&jsoncallback=?', function(data) {
 			createTable(tab, data);		
 		});
 	}
@@ -421,7 +481,72 @@ function createTable(tab, data)
 		$("#loader").hide();
 	}
 	else {
-		if (tab == "grant") {
+		if (tab == "prop") {
+			{* BEGIN PROPOSALS TABLE *}
+			{* Render Proposal DataTable *}
+			$("#props").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable_props'></table>");
+
+			aaData = _.map(data["data"], function(v) { 
+				return [
+					v["proposal"]["nsf_id"],
+					v["request"]["dollar"],
+					v["request"]["date"],
+					v["pge"]["code"], 
+					v["org"]["name"],
+					v["topic"]["id"].join(", "), 
+					//v["status"]["name"],
+				]; 
+			});
+
+			oTable = $('#props table').dataTable({
+				//TableTools - copy, csv, print, pdf
+				"bJQueryUI": true,
+				"sPaginationType": "full_numbers",
+				//"sDom": 'T<"clear">lfrtip',
+				"sDom": 'T<"clear"><"H"lfr>t<"F"ip>',
+				"bDestroy": true,
+				"bProcessing": true,
+				"iDisplayLength": 50,
+				"aoColumnDefs": [
+					{
+						//"fnRender": function ( oObj ) {
+						//	return '<input type="checkbox" name="prop[]" value="'+oObj.aData[0]+'"> '+oObj.aData[0];
+						//},
+						//"bUseRendered": false,
+						"sTitle": "Prop ID",
+						"aTargets": [ 0 ]
+					},
+					{ 
+						"fnRender": function ( oObj ) {
+							return addCommas(oObj.aData[1]);
+							//return '<span class="funding" id="funding_'+oObj.aData[0]+'">'+addCommas(oObj.aData[1])+'</span>';
+						},
+						"bUseRendered": false,
+						"sTitle": "Amount",
+						"aTargets": [ 1 ]
+					},
+					{ 
+						//"fnRender": function ( oObj ) {
+						//	return '<span class="date" id="date_'+oObj.aData[0]+'">'+oObj.aData[2]+'</span>';
+						//},
+						//"bUseRendered": false,
+						"sTitle": "Award Date",
+						"aTargets": [ 2 ] 
+					}, 
+					{ "sTitle": "Prg. Elem. Code", "aTargets": [ 3 ] }, 
+					{ "sTitle": "Division", "aTargets": [ 4 ] }, 
+					{ "sTitle": "Topics", "aTargets": [ 5 ] }
+					//{ "sTitle": "Status", "aTargets": [ 6 ] },
+				],
+				"aaData": aaData,
+				"aaSorting": [[2, 'desc'], [0, 'desc']],
+				"oLanguage": {
+					"sLengthMenu:": "Display _MENU_ records per page",
+					"sSearch": "Keyword Filter:"
+				}
+			});
+			{* END PROPOSALS SECTION *}
+		} else if (tab == "grant") {
 			{* BEGIN GRANTS TABLE *}
 			{* Render Grant DataTable *}
 			$("#grants").html("<table class='display' cellpadding='0' cellspacing='0' border='0' id='dtable_grants'></table>");

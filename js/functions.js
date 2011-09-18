@@ -35,14 +35,18 @@ $(document).ready(function() {
 								var selTabIndex = $("#tabs").tabs('option', 'selected');
 //console.log(selTabIndex);
 								if (selTabIndex==0) {
-									$('#grants table tbody tr').each( function () {
+									$('#props table tbody tr').each( function () {
 										$(this).click();
 									});									
 								} else if (selTabIndex==1) {
-									$('#pi table tbody tr').each( function () {
+									$('#grants table tbody tr').each( function () {
 										$(this).click();
 									});									
 								} else if (selTabIndex==2) {
+									$('#pi table tbody tr').each( function () {
+										$(this).click();
+									});									
+								} else if (selTabIndex==3) {
 									$('#org table tbody tr').each( function () {
 										$(this).click();
 									});									
@@ -55,14 +59,18 @@ $(document).ready(function() {
 								var selTabIndex = $("#tabs").tabs('option', 'selected');
 //console.log(selTabIndex);
 								if (selTabIndex==0) {
-									$('#grants table tbody tr').each( function () {
+									$('#props table tbody tr').each( function () {
 										$(this).click();
 									});									
 								} else if (selTabIndex==1) {
-									$('#pi table tbody tr').each( function () {
+									$('#grants table tbody tr').each( function () {
 										$(this).click();
 									});									
 								} else if (selTabIndex==2) {
+									$('#pi table tbody tr').each( function () {
+										$(this).click();
+									});									
+								} else if (selTabIndex==3) {
 									$('#org table tbody tr').each( function () {
 										$(this).click();
 									});									
@@ -88,7 +96,7 @@ $(document).ready(function() {
 
 	$('#tabs').tabs({
 		select: function(event, ui) {
-			selTab = ["grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
+			selTab = ["prop", "grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
 			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, selTab);
@@ -196,6 +204,81 @@ $(document).ready(function() {
 		}
 		event.preventDefault();
 	});*/
+
+	$('#props table tbody tr').live('click', function (event) {
+		var oTable = $('#props table').dataTable();
+	    var aData = oTable.fnGetData(this); // get datarow
+
+	    if (null != aData)  // null if we clicked on title row
+	    {
+			//set the class
+			if ( $(this).hasClass('row_selected') ) {
+				$(this).removeClass('row_selected');
+			} else {
+				$(this).addClass('row_selected');
+			}			
+	        //now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
+			//trap prop selection
+			var numGrantsSelected = $("#summary_props").html();
+			var numFundingSelected = parseInt(removeNumberFormatting($("#summary_prop_funding_total").html()));
+			var dateFirst = $("#summary_prop_datefirst").html();
+			var dateLast = $("#summary_prop_datelast").html();
+			if (dateLast) dateLast = new Date(dateLast);
+			if ($(this).hasClass('row_selected')) {
+				numGrantsSelected++; 
+				numFundingSelected += parseInt(aData[1]);
+			} else {
+				numGrantsSelected--;
+				numFundingSelected -= parseInt(aData[1]);
+			}
+
+			//now reformat
+			numFundingSelected = addCommas(numFundingSelected);
+			if (numFundingSelected) numFundingSelected = '$'+numFundingSelected;
+
+			$("#summary_props").html(numGrantsSelected);
+			$("#summary_prop_funding_total").html(numFundingSelected);
+
+//console.log(fnGetSelected(oTable));
+			//now recalculate the rankings - do this regardless of checked or unchecked
+			var checkedprops = fnGetSelected(oTable);
+			//now for the prop rankings
+			//first by amount of award
+			//sort the summaries list - descending by funding
+			checkedprops.sort(function(a,b) {return (a[1] > b[1]) ? -1 : ((b[1] > a[1]) ? 1 : 0);} );	
+			//now select the top 4 out of the summaries list
+			for (var i=0;i<4;i++) {
+				//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
+				$("#summary_rankedprops_byfunding_"+(i+1)).html(null);	
+				if (checkedprops[i]) {
+					var tmp = addCommas(checkedprops[i][1]);
+					if (tmp) tmp = '$'+tmp;				
+					//we found one, add it to the summary
+					$("#summary_rankedprops_byfunding_"+(i+1)).html(tmp+' ('+checkedprops[i][0]+')');				
+				}
+			}
+			//min summary
+			$("#summary_prop_funding_min").html(null);	
+			if (checkedprops.length) {
+				var tmp = addCommas(checkedprops[checkedprops.length-1][1]);
+				if (tmp) tmp = '$'+tmp;				
+				$("#summary_prop_funding_min").html(tmp+' ('+checkedprops[checkedprops.length-1][0]+')');					
+			}
+			//date summary
+			//sort the summaries list - descending by funding
+			checkedprops.sort(function(a,b) {return (a[2] > b[2]) ? -1 : ((b[2] > a[2]) ? 1 : 0);} );	
+			var dateFirst = null;
+			var dateLast = null;
+			if (checkedprops.length>0) {
+				dateFirst = checkedprops[0][2];
+				if (dateFirst) dateFirst = new Date(dateFirst).toLocaleDateString();
+				dateLast = checkedprops[checkedprops.length-1][2];
+				if (dateLast) dateLast = new Date(dateLast).toLocaleDateString();
+			}
+			$("#summary_prop_datefirst").html(dateFirst);
+			$("#summary_prop_datelast").html(dateLast);
+	    }
+	});
 
 	$('#grants table tbody tr').live('click', function (event) {
 		var oTable = $('#grants table').dataTable();
