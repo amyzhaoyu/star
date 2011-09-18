@@ -29,6 +29,8 @@ function chgSelects(selector) {
 	if (selector == "topic" || selector == "all") {
 		var selTopics = $("#topics").val(); //PREVIOUSLY SELECTED
 		if ($("#orgs").val() != null) {
+			$("#topic_loader").show();	
+
 			var status = [];
 			$('input[name=prop_status]:checked').each(function() {
 				status.push($(this).val());
@@ -39,6 +41,7 @@ function chgSelects(selector) {
 			$.getJSON(apiurl + 'topic?' + params + '&summ&jsoncallback=?', function(data) {
 				//populate table
 				loadTopics(data);
+				$("#topic_loader").hide();
 			}); 
 		}
 	}
@@ -75,6 +78,26 @@ function chgSelects(selector) {
 }
 
 function loadTopics(data) {
+	//reset the summaries
+	$("#topics_selected").html('0');
+	$("#proposals_selected").html('0');
+	$("#pi_selected").html('0');
+	$("#inst_selected").html('0');
+	$("#topics_selected_right").html('0');
+	$("#proposals_selected_right").html('0');
+	$("#summary_totalfunding").html('0');
+	$("#summary_minyear").html('');
+	$("#summary_maxyear").html('');
+	$("#summary_rankedtopics_bycount_1").html('');
+	$("#summary_rankedtopics_bycount_2").html('');
+	$("#summary_rankedtopics_bycount_3").html('');
+	$("#summary_rankedtopics_byfunding_1").html('');
+	$("#summary_rankedtopics_byfunding_2").html('');
+	$("#summary_rankedtopics_byfunding_3").html('');
+	$("#summary_breakdown").html();
+	$("#pi_selected_right").html('0');
+	$("#inst_selected_right").html('0');
+	
 //console.log('loading topics');	
 	var aaData = _.map(data["data"], function(v) { 
 		//the random columns generate a number to use to generate an image of a graph from a list of graph images img1-img10
@@ -227,6 +250,7 @@ function loadTopics(data) {
 //console.log($('#topics_table_wrapper #topics_table_filter').html());
 	//$('#topics_table_wrapper #topics_table_filter').before( '<div id="topics_table_views" class="dataTables_filter"><a href="#" id="topics_tables_views_text"><img src="images/btn-query-topic-text_on.gif" /></a><a href="#" id="topics_tables_views_graph"><img src="images/btn-query-topic-graph_off.gif" /></a></div>' );
 	
+	/*
 	//trap views links
 	//text
 	$('#topics_table_wrapper #topics_tables_views_text').click(function(event) {
@@ -253,7 +277,7 @@ function loadTopics(data) {
 		$('#topics_table_wrapper #topics_tables_views_text').html('<img src="images/btn-query-topic-text_off.gif" />');
 
 		event.preventDefault();
-	});
+	}); */
 	
 	/*$('#topics_table span[title]').qtip({
 	      content: {
@@ -380,7 +404,7 @@ function loadTopics(data) {
 		if (numTopicsSelected==0) $(".button_view_results").hide();
 		else $(".button_view_results").show();
 	});	
-	
+
 	$("#navDivisions").slideUp();
 	$("#navDivisions-sm").slideDown();
 	$("#navTopics").slideDown();
@@ -594,6 +618,12 @@ function getTopics() {
 		validateMsg("Please enter a valid date range!");
 		return;
 	}
+
+	//check status
+	if (!input.prop_status) {
+		validateMsg("Please specify a status!");
+		return;		
+	};
 	
 	chgSelects('topic');
 }
@@ -652,7 +682,7 @@ function submitMenu(tab) {
 	var showawards = false;
 	var showprop = false;
 	var selectedstatus = query_status.split(',');
-console.log(selectedstatus);
+//console.log(selectedstatus);
 	for (var i in selectedstatus) {
 		if (selectedstatus[i]=="award") {
 			//if award is any one of the items selected tab is always grant
@@ -673,7 +703,7 @@ console.log(selectedstatus);
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
 
-console.log('tab:'+tab);
+//console.log('tab:'+tab);
 	//show/hide relevant tabs
 	//if only award selected, hide prop tab
 	$("#tab-prop").hide();
@@ -694,7 +724,7 @@ console.log('showing prop tab');
 	
 	//activate tab
 	if (tab=='prop') {
-console.log('showing tab prop');
+//console.log('showing tab prop');
 		$('#tabs').tabs('select','tabs-1');
 	} else if (tab=='grant') {
 		$('#tabs').tabs('select','tabs-2');
@@ -703,7 +733,20 @@ console.log('showing tab prop');
 	} else if (tab=='org') {
 		$('#tabs').tabs('select','tabs-4');
 	}
-console.log('all good, proceeding');
+//console.log('all good, proceeding');
+
+	//now show the selected topics in the filter form for prop tab
+	if (tab=='prop') {
+		$("form[id=filter_results]").html('');
+		for (var i in selectedstatus) {
+			//ugly but quick
+			if (selectedstatus[i]=="award") var label="Awarded";
+			else if (selectedstatus[i]=="propose") var label="Proposed";
+			else if (selectedstatus[i]=="decline") var label="Declined";
+			$("form[id=filter_results]").append('<strong><input type="checkbox" value="'+selectedstatus[i]+'" name="prop_status" checked>'+label+'</strong>');
+		}
+		$("form[id=filter_results]").append('<input class="buttonGreen-sm" type="button" name="filter_button" value="Filter">');			
+	}
 
 	//now either show the results or in case an error occurred, don't show them
 	//we check error by seeing if there is anything in the message div - not the best way but quick for now

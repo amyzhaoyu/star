@@ -21,7 +21,7 @@
 	float: left;
 	margin: 0;
 	padding: 0;
-	background: transparent url(../images/sm-nav-bkgd-blue.jpg) top left no-repeat;
+	background: transparent url(../images/sm-nav-bkgd-blue.png) top left no-repeat;
 }
 
 .mainNav.horizontal ul li a {
@@ -515,3 +515,7 @@ padding: 0 5px;
 float: none;
 }
 
+#filter_results strong {
+	display:block;
+	margin: 5px 0;
+}

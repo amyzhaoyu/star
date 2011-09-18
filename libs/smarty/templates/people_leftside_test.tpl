@@ -76,10 +76,10 @@
 					<option value="DAS">Division of Administrative Services</option>
 				</optgroup>
 			</select>
-      </label></td>
+      </label><br />Hold the CTRL key to select more than one.</td>
       <td align="left"><table border="0" cellspacing="1" cellpadding="5" class="select-options">
         <tr>
-          <td><h3>Time</h3></td>
+          <td><h3>Time<br /><span style="font-size: 11px;">(fiscal years)</span></h3></td>
           <td>
 				<select id="year_from" name="year_from">
 					<option value="2000">2000</option>
@@ -148,12 +148,13 @@
       <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
       <td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
       <td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>
-      <td align="right"><input class="buttonGreen-sm" type="submit" value="Change Selection" onClick="editQuery();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change" onClick="editQuery();" /></td>
     </tr>
   </table>
 </div>
+<img id="topic_loader" style="display:none" src="images/ajax-loader.gif" />
 <div id="navTopics" style="display: none;">
- <h3>Select Topics</h3>
+ <h3>Topics Filter<br /><span style="font-size: 13px;">(include proposals for selected topics)</h3>
   <table class="topics-table-wrap">
     <tr valign="top">
       <td class="topics-table-cell">
@@ -319,7 +320,7 @@
         (soon)</span></td>
       <td><span class="values">Publications<br />
 (soon)</span></td>
-      <td align="right"><input class="buttonGreen-sm" type="submit" value="Change Selection" onClick="editTopics();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change" onClick="editTopics();" /></td>
     </tr>
   </table>
 </div>

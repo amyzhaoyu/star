@@ -38,7 +38,7 @@
   <tr valign="top">
     <td class="topics-table-cell">
 	<h1> Query results: </h1>
-	<h3> Click on individual rows to select data. Drill down into each line item by clicking on the "+" button. </h3>
+	<h3> Selecting items below will update the Selection Summary sidebar. Use the Copy/Export functions to export your selection. </h3>
 	{* JQuery UI - tabs *}
 	<div id="tabs">
 		<ul>

@@ -12,9 +12,10 @@
 
 
 {* html *}
+<img id="topic_loader" style="display:none" src="images/ajax-loader.gif" />
 <form id="queryform" name="queryform" method="post" action="">
 <div id="navTopics" style="display: none;">
- <h3>Select Topics</h3>
+ <h3>Topics Filter<br /><span style="font-size: 13px;">(include researchers for selected topics)</h3>
   <table class="topics-table-wrap">
     <tr valign="top">
       <td class="topics-table-cell">
@@ -128,7 +129,7 @@
         </h3></td>
       <td align="left">Topics: <span class="values" id="topics_selected">0</span>/<span class="values" id="topics_total">[count total]</span></td>
       <td>Researchers: <span class="values" id="pi_selected">0</span></td>
-      <td align="right"><input class="buttonGreen-sm" type="submit" value="Edit" onClick="editTopics();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change" onClick="editTopics();" /></td>
     </tr>
   </table>
 </div>

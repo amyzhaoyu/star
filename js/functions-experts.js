@@ -69,6 +69,30 @@ $(document).ready(function() {
 			selTab = ["grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
+			//reset summaries
+			if (selTab=="pi") {
+				$("#summary_pis").html('0');
+				$("#summary_rankedpis_bypropcount_1").html('0');
+				$("#summary_rankedpis_bypropcount_2").html('');
+				$("#summary_rankedpis_bypropcount_3").html('');
+				$("#summary_rankedpis_bypropcount_4").html('');
+				$("#summary_rankedpis_bypropcount_5").html('');
+				$("#summary_rankedpis_byawardcount_1").html('');
+				$("#summary_rankedpis_byawardcount_2").html('');
+				$("#summary_rankedpis_byawardcount_3").html('');
+				$("#summary_rankedpis_byawardcount_4").html('');
+				$("#summary_rankedpis_byawardcount_5").html('');
+				$("#summary_rankedpis_byawardfunding_1").html('');
+				$("#summary_rankedpis_byawardfunding_2").html('');
+				$("#summary_rankedpis_byawardfunding_3").html('');
+				$("#summary_rankedpis_byawardfunding_4").html('');
+				$("#summary_rankedpis_byawardfunding_5").html('');
+				$("#summary_rankedpis_byavgawardfunding_1").html('');
+				$("#summary_rankedpis_byavgawardfunding_2").html('');
+				$("#summary_rankedpis_byavgawardfunding_3").html('');
+				$("#summary_rankedpis_byavgawardfunding_4").html('');
+				$("#summary_rankedpis_byavgawardfunding_5").html('');
+			}
 			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, selTab);
 		}
 	});
@@ -93,7 +117,7 @@ $(document).ready(function() {
 	
 	//filtering the results
 	//$('#filter_results input[name="topic[]"]').live('click',function(event) {
-	$('#filter_results input[name="filter_button"]').click(function(event) {
+	$('#filter_results input[name="filter_button"]').live('click',function(event) {
 		//using only what is selected reload the data
 		var filteredtopics = [];
 		$('#filter_results input[name="topic[]"]:checked').each(function() {
@@ -148,7 +172,7 @@ $(document).ready(function() {
 				else
 				{
 					$(event.target).attr("src", "images/details_close.png");
-					oTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'><div id='userDetails_"+pData[1]+"'></div><div id='propDetails_"+pData[1]+"'><h3>Proposals (<span></span>)</h3></div><div id='copiDetails_"+pData[1]+"'><h3>Co-PIs (<span></span>)</h3></div></div>", 'details' );
+					oTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[1] + "'><table><tr><td id='userDetails_"+pData[1]+"'></td><td id='propDetails_"+pData[1]+"'><h3>Proposals (<span></span>)</h3></td><td id='copiDetails_"+pData[1]+"'><h3>Co-PIs (<span></span>)</h3></td></tr></table></div>", 'details' );
 					$("#pid_" + pData[1]).hide();
 					//load pi data
 					$.getJSON(apiurl+'user?id=' + pData[1] + '&jsoncallback=?', function(data) {

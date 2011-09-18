@@ -9,10 +9,9 @@ function setSelects() {
 	selValues = $("#year_from").val()+' - '+$("#year_to").val();
 	$("#year_selected").html((selValues==null)?"":(selValues)); 
 	selValues = "";
-	$('#prop_status:checked').each(function() {
+	$('[id^="prop_status"]:checked').each(function() {
 		if (selValues!="") selValues += ", ";
-	    if ($(this).val()=='granted') selValues += 'Grants';
-		else selValues += $(this).val();
+		selValues += $(this).next().text();
 	});
 	$("#propstatus_selected").html(selValues); 
 	$("#primarytopic_selected").html($("#primary_topic").attr("checked")?"Primary Topic Only":"All Topics");
@@ -23,6 +22,8 @@ function chgSelects(selector) {
 	$("#message").html(null);
 	
 	if (selector == "topic" || selector == "all") {
+		$("#topic_loader").show();
+		
 		var selTopics = $("#topics").val(); //PREVIOUSLY SELECTED
 		var status = [];
 		$('input[name=prop_status]:checked').each(function() {
@@ -38,6 +39,7 @@ function chgSelects(selector) {
 		$.getJSON(apiurl+'topic?' + params + '&summ&jsoncallback=?', function(data) {
 			//populate table
 			loadTopics(data);
+			$("#topic_loader").hide();
 		}); 
 	}
 	if (selector == "org" || selector == "all") {
@@ -63,6 +65,13 @@ function fullTopics(){
 }
 
 function loadTopics(data) {
+	//reset the summaries
+	$("#topics_selected").html('0');
+	$("#pi_selected").html('0');
+	$("#topics_selected_right").html('0');
+	$("#topics_selected_list").html('');
+	$("#pi_selected_right").html('0');
+
 	var aaData = _.map(data["data"], function(v) { 
 		//the random columns generate a number to use to generate an image of a graph from a list of graph images img1-img10
 		//the last column is a dummy number between 
@@ -182,6 +191,7 @@ function loadTopics(data) {
 //console.log($('#topics_table_wrapper #topics_table_filter').html());
 	//$('#topics_table_wrapper #topics_table_filter').before( '<div id="topics_table_views" class="dataTables_filter"><a href="#" id="topics_tables_views_text"><img src="images/btn-query-topic-text_on.gif" /></a><a href="#" id="topics_tables_views_graph"><img src="images/btn-query-topic-graph_off.gif" /></a></div>' );
 	
+	/*
 	//trap views links
 	//text
 	$('#topics_table_wrapper #topics_tables_views_text').click(function(event) {
@@ -208,7 +218,7 @@ function loadTopics(data) {
 		$('#topics_table_wrapper #topics_tables_views_text').html('<img src="images/btn-query-topic-text_off.gif" />');
 
 		event.preventDefault();
-	});
+	}); */
 	
 	/*$('#topics_table span[title]').qtip({
 	      content: {
@@ -292,6 +302,12 @@ function getTopics() {
 		return;
 	}
 	
+	//check status
+	if (!input.prop_status) {
+		validateMsg("Please specify a status!");
+		return;		
+	};
+	
 	chgSelects('topic');
 }
 
@@ -307,6 +323,18 @@ function submitMenu(tab) {
 //	tab = selTab;
 		
 	var input = $("#queryform").serializeObject();
+	
+	//some quick checks
+	if(input.year_from > input.year_to) {
+		validateMsg("Please enter a valid date range!");
+		return;
+	}
+	//check status
+	if (!input.prop_status) {
+		validateMsg("Please specify a status!");
+		return;		
+	};
+	
 //console.log(input);	
 	query_nsfDiv = input.org;
 	query_yearFrom = input.year_from;
@@ -355,8 +383,9 @@ function submitMenu(tab) {
 	
 	//now show the selected topics in the filter form
 	var tmp = query_topics.split(',');
+	$("form[id=filter_results]").html('');
 	for (var i in tmp) {
-		$("form[id=filter_results]").append('<input type="checkbox" value="'+tmp[i]+'" name="topic[]" checked>Topic: '+tmp[i]+'<br />');
+		$("form[id=filter_results]").append('<strong><input type="checkbox" value="'+tmp[i]+'" name="topic[]" checked>Topic: '+tmp[i]+'</strong>');
 	}
 	$("form[id=filter_results]").append('<input class="buttonGreen-sm" type="button" name="filter_button" value="Filter">');	
 	

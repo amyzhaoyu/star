@@ -110,6 +110,72 @@ $(document).ready(function() {
 				}
 				query_status = tmp;
 			}
+			//reset summaries
+			if (selTab=="prop") {
+				$("#summary_props").html('0');
+				$("#summary_prop_datefirst").html('');
+				$("#summary_prop_datelast").html('');
+				$("#summary_prop_funding_total").html('0');
+				$("#summary_rankedprops_byfunding_1").html('');
+				$("#summary_rankedprops_byfunding_2").html('');
+				$("#summary_rankedprops_byfunding_3").html('');
+				$("#summary_rankedprop_byfunding_4").html('');				
+				$("#summary_prop_funding_min").html('');				
+			} else if (selTab=="grant") {
+				$("#summary_grants").html('0');
+				$("#summary_datefirst").html('');
+				$("#summary_datelast").html('');
+				$("#summary_funding_total").html('0');
+				$("#summary_rankedgrants_byfunding_1").html('');
+				$("#summary_rankedgrants_byfunding_2").html('');
+				$("#summary_rankedgrants_byfunding_3").html('');
+				$("#summary_rankedgrants_byfunding_4").html('');				
+				$("#summary_funding_min").html('');
+			} else if (selTab=="pi") {
+				$("#summary_pis").html('0');
+				$("#summary_rankedpis_bypropcount_1").html('0');
+				$("#summary_rankedpis_bypropcount_2").html('');
+				$("#summary_rankedpis_bypropcount_3").html('');
+				$("#summary_rankedpis_bypropcount_4").html('');
+				$("#summary_rankedpis_bypropcount_5").html('');
+				$("#summary_rankedpis_byawardcount_1").html('');
+				$("#summary_rankedpis_byawardcount_2").html('');
+				$("#summary_rankedpis_byawardcount_3").html('');
+				$("#summary_rankedpis_byawardcount_4").html('');
+				$("#summary_rankedpis_byawardcount_5").html('');
+				$("#summary_rankedpis_byawardfunding_1").html('');
+				$("#summary_rankedpis_byawardfunding_2").html('');
+				$("#summary_rankedpis_byawardfunding_3").html('');
+				$("#summary_rankedpis_byawardfunding_4").html('');
+				$("#summary_rankedpis_byawardfunding_5").html('');
+				$("#summary_rankedpis_byavgawardfunding_1").html('');
+				$("#summary_rankedpis_byavgawardfunding_2").html('');
+				$("#summary_rankedpis_byavgawardfunding_3").html('');
+				$("#summary_rankedpis_byavgawardfunding_4").html('');
+				$("#summary_rankedpis_byavgawardfunding_5").html('');				
+			} else if (selTab=="org") {
+				$("#summary_orgs").html('0');
+				$("#summary_rankedorgs_bypropcount_1").html('0');
+				$("#summary_rankedorgs_bypropcount_2").html('');
+				$("#summary_rankedorgs_bypropcount_3").html('');
+				$("#summary_rankedorgs_bypropcount_4").html('');
+				$("#summary_rankedorgs_bypropcount_5").html('');
+				$("#summary_rankedorgs_byawardcount_1").html('');
+				$("#summary_rankedorgs_byawardcount_2").html('');
+				$("#summary_rankedorgs_byawardcount_3").html('');
+				$("#summary_rankedorgs_byawardcount_4").html('');
+				$("#summary_rankedorgs_byawardcount_5").html('');
+				$("#summary_rankedorgs_byawardfunding_1").html('');
+				$("#summary_rankedorgs_byawardfunding_2").html('');
+				$("#summary_rankedorgs_byawardfunding_3").html('');
+				$("#summary_rankedorgs_byawardfunding_4").html('');
+				$("#summary_rankedorgs_byawardfunding_5").html('');
+				$("#summary_rankedorgs_byavgawardfunding_1").html('');
+				$("#summary_rankedorgs_byavgawardfunding_2").html('');
+				$("#summary_rankedorgs_byavgawardfunding_3").html('');
+				$("#summary_rankedorgs_byavgawardfunding_4").html('');
+				$("#summary_rankedorgs_byavgawardfunding_5").html('');				
+			}
 			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, selTab);
 		}
 	});
@@ -130,6 +196,22 @@ $(document).ready(function() {
 		   		}
 			}
 		});
+	});
+
+	//filtering the results
+	$('#filter_results input[name="filter_button"]').live('click',function(event) {
+		//using only what is selected reload the data
+		var filteredstatus = [];
+		$('#filter_results input[name="prop_status"]:checked').each(function() {
+			filteredstatus.push($(this).val());
+		});
+		if (filteredstatus.length==0) alert('Please select at least one topic');
+		else {
+			//but we need a string
+			filteredstatus = filteredstatus.join(',');					
+			//reload the data with the selected topics
+			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, filteredstatus, query_topics, query_primtopic, "prop");
+		}
 	});
 
 	/* Detail for Grant Details */

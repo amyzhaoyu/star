@@ -44,8 +44,8 @@
 <table class="topics-table-wrap">
   <tr valign="top">
     <td class="topics-table-cell">
-	<h1> Query results: </h1>
-	<h3> Click on individual rows to select data. Drill down into each line item by clicking on the "+" button. </h3>
+	<h1> Proposal Portfolio: </h1>
+	<h3> Selecting items below will update the Selection Summary sidebar. Use the Copy/Export functions to export your selection. </h3>
 	{* JQuery UI - tabs *}
 	<div id="tabs">
 		<ul>
@@ -68,7 +68,12 @@
 		<div id="tabs-7"><div id = "publications"><p>Coming Soon</p></div></div>
    </div>
    </td>
-   <td><div class="topic-selection-summary-wrap">
+   <td><div id="prop-selection-summary" class="topic-selection-summary-wrap">
+
+	 <h3>Filter Results</h3>
+	 <form id="filter_results">
+	 </form>
+	 <br /><br />
 
      <h3>Selection Summary</h3>
        <p>The below reflects a summary of the items you 
@@ -121,13 +126,19 @@
 		  </tr>
 		  <tr>
 		    <td class="label">Smallest Request</td>
-		    <td class="value" id="summary_funding_min"></td>
+		    <td class="value" id="summary_prop_funding_min"></td>
 		  </tr>
 		  <tr>
 		    <td class="label">&nbsp;</td>
 		    <td>&nbsp;</td>
 		  </tr>
 		</table>
+	</div>
+	<div id="grant-selection-summary" class="topic-selection-summary-wrap">
+
+	     <h3>Selection Summary</h3>
+	       <p>The below reflects a summary of the items you 
+	         selected on the left.</p>
 
        <table id="grant-selection-summary-table" class="topic-selection-summary-table">
          <tr class="heading">
@@ -183,8 +194,14 @@
            <td>&nbsp;</td>
          </tr>
        </table>
+	</div>
+	<div id="pi-selection-summary" class="topic-selection-summary-wrap">
 
-       <table id="pi-selection-summary-table" class="topic-selection-summary-table">
+	     <h3>Selection Summary</h3>
+	       <p>The below reflects a summary of the items you 
+	         selected on the left.</p>
+
+      <table id="pi-selection-summary-table" class="topic-selection-summary-table">
          <tr class="heading">
            <td class="label"><strong>Researchers Selected</strong></td>
            <td><div class="header-row-wrap"><strong><span id="summary_pis">0</span></strong></div></td>
@@ -302,6 +319,12 @@
            <td>&nbsp;</td>
          </tr>
        </table>
+	</div>
+	<div id="org-selection-summary" class="topic-selection-summary-wrap">
+
+	     <h3>Selection Summary</h3>
+	       <p>The below reflects a summary of the items you 
+	         selected on the left.</p>
 
        <table id="org-selection-summary-table" class="topic-selection-summary-table">
          <tr class="heading">
@@ -494,7 +517,7 @@ function createTable(tab, data)
 					v["pge"]["code"], 
 					v["org"]["name"],
 					v["topic"]["id"].join(", "), 
-					v["status"]["name"],
+					//v["status"]["name"],
 				]; 
 			});
 
@@ -535,8 +558,8 @@ function createTable(tab, data)
 					}, 
 					{ "sTitle": "Prg. Elem. Code", "aTargets": [ 3 ] }, 
 					{ "sTitle": "Division", "aTargets": [ 4 ] }, 
-					{ "sTitle": "Topics", "aTargets": [ 5 ] },
-					{ "sTitle": "Status", "aTargets": [ 6 ] }
+					{ "sTitle": "Topics", "aTargets": [ 5 ] }
+					//{ "sTitle": "Status", "aTargets": [ 6 ] } - ADD COMMA ABOVE IF UNCOMMENTING THIS
 				],
 				"aaData": aaData,
 				"aaSorting": [[2, 'desc'], [0, 'desc']],
@@ -811,9 +834,9 @@ function createTable(tab, data)
 			});
 		}
 		//now show hide the appropriate summaries
-		$('table[id$="-selection-summary-table"]').hide();
+		$('div[id$="-selection-summary"]').hide();
 //console.log('id="'+tab+'-selection-summary-table"');		
-		$('table[id="'+tab+'-selection-summary-table"]').show();
+		$('div[id="'+tab+'-selection-summary"]').show();
 	}
 	$("#loader").hide();
 }
