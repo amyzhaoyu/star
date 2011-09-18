@@ -90,6 +90,23 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	//filtering the results
+	//$('#filter_results input[name="topic[]"]').live('click',function(event) {
+	$('#filter_results input[name="filter_button"]').click(function(event) {
+		//using only what is selected reload the data
+		var filteredtopics = [];
+		$('#filter_results input[name="topic[]"]:checked').each(function() {
+			filteredtopics.push($(this).val());
+		});
+		if (filteredtopics.length==0) alert('Please select at least one topic');
+		else {
+			//but we need a string
+			filteredtopics = filteredtopics.join(',');					
+			//reload the data with the selected topics
+			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, filteredtopics, query_primtopic, "pi");
+		}
+	});
 
 	$('#pi table tbody tr').live('click', function (event) {   
 		var oTable = $('#pi table').dataTable();
@@ -167,6 +184,19 @@ $(document).ready(function() {
 					}
 					$("#pid_" + pData[1]).slideDown();
 				}
+			}
+
+			event.preventDefault();
+		    return;
+		}
+
+		//if the more link was clicked trap that		
+	   if(event.target.nodeName == "A"){
+//console.log($(event.target));		
+			var pi_node = this;
+			if (pi_node != null) {
+				var pData = oTable.fnGetData(pi_node);
+				$("#grants_more_"+pData[1]).toggle();
 			}
 
 			event.preventDefault();

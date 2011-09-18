@@ -353,6 +353,13 @@ function submitMenu(tab) {
 		$('#tabs').tabs('select','tabs-3');
 	}
 	
+	//now show the selected topics in the filter form
+	var tmp = query_topics.split(',');
+	for (var i in tmp) {
+		$("form[id=filter_results]").append('<input type="checkbox" value="'+tmp[i]+'" name="topic[]" checked>Topic: '+tmp[i]+'<br />');
+	}
+	$("form[id=filter_results]").append('<input class="buttonGreen-sm" type="button" name="filter_button" value="Filter">');	
+	
 	//now either show the results or in case an error occurred, don't show them
 	//we check error by seeing if there is anything in the message div - not the best way but quick for now
 	//chgSelects above resets the div before a call

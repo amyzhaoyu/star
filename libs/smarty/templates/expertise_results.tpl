@@ -49,7 +49,10 @@
 	</div>
    </td>
    <td><div class="topic-selection-summary-wrap">
-
+	 <h3>Filter Results</h3>
+	 <form id="filter_results">
+	 </form>
+	 <br /><br />
      <h3>Selection Summary</h3>
        <p>The below reflects a summary of the items you 
          selected on the left.</p>
@@ -255,7 +258,22 @@ function createTable(tab, data)
 					{ "sWidth": "30%", "sTitle": "Institution", "aTargets": [ 3 ] }, 
 					{ "sWidth": "30%", "sTitle": "Department", "aTargets": [ 4 ] },  
 					{ "sWidth": "5%", "sTitle": "Number of Grants", "aTargets": [ 5 ] },  
-					{ "sWidth": "20%", "sTitle": "Grants IDs", "aTargets": [ 6 ] }
+					{ 
+						"fnRender": function ( oObj ) {
+							if (oObj.aData[6] && oObj.aData[6].split(',').length>3) {
+//console.log(oObj.aData[6].split(',').slice(0,3	));								
+								//only show first 3, put rest in more
+								var html = oObj.aData[6].split(',').slice(0,3).join(',')+' <a href="#">More</a>';
+								html += '<div id="grants_more_'+oObj.aData[1]+'" style="display: none;">'+oObj.aData[6].split(',').slice(3).join(',')+'</div>';
+								return html;
+							}
+							else return oObj.aData[6];
+						},
+						"bUseRendered": false,
+						"sWidth": "20%", 
+						"sTitle": "Grants IDs", 
+						"aTargets": [ 6 ] 
+					}
 				],
 				"aaData": aaData,
 				"aaSorting": [[5, 'desc']],
