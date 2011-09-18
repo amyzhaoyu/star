@@ -662,20 +662,19 @@ function submitMenu(tab) {
 
 	//show/hide relevant tabs
 	//if only award selected, hide prop tab
-	if (selectedstatus.length==1 && selectedstatus[0]=="award") {
-		$("#tab-prop").hide();
-		$("#tab-grant").show();
-	} else {
+	$("#tab-prop").hide();
+	$("#tab-grant").hide();
 console.log(selectedstatus);				
-		$("#tab-prop").hide();
-		$("#tab-grant").hide();
-		if ("propose" in selectedstatus || "decline" in selectedstatus) {
-console.log('showing tab');			
-			$("#tab-prop").show();
+	if (selectedstatus.length==1) {
+		if (selectedstatus[0]=="award") {
+			$("#tab-grant").show();	
+		} else {
+			$("#tab-prop").show();	
 		}
+	} else {
+		if ("propose" in selectedstatus || "decline" in selectedstatus) $("#tab-prop").show();
 		if ("award" in selectedstatus) $("#tab-grant").show();
 	}
-	
 	
 	//activate tab
 	if (tab=='prop') {
