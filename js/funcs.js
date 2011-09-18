@@ -90,9 +90,11 @@ console.log('loading topics');
 			v["count"],
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
 			v["awarded_dollar"],
-			keyExists("request_dollar",v,null),
+			null,
 		]; 
 	});
+
+//keyExists("request_dollar",v,null),
 
 	$("#topics_total").html(aaData.length);
 
