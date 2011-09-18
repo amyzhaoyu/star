@@ -535,8 +535,8 @@ function createTable(tab, data)
 					}, 
 					{ "sTitle": "Prg. Elem. Code", "aTargets": [ 3 ] }, 
 					{ "sTitle": "Division", "aTargets": [ 4 ] }, 
-					{ "sTitle": "Topics", "aTargets": [ 5 ] }
-					{ "sTitle": "Status", "aTargets": [ 6 ] },
+					{ "sTitle": "Topics", "aTargets": [ 5 ] },
+					{ "sTitle": "Status", "aTargets": [ 6 ] }
 				],
 				"aaData": aaData,
 				"aaSorting": [[2, 'desc'], [0, 'desc']],
