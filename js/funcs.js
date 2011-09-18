@@ -75,6 +75,7 @@ function chgSelects(selector) {
 }
 
 function loadTopics(data) {
+console.log('loading topics');	
 	var aaData = _.map(data["data"], function(v) { 
 		//the random columns generate a number to use to generate an image of a graph from a list of graph images img1-img10
 		//the last column is a dummy number between 
@@ -95,7 +96,7 @@ function loadTopics(data) {
 
 	$("#topics_total").html(aaData.length);
 
-//console.log(aaData);
+console.log(aaData);
 	//before we do anything figure out the max number of proposals
 	//we need this for the "bar graphs"
 	var maxProposalCount = 0;
