@@ -75,7 +75,7 @@ function chgSelects(selector) {
 }
 
 function loadTopics(data) {
-console.log('loading topics');	
+//console.log('loading topics');	
 	var aaData = _.map(data["data"], function(v) { 
 		//the random columns generate a number to use to generate an image of a graph from a list of graph images img1-img10
 		//the last column is a dummy number between 
@@ -90,15 +90,13 @@ console.log('loading topics');
 			v["count"],
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
 			v["awarded_dollar"],
-			null,
+			keyExists("request_dollar",v,null),
 		]; 
 	});
 
-//keyExists("request_dollar",v,null),
-
 	$("#topics_total").html(aaData.length);
 
-console.log(aaData);
+//console.log(aaData);
 	//before we do anything figure out the max number of proposals
 	//we need this for the "bar graphs"
 	var maxProposalCount = 0;
@@ -663,6 +661,7 @@ function submitMenu(tab) {
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
 
+console.log('tab:'+tab);
 	//show/hide relevant tabs
 	//if only award selected, hide prop tab
 	$("#tab-prop").hide();
@@ -672,6 +671,7 @@ console.log(selectedstatus);
 		if (selectedstatus[0]=="award") {
 			$("#tab-grant").show();	
 		} else {
+console.log('showing prop tab');			
 			$("#tab-prop").show();	
 		}
 	} else {
@@ -681,6 +681,7 @@ console.log(selectedstatus);
 	
 	//activate tab
 	if (tab=='prop') {
+console.log('showing tab prop');
 		$('#tabs').tabs('select','tabs-1');
 	} else if (tab=='grant') {
 		$('#tabs').tabs('select','tabs-2');
@@ -689,6 +690,7 @@ console.log(selectedstatus);
 	} else if (tab=='org') {
 		$('#tabs').tabs('select','tabs-4');
 	}
+console.log('all good, proceeding');
 
 	//now either show the results or in case an error occurred, don't show them
 	//we check error by seeing if there is anything in the message div - not the best way but quick for now
