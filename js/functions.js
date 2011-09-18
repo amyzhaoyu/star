@@ -115,7 +115,7 @@ $(document).ready(function() {
 				$("#summary_props").html('0');
 				$("#summary_prop_datefirst").html('');
 				$("#summary_prop_datelast").html('');
-				$("#summary_prop_funding_total").html('0');
+				$("#summary_prop_funding_total").html('');
 				$("#summary_rankedprops_byfunding_1").html('');
 				$("#summary_rankedprops_byfunding_2").html('');
 				$("#summary_rankedprops_byfunding_3").html('');
@@ -125,7 +125,7 @@ $(document).ready(function() {
 				$("#summary_grants").html('0');
 				$("#summary_datefirst").html('');
 				$("#summary_datelast").html('');
-				$("#summary_funding_total").html('0');
+				$("#summary_funding_total").html('');
 				$("#summary_rankedgrants_byfunding_1").html('');
 				$("#summary_rankedgrants_byfunding_2").html('');
 				$("#summary_rankedgrants_byfunding_3").html('');
@@ -133,7 +133,7 @@ $(document).ready(function() {
 				$("#summary_funding_min").html('');
 			} else if (selTab=="pi") {
 				$("#summary_pis").html('0');
-				$("#summary_rankedpis_bypropcount_1").html('0');
+				$("#summary_rankedpis_bypropcount_1").html('');
 				$("#summary_rankedpis_bypropcount_2").html('');
 				$("#summary_rankedpis_bypropcount_3").html('');
 				$("#summary_rankedpis_bypropcount_4").html('');
@@ -155,7 +155,7 @@ $(document).ready(function() {
 				$("#summary_rankedpis_byavgawardfunding_5").html('');				
 			} else if (selTab=="org") {
 				$("#summary_orgs").html('0');
-				$("#summary_rankedorgs_bypropcount_1").html('0');
+				$("#summary_rankedorgs_bypropcount_1").html('');
 				$("#summary_rankedorgs_bypropcount_2").html('');
 				$("#summary_rankedorgs_bypropcount_3").html('');
 				$("#summary_rankedorgs_bypropcount_4").html('');

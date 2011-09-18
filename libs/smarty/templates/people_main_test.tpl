@@ -613,7 +613,7 @@ function createTable(tab, data)
 							//return '<span class="funding" id="funding_'+oObj.aData[0]+'">'+addCommas(oObj.aData[1])+'</span>';
 						},
 						"bUseRendered": false,
-						"sTitle": "Amount",
+						"sTitle": "Requested Amount",
 						"aTargets": [ 1 ]
 					},
 					{ 
@@ -621,7 +621,7 @@ function createTable(tab, data)
 						//	return '<span class="date" id="date_'+oObj.aData[0]+'">'+oObj.aData[2]+'</span>';
 						//},
 						//"bUseRendered": false,
-						"sTitle": "Award Date",
+						"sTitle": "Request Date",
 						"aTargets": [ 2 ] 
 					}, 
 					{ "sTitle": "Prg. Elem. Code", "aTargets": [ 3 ] }, 
