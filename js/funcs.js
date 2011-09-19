@@ -736,16 +736,20 @@ console.log('showing prop tab');
 //console.log('all good, proceeding');
 
 	//now show the selected topics in the filter form for prop tab
-	if (tab=='prop') {
-		$("form[id=filter_results]").html('');
-		for (var i in selectedstatus) {
-			//ugly but quick
-			if (selectedstatus[i]=="award") var label="Awarded";
-			else if (selectedstatus[i]=="propose") var label="Proposed";
-			else if (selectedstatus[i]=="decline") var label="Declined";
-			$("form[id=filter_results]").append('<strong><input type="checkbox" value="'+selectedstatus[i]+'" name="prop_status" checked>'+label+'</strong>');
-		}
-		$("form[id=filter_results]").append('<input class="buttonGreen-sm" type="button" name="filter_button" value="Filter">');			
+	$("form[id=filter_results]").html('');
+	var filterhtml = '';
+	var filtercount = 0;
+	for (var i in selectedstatus) {
+		//ugly but quick
+		if (selectedstatus[i]=="award") continue; 
+		filtercount++;
+		if (selectedstatus[i]=="propose") var label="Proposed";
+		else if (selectedstatus[i]=="decline") var label="Declined";
+		filterhtml += '<strong><input type="checkbox" value="'+selectedstatus[i]+'" name="prop_status" checked>'+label+'</strong>'
+	}
+	if (filtercount>1 && filterhtml) {
+		$("form[id=filter_results]").append(filterhtml);
+		$("form[id=filter_results]").append('<input class="buttonGreen-sm" type="button" name="filter_button" value="Filter">');		
 	}
 
 	//now either show the results or in case an error occurred, don't show them
