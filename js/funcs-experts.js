@@ -65,12 +65,16 @@ function fullTopics(){
 }
 
 function loadTopics(data) {
+console.log('loading topics');
 	//reset the summaries
 	$("#topics_selected").html('0');
 	$("#pi_selected").html('0');
 	$("#topics_selected_right").html('0');
-	$("#topics_selected_list").html('');
+	$("#topics_selected_list").empty();
 	$("#pi_selected_right").html('0');
+	
+	//clear data table
+	//$('#topics_table').empty();
 
 	var aaData = _.map(data["data"], function(v) { 
 		//the random columns generate a number to use to generate an image of a graph from a list of graph images img1-img10
@@ -226,7 +230,10 @@ function loadTopics(data) {
 	      },
 	});*/
 	
-	$('#topics_table input[name="topic[]"]').live('click',function(event) {
+	$('#topics_table input[name="topic[]"]').unbind('click');
+	$('#topics_table input[name="topic[]"]').click(function(event) {
+//console.log(event.target.tagName);
+console.log('checked:'+$(this).attr('value'));
 		var oTable = $('#topics_table').dataTable();		
 		/* Get the position of the current data from the node */
 		var aPos = oTable.fnGetPosition( $(this).parent().parent().get(0) );
@@ -238,6 +245,7 @@ function loadTopics(data) {
 		
 		//trap topic selection
 		var numTopicsSelected = $("#topics_selected").html();
+console.log(numTopicsSelected);		
 		if (checked) {
 			//set the row on
 			$(this).parent().parent().addClass('selected');
