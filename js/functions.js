@@ -106,8 +106,8 @@ $(document).ready(function() {
 				var tmp = "";
 				var propstatusarray = propstatus.split(",");
 alert(propstatusarray);				
-				if (propstatusarray.indexOf("propose")!=-1) tmp = "propose";
-				if (propstatusarray.indexOf("decline")!=-1) {
+				if (jQuery.inArray( "propose", propstatusarray )!=-1) tmp = "propose";
+				if (jQuery.inArray( "decline", propstatusarray )!=-1) {
 					if (tmp) tmp += ',';
 					tmp += "decline";
 				}

@@ -698,7 +698,7 @@ function submitMenu(tab) {
 //	if ($smarty.get.alert=="amy") {
 //		alert(JSON.stringify(input));
 //	}
-	renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, tab);
+	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, tab);
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "grant");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "pi");
 	//renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_topics, query_primtopic, "org");
@@ -723,6 +723,7 @@ console.log('showing prop tab');
 	}*/
 	
 	//activate tab
+	//this will take care of rendering
 	if (tab=='prop') {
 //console.log('showing tab prop');
 		$('#tabs').tabs('select','tabs-1');
