@@ -99,16 +99,17 @@ $(document).ready(function() {
 			selTab = ["prop", "grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
-			if (selTab=="grant") query_status = "award";
+			var propstatus = query_status;
+			if (selTab=="grant") propstatus = "award";
 			else if (selTab=="prop") {
 				//only award or decline depending on what was selected
 				var tmp = "";
-				if ("propose" in query_status.split(',')) tmp = "propose";
-				if ("decline" in query_status.split(',')) {
+				if ("propose" in propstatus.split(',')) tmp = "propose";
+				if ("decline" in propstatus.split(',')) {
 					if (tmp) tmp += ',';
 					tmp += "decline";
 				}
-				query_status = tmp;
+				propstatus = tmp;
 			}
 			//reset summaries
 			if (selTab=="prop") {
@@ -176,7 +177,7 @@ $(document).ready(function() {
 				$("#summary_rankedorgs_byavgawardfunding_4").html('');
 				$("#summary_rankedorgs_byavgawardfunding_5").html('');				
 			}
-			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, query_status, query_topics, query_primtopic, selTab);
+			renderIt(query_nsfDiv, query_yearFrom, query_yearTo, propstatus, query_topics, query_primtopic, selTab);
 		}
 	});
 
