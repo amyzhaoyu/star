@@ -104,8 +104,8 @@ $(document).ready(function() {
 			else if (selTab=="prop") {
 				//only award or decline depending on what was selected
 				var tmp = "";
-				if ("propose" in propstatus.split(',')) tmp = "propose";
-				if ("decline" in propstatus.split(',')) {
+				if (propstatus.split(',').indexOf("propose")!=-1) tmp = "propose";
+				if (propstatus.split(',').indexOf("decline")!=-1) {
 					if (tmp) tmp += ',';
 					tmp += "decline";
 				}
