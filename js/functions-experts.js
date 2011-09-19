@@ -154,7 +154,6 @@ $(document).ready(function() {
 				params += propid;
 			}
 		}
-alert(params);
 //console.log(params);
 	
 		//if the show details link was clicked trap that		
