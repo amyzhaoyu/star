@@ -25,7 +25,7 @@
 		<p>Awards: ${awardcount}<br /><br />
 		Date First: ${mindate}<br />
 		Date Last: ${maxdate}<br /><br />
-		Total Funding: ${requestfunding}<br />
+		Total Requested Funding: ${requestfunding}<br />
 		Award Funding: ${awardfunding}<br />
 		Award Avg.: ${avgawardfunding}<br />
 		</p>
