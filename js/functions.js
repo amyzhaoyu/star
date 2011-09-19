@@ -111,6 +111,7 @@ $(document).ready(function() {
 				}
 				propstatus = tmp;
 			}
+console.log('propstatus:'+propstatus);			
 			//reset summaries
 			if (selTab=="prop") {
 				$("#summary_props").html('0');
