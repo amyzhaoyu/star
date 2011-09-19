@@ -129,7 +129,7 @@ $(document).ready(function() {
 				$("#summary_grants").html('0');
 				$("#summary_datefirst").html('');
 				$("#summary_datelast").html('');
-				$("#summary_funding_total").html('');
+				$("#summary_funding_total").html('0');
 				$("#summary_rankedgrants_byfunding_1").html('');
 				$("#summary_rankedgrants_byfunding_2").html('');
 				$("#summary_rankedgrants_byfunding_3").html('');
