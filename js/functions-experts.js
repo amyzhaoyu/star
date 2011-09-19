@@ -154,6 +154,7 @@ $(document).ready(function() {
 				params += propid;
 			}
 		}
+alert(params);
 //console.log(params);
 	
 		//if the show details link was clicked trap that		
@@ -300,10 +301,12 @@ function summarizePI() {
 	//now recalculate the rankings - do this regardless of checked or unchecked
 	//current checked items
 	var oTable = $("#pi table").dataTable();
-	var checkedpis = fnGetSelected(oTable).map(function(v) {
+	var checkedpis = _.map(fnGetSelected(oTable), function(v) {
+//alert(v);		
 //console.log(v);		
 		var tmp = {};
 		tmp['propcount'] = v[5];
+//alert(v[5]);
 
 		//now total up the funding for all the proposals
 		var awardcount = 0;
@@ -468,8 +471,10 @@ function fnGetSelected( oTableLocal )
     {
         if ( $(aTrs[i]).hasClass('row_selected') )
         {
+//console.log(oTableLocal.fnGetData(aTrs[i]));	
             aReturn.push( oTableLocal.fnGetData(aTrs[i]) ); //return data, not node
         }
     }
+//alert(aReturn[0]);
     return aReturn;
 }

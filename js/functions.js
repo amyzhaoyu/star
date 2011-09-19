@@ -105,7 +105,7 @@ $(document).ready(function() {
 				//only award or decline depending on what was selected
 				var tmp = "";
 				var propstatusarray = propstatus.split(",");
-alert(propstatusarray);				
+//alert(propstatusarray);				
 				if (jQuery.inArray( "propose", propstatusarray )!=-1) tmp = "propose";
 				if (jQuery.inArray( "decline", propstatusarray )!=-1) {
 					if (tmp) tmp += ',';
@@ -832,7 +832,7 @@ function summarizePI() {
 	//now recalculate the rankings - do this regardless of checked or unchecked
 	//current checked items
 	var oTable = $("#pi table").dataTable();
-	var checkedpis = fnGetSelected(oTable).map(function(v) {
+	var checkedpis =  _.map(fnGetSelected(oTable),function(v) {
 //console.log(v);		
 		var tmp = {};
 		tmp['propcount'] = v[4];
@@ -972,7 +972,7 @@ function summarizeOrg() {
 	//now recalculate the rankings - do this regardless of checked or unchecked
 	//current checked items
 	var oTable = $("#org table").dataTable();
-	var checkedorgs = fnGetSelected(oTable).map(function(v) {
+	var checkedorgs =  _.map(fnGetSelected(oTable),function(v) {
 //console.log(v);
 		var tmp = {};
 		tmp['propcount'] = v[2];
