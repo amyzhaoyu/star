@@ -42,6 +42,7 @@
 						<option value="2008">2008</option>
 						<option value="2009">2009</option>
 						<option value="2010" selected="selected">2010</option>
+						<option value="2011">2011</option>
 					</select> 
 					to
 					<select id="year_to" name="year_to">
@@ -56,24 +57,25 @@
 						<option value="2008">2008</option>
 						<option value="2009">2009</option>
 						<option value="2010" selected="selected">2010</option>
+						<option value="2011">2011</option>
 					</select> 
 	          </td>
 	        </tr>
 	        <tr>
 	          <td><strong>Show</strong></td>
 	          <td>
-	         	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded</label></p>
+	         	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded (up to last Fiscal Year)</label></p>
 	<script>
 				if (proposalaccessallowed) {
 					document.write('<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>');
-					document.write('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined</label></p>');
+					document.write('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined (up to last Fiscal Year)</label></p>');
 				}
 	</script>			
 	          </td>
 	        </tr>
 	        <tr>
-	          <td><strong>Topics</strong></td>
-	          <td><input type="checkbox" id = "primary_topic" name = "primary_topic" value = true checked> Use primary topic</td>
+	          <td><!--<strong>Topics</strong>--></td>
+	          <td><input type="checkbox" id = "primary_topic" name = "primary_topic" value = true checked style="display: none;"><!-- Use primary topic--></td>
 	        </tr>
 	      </table></td>
 	      <td align="left">
@@ -83,10 +85,10 @@
 			</td>
 	      </tr>
 	  </table>
-      <h3>Topic Selection Summary</h3>
-        <p>The below reflects a summary of the Topics you 
+      <h3>Quick Selection Summary</h3>
+        <p>The below reflects a summary of the items you 
           selected on the left. Click the links below to 
-          analyze your Topic selection deeper.        </p>
+          analyze your selection deeper.        </p>
           
         <table class="topic-selection-summary-table">
           <tr class="heading">
@@ -120,8 +122,8 @@
         <label>Filtered By:</label>
         </h3></td>
       <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
-      <td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
-      <td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>
+      <td colspan="2">Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
+      <!--<td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>-->
     </tr>
     <tr valign="middle">
       <td align="left"><h3>

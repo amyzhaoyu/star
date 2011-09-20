@@ -66,7 +66,9 @@ $(document).ready(function() {
 
 	$('#tabs').tabs({
 		select: function(event, ui) {
-			selTab = ["grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
+			selTab = ["pi"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
+//console.log(selTab);			
+//console.log(ui);			
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
 			//reset summaries
@@ -132,15 +134,15 @@ $(document).ready(function() {
 		}
 	});
 
-	$('#pi table tbody tr').live('click', function (event) {   
+	$('#pi table tbody tr').live('click', function (event) {  
+//console.log('clicked');		 
 		var oTable = $('#pi table').dataTable();
-
 	    var aData = oTable.fnGetData(this); // get datarow
 //console.log(fnGetSelected(oTable));
+
 		//load prop data for selected pis so we can calculate summaries and rankings
 		var propids = [];
-		var rowdata = oTable.fnGetData(this);
-		var tmp_propids = rowdata[6];
+		var tmp_propids = aData[6];
 		//make array out of string
 		if (tmp_propids) propids = tmp_propids.split(',');
 		//now load the data for each propid if it is not already loaded
@@ -155,6 +157,8 @@ $(document).ready(function() {
 			}
 		}
 //console.log(params);
+
+//console.log(event.target.nodeName);		
 	
 		//if the show details link was clicked trap that		
 	   if(event.target.nodeName == "IMG"){
@@ -215,16 +219,19 @@ $(document).ready(function() {
 		}
 
 		//if the more link was clicked trap that		
-	   if(event.target.nodeName == "A"){
+	   if(event.target.nodeName == "A") {
 //console.log($(event.target));		
-			var pi_node = this;
-			if (pi_node != null) {
-				var pData = oTable.fnGetData(pi_node);
-				$("#grants_more_"+pData[1]).toggle();
+			if ($(event.target).hasClass('moregrantids')) {
+				var pi_node = this;
+				if (pi_node != null) {
+					var pData = oTable.fnGetData(pi_node);
+					$("#grants_more_"+pData[1]).toggle();
+				}				
+				event.preventDefault();
+			    return;
+			} else {
+				return;
 			}
-
-			event.preventDefault();
-		    return;
 		}
 
 	    if (null != aData)  // null if we clicked on title row
@@ -358,7 +365,7 @@ function summarizePI() {
 	//now for the researcher rankings
 	//by number of proposals
 	//sort the summaries list - descending by number of proposals submitted
-	checkedpis.sort(function(a,b) {return (a.propcount > b.propcount) ? -1 : ((b.propcount > a.propcount) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseInt(a.propcount) > parseInt(b.propcount)) ? -1 : ((parseInt(b.propcount) > parseInt(a.propcount)) ? 1 : 0);} );	
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
 		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
@@ -370,7 +377,7 @@ function summarizePI() {
 	}
 	//by number of awards
 	//sort the summaries list - descending by number of awarded proposals
-	checkedpis.sort(function(a,b) {return (a.awardcount > b.awardcount) ? -1 : ((b.awardcount > a.awardcount) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseInt(a.awardcount) > parseInt(b.awardcount)) ? -1 : ((parseInt(b.awardcount) > parseInt(a.awardcount)) ? 1 : 0);} );	
 //console.log(checkedpis);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
@@ -383,7 +390,7 @@ function summarizePI() {
 	}
 	//by number of award funding
 	//sort the summaries list - descending by funding of awarded proposals
-	checkedpis.sort(function(a,b) {return (a.awardfunding > b.awardfunding) ? -1 : ((b.awardfunding > a.awardfunding) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseInt(a.awardfunding) > parseInt(b.awardfunding)) ? -1 : ((parseInt(b.awardfunding) > parseInt(a.awardfunding)) ? 1 : 0);} );	
 //console.log(checkedpis);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
@@ -396,7 +403,7 @@ function summarizePI() {
 	}
 	//by avg. award funding by grant
 	//sort the summaries list - descending by funding of awarded proposals
-	checkedpis.sort(function(a,b) {return (a.avgawardfunding > b.avgawardfunding) ? -1 : ((b.avgawardfunding > a.avgawardfunding) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseFloat(a.avgawardfunding) > parseFloat(b.avgawardfunding)) ? -1 : ((parseFloat(b.avgawardfunding) > parseFloat(a.avgawardfunding)) ? 1 : 0);} );	
 //console.log(checkedpis);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {

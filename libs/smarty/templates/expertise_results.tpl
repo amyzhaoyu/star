@@ -42,9 +42,9 @@
 	{* JQuery UI - tabs *}
 	<div id="tabs">
 		<ul>
-			<li><a href="#tabs-2">Researchers</a></li>
+			<li><a href="#tabs-1">Researchers</a></li>
 		</ul>
-		<div id="tabs-2"><div id="pi"></div> </div>
+		<div id="tabs-1"><div id="pi"></div> </div>
 
 	</div>
    </td>
@@ -260,14 +260,20 @@ function createTable(tab, data)
 					{ "sWidth": "5%", "sTitle": "Number of Grants", "aTargets": [ 5 ] },  
 					{ 
 						"fnRender": function ( oObj ) {
+							//wrap each prop id in a link
+							var formatted = [];
+							if (oObj.aData[6]) {
+								var tmp = oObj.aData[6].split(',');
+								for (var i in tmp)	formatted.push('<a href="https://www.ejacket.nsf.gov/ej/showProposal.do?optimize=Y&ID='+tmp[i]+'&docid='+tmp[i]+'" title="Open in e-Jacket" target="_blank">'+tmp[i]+'</a>');
+							}
 							if (oObj.aData[6] && oObj.aData[6].split(',').length>3) {
 //console.log(oObj.aData[6].split(',').slice(0,3	));								
 								//only show first 3, put rest in more
-								var html = oObj.aData[6].split(',').slice(0,3).join(',')+' <a href="#">More</a>';
-								html += '<div id="grants_more_'+oObj.aData[1]+'" style="display: none;">'+oObj.aData[6].split(',').slice(3).join(',')+'</div>';
+								var html = formatted.slice(0,3).join(',')+' <a class="moregrantids" href="#">More</a>';
+								html += '<div id="grants_more_'+oObj.aData[1]+'" style="display: none;">'+formatted.slice(3).join(',')+'</div>';
 								return html;
 							}
-							else return oObj.aData[6];
+							else return formatted.join(',');
 						},
 						"bUseRendered": false,
 						"sWidth": "20%", 

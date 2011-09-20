@@ -306,6 +306,12 @@ $(document).ready(function() {
 		var oTable = $('#props table').dataTable();
 	    var aData = oTable.fnGetData(this); // get datarow
 
+		//if the prop id link was clicked trap that		
+	   if(event.target.nodeName == "A") {
+//console.log($(event.target));		
+			return;
+		}
+
 	    if (null != aData)  // null if we clicked on title row
 	    {
 			//set the class
@@ -342,7 +348,7 @@ $(document).ready(function() {
 			//now for the prop rankings
 			//first by amount of award
 			//sort the summaries list - descending by funding
-			checkedprops.sort(function(a,b) {return (a[1] > b[1]) ? -1 : ((b[1] > a[1]) ? 1 : 0);} );	
+			checkedprops.sort(function(a,b) {return (parseInt(a[1]) > parseInt(b[1])) ? -1 : ((parseInt(b[1]) > parseInt(a[1])) ? 1 : 0);} );	
 			//now select the top 4 out of the summaries list
 			for (var i=0;i<4;i++) {
 				//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
@@ -362,8 +368,8 @@ $(document).ready(function() {
 				$("#summary_prop_funding_min").html(tmp+' ('+checkedprops[checkedprops.length-1][0]+')');					
 			}
 			//date summary
-			//sort the summaries list - descending by funding
-			checkedprops.sort(function(a,b) {return (a[2] > b[2]) ? -1 : ((b[2] > a[2]) ? 1 : 0);} );	
+			//sort the summaries list - ascending by date
+			checkedprops.sort(function(a,b) {return (a[2] > b[2]) ? 1 : ((b[2] > a[2]) ? -1 : 0);} );	
 			var dateFirst = null;
 			var dateLast = null;
 			if (checkedprops.length>0) {
@@ -382,29 +388,33 @@ $(document).ready(function() {
 
 		//if the show details link was clicked trap that		
 	   if(event.target.nodeName == "A"){
-			var nTr = this;
-			if (nTr != null) {
-				var aData = oTable.fnGetData(nTr);
-				if ( $(event.target).html().match('Hide') )
-				{
-					$(event.target).html('Show');
-					$("#pid_" + aData[0]).slideUp(function() {
-						oTable.fnClose(nTr);
-					});
+			if ($(event.target).hasClass('details')) {		
+				var nTr = this;
+				if (nTr != null) {
+					var aData = oTable.fnGetData(nTr);
+					if ( $(event.target).html().match('Hide') )
+					{
+						$(event.target).html('Show');
+						$("#pid_" + aData[0]).slideUp(function() {
+							oTable.fnClose(nTr);
+						});
+					}
+					else
+					{
+						$(event.target).html('Hide');
+						oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[0] + "'></div>", 'details' );
+						$.getJSON(apiurl+'prop?id=' + aData[0] + '&jsoncallback=?', function(data) {
+							$("#pid_" + aData[0]).hide()
+							$("#pid_" + aData[0]).html($("#propRender").tmpl(data["data"]));
+							$("#pid_" + aData[0]).slideDown()
+						});
+					}
 				}
-				else
-				{
-					$(event.target).html('Hide');
-					oTable.fnOpen(nTr, "<div class='dataInnerts' id='pid_" + aData[0] + "'></div>", 'details' );
-					$.getJSON(apiurl+'prop?id=' + aData[0] + '&jsoncallback=?', function(data) {
-						$("#pid_" + aData[0]).hide()
-						$("#pid_" + aData[0]).html($("#propRender").tmpl(data["data"]));
-						$("#pid_" + aData[0]).slideDown()
-					});
-				}
+				event.preventDefault();
+				return;
+			} else {
+				return;
 			}
-			event.preventDefault();
-			return;
 	   }
 			        
 	    var aData = oTable.fnGetData(this); // get datarow
@@ -444,7 +454,8 @@ $(document).ready(function() {
 			//now for the grant rankings
 			//first by amount of award
 			//sort the summaries list - descending by funding
-			checkedgrants.sort(function(a,b) {return (a[1] > b[1]) ? -1 : ((b[1] > a[1]) ? 1 : 0);} );	
+			checkedgrants.sort(function(a,b) {return (parseInt(a[1]) > parseInt(b[1])) ? -1 : ((parseInt(b[1]) > parseInt(a[1])) ? 1 : 0);} );	
+//console.log(checkedgrants);			
 			//now select the top 4 out of the summaries list
 			for (var i=0;i<4;i++) {
 				//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
@@ -464,8 +475,8 @@ $(document).ready(function() {
 				$("#summary_funding_min").html(tmp+' ('+checkedgrants[checkedgrants.length-1][0]+')');					
 			}
 			//date summary
-			//sort the summaries list - descending by funding
-			checkedgrants.sort(function(a,b) {return (a[2] > b[2]) ? -1 : ((b[2] > a[2]) ? 1 : 0);} );	
+			//sort the summaries list - ascending by date
+			checkedgrants.sort(function(a,b) {return (a[2] > b[2]) ? 1 : ((b[2] > a[2]) ? -1 : 0);} );	
 			var dateFirst = null;
 			var dateLast = null;
 			if (checkedgrants.length>0) {
@@ -558,32 +569,36 @@ $(document).ready(function() {
 
 		//if the show details link was clicked trap that		
 	   if(event.target.nodeName == "A"){
-			var pi_node = this;
-			if (pi_node != null) {
-				var pData = oTable.fnGetData(pi_node);
-				if ( $(event.target).html().match('Hide') )
-				{
-					$(event.target).html('Show');
-					$("#pid_" + pData[0]).slideUp(function() {
-						oTable.fnClose(pi_node);
-					});
-				}
-				else
-				{
-					$(event.target).html('Hide');
-					oTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[0] + "'></div>", 'details' );
-					$.getJSON((apiurl+'prop?id=' + pData[5]).split(' ').join('') + '&jsoncallback=?', function(data) {
-						$("#pid_" + pData[0]).hide()
-						// Use $.each() to get all grant details for each PI
-						$.each(data["data"], function(i, item){
-							$($("#personRender").tmpl(item)).appendTo("#pid_" + pData[0]);
+			if ($(event.target).hasClass('pi_details')) {		
+				var pi_node = this;
+				if (pi_node != null) {
+					var pData = oTable.fnGetData(pi_node);
+					if ( $(event.target).html().match('Hide') )
+					{
+						$(event.target).html('Show');
+						$("#pid_" + pData[0]).slideUp(function() {
+							oTable.fnClose(pi_node);
 						});
-						$("#pid_" + pData[0]).slideDown()
-					});
+					}
+					else
+					{
+						$(event.target).html('Hide');
+						oTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[0] + "'></div>", 'details' );
+						$.getJSON((apiurl+'prop?id=' + pData[5]).split(' ').join('') + '&jsoncallback=?', function(data) {
+							$("#pid_" + pData[0]).hide()
+							// Use $.each() to get all grant details for each PI
+							$.each(data["data"], function(i, item){
+								$($("#personRender").tmpl(item)).appendTo("#pid_" + pData[0]);
+							});
+							$("#pid_" + pData[0]).slideDown()
+						});
+					}
 				}
+				event.preventDefault();
+			    return;
+			} else {
+				return;
 			}
-			event.preventDefault();
-		    return;
 		}
 		
 	    var aData = oTable.fnGetData(this); // get datarow
@@ -695,30 +710,34 @@ $(document).ready(function() {
 
 		//if the show details link was clicked trap that		
 	   if(event.target.nodeName == "A"){
-			var org_node = this;
-			if (org_node != null) {
-				var orgData = oTable.fnGetData(org_node);
-				if ( $(event.target).html().match('Hide') )
-				{
-					$(event.target).html('Show');
-					$("#oid_" + orgData[0]).slideUp(function() {
-						oTable.fnClose(org_node);
-					});
-				}
-				else
-				{
-					$(event.target).html('Hide');
-					oTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[0] + "'></div>", 'details' );
+			if ($(event.target).hasClass('org_details')) {		
+				var org_node = this;
+				if (org_node != null) {
+					var orgData = oTable.fnGetData(org_node);
+					if ( $(event.target).html().match('Hide') )
+					{
+						$(event.target).html('Show');
+						$("#oid_" + orgData[0]).slideUp(function() {
+							oTable.fnClose(org_node);
+						});
+					}
+					else
+					{
+						$(event.target).html('Hide');
+						oTable.fnOpen(org_node, "<div class='dataInnerts' id='oid_" + orgData[0] + "'></div>", 'details' );
 
-					$.getJSON(apiurl+'org?id=' + orgData[0] + '&jsoncallback=?', function(data) {
-						$("#oid_" + orgData[0]).hide()
-						$("#oid_" + orgData[0]).html($("#orgRender").tmpl(data["data"]));
-						$("#oid_" + orgData[0]).slideDown()
-					});
+						$.getJSON(apiurl+'org?id=' + orgData[0] + '&jsoncallback=?', function(data) {
+							$("#oid_" + orgData[0]).hide()
+							$("#oid_" + orgData[0]).html($("#orgRender").tmpl(data["data"]));
+							$("#oid_" + orgData[0]).slideDown()
+						});
+					}
 				}
+				event.preventDefault();
+			    return;
+			} else {
+				return;
 			}
-			event.preventDefault();
-		    return;
 		}
 
 	    var aData = oTable.fnGetData(this); // get datarow
@@ -916,7 +935,7 @@ function summarizePI() {
 	//now for the researcher rankings
 	//by number of proposals
 	//sort the summaries list - descending by number of proposals submitted
-	checkedpis.sort(function(a,b) {return (a.propcount > b.propcount) ? -1 : ((b.propcount > a.propcount) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseInt(a.propcount) > parseInt(b.propcount)) ? -1 : ((parseInt(b.propcount) > parseInt(a.propcount)) ? 1 : 0);} );	
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
 		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
@@ -928,7 +947,7 @@ function summarizePI() {
 	}
 	//by number of awards
 	//sort the summaries list - descending by number of awarded proposals
-	checkedpis.sort(function(a,b) {return (a.awardcount > b.awardcount) ? -1 : ((b.awardcount > a.awardcount) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseInt(a.awardcount) > parseInt(b.awardcount)) ? -1 : ((parseInt(b.awardcount) > parseInt(a.awardcount)) ? 1 : 0);} );	
 //console.log(checkedpis);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
@@ -941,7 +960,7 @@ function summarizePI() {
 	}
 	//by number of award funding
 	//sort the summaries list - descending by funding of awarded proposals
-	checkedpis.sort(function(a,b) {return (a.awardfunding > b.awardfunding) ? -1 : ((b.awardfunding > a.awardfunding) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseInt(a.awardfunding) > parseInt(b.awardfunding)) ? -1 : ((parseInt(b.awardfunding) > parseInt(a.awardfunding)) ? 1 : 0);} );	
 //console.log(checkedpis);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
@@ -954,7 +973,7 @@ function summarizePI() {
 	}
 	//by avg. award funding by grant
 	//sort the summaries list - descending by funding of awarded proposals
-	checkedpis.sort(function(a,b) {return (a.avgawardfunding > b.avgawardfunding) ? -1 : ((b.avgawardfunding > a.avgawardfunding) ? 1 : 0);} );	
+	checkedpis.sort(function(a,b) {return (parseFloat(a.avgawardfunding) > parseFloat(b.avgawardfunding)) ? -1 : ((parseFloat(b.avgawardfunding) > parseFloat(a.avgawardfunding)) ? 1 : 0);} );	
 //console.log(checkedpis);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
@@ -1053,7 +1072,7 @@ function summarizeOrg() {
 	//now for the researcher rankings
 	//by number of proposals
 	//sort the summaries list - descending by number of proposals submitted
-	checkedorgs.sort(function(a,b) {return (a.propcount > b.propcount) ? -1 : ((b.propcount > a.propcount) ? 1 : 0);} );	
+	checkedorgs.sort(function(a,b) {return (parseInt(a.propcount) > parseInt(b.propcount)) ? -1 : ((parseInt(b.propcount) > parseInt(a.propcount)) ? 1 : 0);} );	
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
 		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
@@ -1065,7 +1084,7 @@ function summarizeOrg() {
 	}
 	//by number of awards
 	//sort the summaries list - descending by number of awarded proposals
-	checkedorgs.sort(function(a,b) {return (a.awardcount > b.awardcount) ? -1 : ((b.awardcount > a.awardcount) ? 1 : 0);} );	
+	checkedorgs.sort(function(a,b) {return (parseInt(a.awardcount) > parseInt(b.awardcount)) ? -1 : ((parseInt(b.awardcount) > parseInt(a.awardcount)) ? 1 : 0);} );	
 //console.log(checkedorgs);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
@@ -1078,7 +1097,7 @@ function summarizeOrg() {
 	}
 	//by number of award funding
 	//sort the summaries list - descending by funding of awarded proposals
-	checkedorgs.sort(function(a,b) {return (a.awardfunding > b.awardfunding) ? -1 : ((b.awardfunding > a.awardfunding) ? 1 : 0);} );	
+	checkedorgs.sort(function(a,b) {return (parseInt(a.awardfunding) > parseInt(b.awardfunding)) ? -1 : ((parseInt(b.awardfunding) > parseInt(a.awardfunding)) ? 1 : 0);} );	
 //console.log(checkedorgs);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {
@@ -1091,7 +1110,7 @@ function summarizeOrg() {
 	}
 	//by avg. award funding by grant
 	//sort the summaries list - descending by funding of awarded proposals
-	checkedorgs.sort(function(a,b) {return (a.avgawardfunding > b.avgawardfunding) ? -1 : ((b.avgawardfunding > a.avgawardfunding) ? 1 : 0);} );	
+	checkedorgs.sort(function(a,b) {return (parseFloat(a.avgawardfunding) > parseFloat(b.avgawardfunding)) ? -1 : ((parseFloat(b.avgawardfunding) > parseFloat(a.avgawardfunding)) ? 1 : 0);} );	
 //console.log(checkedorgs);		
 	//now select the top 5 out of the summaries list
 	for (var i=0;i<5;i++) {

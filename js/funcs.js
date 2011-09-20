@@ -126,13 +126,16 @@ function loadTopics(data) {
 	var maxAwardCount = 0;
 	for (var i=0;i<aaData.length;i++) {
 		if (aaData[i][3]>maxProposalCount) maxProposalCount = aaData[i][3];
-		if (aaData[i][6]) {
+		if (!aaData[i][6]) {
 			//if no requested dollar amount available use awarded dollar for total funding numbers (public vs. private access)
 			if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
+			aaData[i].push(null);
 		} else {
 			if (aaData[i][6]>maxAwardCount) maxAwardCount = aaData[i][6];
+			aaData[i].push(((aaData[i][5]/aaData[i][6])*100).toFixed(2));
 		}
 	}
+//console.log(maxAwardCount);	
 //alert(maxProposalCount);	
 
 	//set the number of orgs selected
@@ -186,10 +189,6 @@ function loadTopics(data) {
 					var numPixels = 0;
 					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[3]);
 					var numProposals = oObj.aData[3];
-					if (oObj.aData[6]) {
-						var tmp = ((oObj.aData[5]/oObj.aData[6])*100).toFixed(2);
-						numProposals += ' / '+tmp+'%';
-					}
 					return '<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number numproposals">'+numProposals+'</span></span></strong>';
 				},
 				"bSearchable": false,
@@ -215,7 +214,9 @@ function loadTopics(data) {
 					//it is relative to the maxCount and the size of this column - 150px
 					var numPixels = 0;
 					var formattedAwarded_Dollar = (oObj.aData[5]/1000000).toFixed(2);
-					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*formattedAwarded_Dollar);
+					if (maxAwardCount > 0) {
+						numPixels = Math.ceil((150/maxAwardCount)*oObj.aData[5]);
+					}
 					return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+formattedAwarded_Dollar+'M</span></span></strong>';
 				},
 				"bSearchable": false,
@@ -231,7 +232,9 @@ function loadTopics(data) {
 					if (oObj.aData[6]) {
 						var numPixels = 0;
 						var formattedAwarded_Dollar = (oObj.aData[6]/1000000).toFixed(2);
-						if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*formattedAwarded_Dollar);
+						if (maxAwardCount > 0) {
+							numPixels = Math.ceil((150/maxAwardCount)*oObj.aData[6]);
+						}
 						return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+formattedAwarded_Dollar+'M</span></span></strong>';						
 					}
 				},
@@ -241,10 +244,33 @@ function loadTopics(data) {
 				"sTitle": "Request Funding", 
 				"bVisible": false,
 				"aTargets": [ 6 ]
-			}
+			},
+			{
+				"fnRender": function ( oObj ) {
+					var calc = oObj.aData[7];
+					if (oObj.aData[7]) {
+						calc += '%';
+					}
+					return '<strong class="num-bar-wrap num-bar-proposals"><span class="number numproposals">'+calc+'</span></strong>';
+				},
+				"bVisible": false,
+				"bUseRendered": false,
+				"sTitle": "Success Rate", 
+				"aTargets": [ 7 ]
+			},
 		],
 		"aaSorting": [[3, 'desc']]
 	});
+	
+	//if awarded selected show last column and default sort by it
+	var propstatusarray = [];
+	$('[id^="prop_status"]:checked').each(function() {
+		propstatusarray.push($(this).next().text());
+	});
+	
+	if (proposalaccessallowed && jQuery.inArray( "award", propstatusarray )!=-1) {
+		oTable.fnSetColumnVis( 7, true );
+	}
 	
 	//append the view toggle states after the filter
 //console.log($('#topics_table_wrapper #topics_table_filter').html());
@@ -573,7 +599,7 @@ function updateTopicSummary(checked,data) {
 	//now for the topic rankings
 	//first by number of grants
 	//sort the summaries list - descending by count
-	checkedtopics.sort(function(a,b) {return (a.summary_count > b.summary_count) ? -1 : ((b.summary_count > a.summary_count) ? 1 : 0);} );	
+	checkedtopics.sort(function(a,b) {return (parseInt(a.summary_count) > parseInt(b.summary_count)) ? -1 : ((parseInt(b.summary_count) > parseInt(a.summary_count)) ? 1 : 0);} );	
 	//now select the top 3 out of the summaries list
 	for (var i=0;i<3;i++) {
 		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
@@ -585,7 +611,7 @@ function updateTopicSummary(checked,data) {
 	}
 	//do the funding rankings
 	//sort the summaries list - descending by totalfunding
-	checkedtopics.sort(function(a,b) {return (a.summary_totalfunding > b.summary_totalfunding) ? -1 : ((b.summary_totalfunding > a.summary_totalfunding) ? 1 : 0);} );	
+	checkedtopics.sort(function(a,b) {return (parseInt(a.summary_totalfunding) > parseInt(b.summary_totalfunding)) ? -1 : ((parseInt(b.summary_totalfunding) > parseInt(a.summary_totalfunding)) ? 1 : 0);} );	
 	//now select the top 3 out of the summaries list
 	for (var i=0;i<3;i++) {
 		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not

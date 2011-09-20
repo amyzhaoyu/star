@@ -79,7 +79,7 @@
       </label><br />Hold the CTRL key to select more than one.</td>
       <td align="left"><table border="0" cellspacing="1" cellpadding="5" class="select-options">
         <tr>
-          <td><h3>Time<br /><span style="font-size: 11px;">(fiscal years)</span></h3></td>
+          <td><h3>Time</h3></td>
           <td>
 				<select id="year_from" name="year_from">
 					<option value="2000">2000</option>
@@ -93,6 +93,7 @@
 					<option value="2008">2008</option>
 					<option value="2009">2009</option>
 					<option value="2010" selected="selected">2010</option>
+					<option value="2011">2011</option>
 				</select> 
 				to
 				<select id="year_to" name="year_to">
@@ -107,24 +108,25 @@
 					<option value="2008">2008</option>
 					<option value="2009">2009</option>
 					<option value="2010" selected="selected">2010</option>
+					<option value="2011">2011</option>
 				</select> 
           </td>
         </tr>
         <tr>
           <td><h3>Show</h3></td>
           <td>
-         	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded</label></p>
+         	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded (up to last Fiscal Year)</label></p>
 <script>
 			if (proposalaccessallowed) {
 				document.write('<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>');
-				document.write('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined</label></p>');
+				document.write('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined (up to last Fiscal Year)</label></p>');
 			}
 </script>			
           </td>
         </tr>
         <tr>
-          <td><h3>Topics</h3></td>
-          <td><input type="checkbox" id = "primary_topic" name = "primary_topic" value = true checked> Use primary topic</td>
+          <td><!--<h3>Topics</h3>--></td>
+          <td><input type="checkbox" id = "primary_topic" name = "primary_topic" value = true checked style="display:none;"><!-- Use primary topic--></td>
         </tr>
       </table></td>
       <td align="left">
@@ -147,8 +149,8 @@
       <td align="left">Divisions: <span class="values" id="orgs_selected">[count] [values]</span></td>
       <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
       <td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
-      <td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>
-      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change" onClick="editQuery();" /></td>
+      <!--<td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>-->
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="button" value="Change" onClick="editQuery();" /></td>
     </tr>
   </table>
 </div>
@@ -162,10 +164,10 @@
 	  </td>
       <td><div class="topic-selection-summary-wrap">
 
-      <h3>Topic Selection Summary</h3>
-        <p>The below reflects a summary of the Topics you 
-          selected on the left. Click the links below to 
-          analyze your Topic selection deeper.        </p>
+      <h3>Quick Selection Summary</h3>
+        <p>The below reflects a summary of the items you 
+          selected on the left. Click the buttons below to 
+          analyze your selection deeper.        </p>
           
         <table id="topic_summary" class="topic-selection-summary-table">
           <tr class="heading">

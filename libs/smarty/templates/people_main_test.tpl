@@ -50,7 +50,7 @@
 	<div id="tabs">
 		<ul>
 			<li id="tab-prop"><a href="#tabs-1">Proposals</a></li>
-			<li id="tab-grant"><a href="#tabs-2">Funding</a></li>
+			<li id="tab-grant"><a href="#tabs-2">Awards</a></li>
 			<li><a href="#tabs-3">Researchers</a></li>
 			<li><a href="#tabs-4">Institutions</a></li>
 	<!--		<li><a href="#tabs-4">Related Divisions</a></li>-->
@@ -600,10 +600,10 @@ function createTable(tab, data)
 				"iDisplayLength": 50,
 				"aoColumnDefs": [
 					{
-						//"fnRender": function ( oObj ) {
-						//	return '<input type="checkbox" name="prop[]" value="'+oObj.aData[0]+'"> '+oObj.aData[0];
-						//},
-						//"bUseRendered": false,
+						"fnRender": function ( oObj ) {
+							return '<a href="https://www.ejacket.nsf.gov/ej/showProposal.do?optimize=Y&ID='+oObj.aData[0]+'&docid='+oObj.aData[0]+'" title="Open in e-Jacket" target="_blank">'+oObj.aData[0]+'</a>'; //'<input type="checkbox" name="grant[]" value="'+oObj.aData[0]+'"> '+oObj.aData[0];
+						},
+						"bUseRendered": false,
 						"sTitle": "Prop ID",
 						"aTargets": [ 0 ]
 					},
@@ -665,10 +665,10 @@ function createTable(tab, data)
 				"iDisplayLength": 50,
 				"aoColumnDefs": [
 					{
-						//"fnRender": function ( oObj ) {
-						//	return '<input type="checkbox" name="grant[]" value="'+oObj.aData[0]+'"> '+oObj.aData[0];
-						//},
-						//"bUseRendered": false,
+						"fnRender": function ( oObj ) {
+							return '<a href="https://www.ejacket.nsf.gov/ej/showProposal.do?optimize=Y&ID='+oObj.aData[0]+'&docid='+oObj.aData[0]+'" title="Open in e-Jacket" target="_blank">'+oObj.aData[0]+'</a>'; //'<input type="checkbox" name="grant[]" value="'+oObj.aData[0]+'"> '+oObj.aData[0];
+						},
+						"bUseRendered": false,
 						"sTitle": "Prop ID",
 						"aTargets": [ 0 ]
 					},
@@ -678,7 +678,7 @@ function createTable(tab, data)
 							//return '<span class="funding" id="funding_'+oObj.aData[0]+'">'+addCommas(oObj.aData[1])+'</span>';
 						},
 						"bUseRendered": false,
-						"sTitle": "Amount",
+						"sTitle": "Awarded Amount",
 						"aTargets": [ 1 ]
 					},
 					{ 
@@ -702,7 +702,7 @@ function createTable(tab, data)
 					}
 				],
 				"aaData": aaData,
-				"aaSorting": [[2, 'desc'], [0, 'desc']],
+				"aaSorting": [[1, 'desc']], //, [0, 'desc']
 				"oLanguage": {
 					"sLengthMenu:": "Display _MENU_ records per page",
 					"sSearch": "Keyword Filter:"
@@ -767,10 +767,17 @@ function createTable(tab, data)
 						"aTargets": [ 4 ] 
 					},  
 					{ 
-						//"fnRender": function ( oObj ) {
-						//	return '<span id="pi_propids_'+oObj.aData[0]+'">'+oObj.aData[5]+'</span>';
-						//},
-						//"bUseRendered": false,
+						"fnRender": function ( oObj ) {
+							//wrap each prop id in a link
+							var formatted = [];
+							if (oObj.aData[5]) {
+								var tmp = oObj.aData[5].split(',');
+								for (var i in tmp) formatted.push('<a href="https://www.ejacket.nsf.gov/ej/showProposal.do?optimize=Y&ID='+tmp[i]+'&docid='+tmp[i]+'" title="Open in e-Jacket" target="_blank">'+tmp[i]+'</a>');
+									
+							}
+							return formatted.join(',');
+						},
+						"bUseRendered": false,
 						"sTitle": "Grants IDs", 
 						"aTargets": [ 5 ] 
 					},
@@ -846,10 +853,17 @@ function createTable(tab, data)
 					}, 
 					{ "sTitle": "Number of PIs", "aTargets": [ 3 ] },
 					{ 
-						//"fnRender": function ( oObj ) {
-						//	return '<span id="org_propids_'+oObj.aData[0]+'">'+oObj.aData[4]+'</span>';
-						//},
-						//"bUseRendered": false,						
+						"fnRender": function ( oObj ) {
+							//wrap each prop id in a link
+							var formatted = [];
+							if (oObj.aData[4]) {
+								var tmp = oObj.aData[4].split(',');
+								for (var i in tmp) formatted.push('<a href="https://www.ejacket.nsf.gov/ej/showProposal.do?optimize=Y&ID='+tmp[i]+'&docid='+tmp[i]+'" title="Open in e-Jacket" target="_blank">'+tmp[i]+'</a>');
+									
+							}
+							return formatted.join(',');
+						},
+						"bUseRendered": false,
 						"bVisible": false, 
 						"sTitle": "Grant IDs", 
 						"aTargets": [ 4 ] 

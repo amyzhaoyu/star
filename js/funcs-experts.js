@@ -89,7 +89,8 @@ console.log('loading topics');
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
 			v["count"],
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
-			(Math.random() * (fundMax - fundMin) + fundMin).toFixed(2),
+			v["awarded_dollar"],
+			keyExists("request_dollar",v,null),
 		]; 
 	});
 
@@ -103,8 +104,14 @@ console.log('loading topics');
 	var maxAwardCount = 0;
 	for (var i=0;i<aaData.length;i++) {
 		if (aaData[i][3]>maxProposalCount) maxProposalCount = aaData[i][3];
-		if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
+		if (!aaData[i][6]) {
+			//if no requested dollar amount available use awarded dollar for total funding numbers (public vs. private access)
+			if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
+		} else {
+			if (aaData[i][6]>maxAwardCount) maxAwardCount = aaData[i][6];
+		}
 	}
+//console.log(maxAwardCount);	
 //alert(maxProposalCount);	
 
 	var oTable = $('#topics_table').dataTable({
@@ -177,15 +184,39 @@ console.log('loading topics');
 				"fnRender": function ( oObj ) {
 					//calculate the width of the "bar" for this row
 					//it is relative to the maxCount and the size of this column - 150px
+					var formattedAwarded_Dollar = (oObj.aData[5]/1000000).toFixed(2);					
 					var numPixels = 0;
-					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[5]);
-					return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+oObj.aData[5]+'M</span></span></strong>';
+					if (maxAwardCount > 0) {
+						numPixels = Math.ceil((150/maxAwardCount)*oObj.aData[5]);
+					}
+//console.log(oObj.aData[5]);					
+					return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+formattedAwarded_Dollar+'M</span></span></strong>';
 				},
 				"bSearchable": false,
 				"bUseRendered": false,
 				"sWidth": "150px",
 				"sTitle": "Funding", 
 				"aTargets": [ 5 ]
+			},
+			{
+				"fnRender": function ( oObj ) {
+					//calculate the width of the "bar" for this row
+					//it is relative to the maxCount and the size of this column - 150px
+					if (oObj.aData[6]) {
+						var numPixels = 0;
+						var formattedAwarded_Dollar = (oObj.aData[6]/1000000).toFixed(2);
+						if (maxAwardCount > 0) {
+							numPixels = Math.ceil((150/maxAwardCount)*oObj.aData[6]);
+						}
+						return '<strong class="num-bar-wrap num-bar-amount"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">$ '+formattedAwarded_Dollar+'M</span></span></strong>';						
+					}
+				},
+				"bSearchable": false,
+				"bUseRendered": false,
+				"sWidth": "150px",
+				"sTitle": "Request Funding", 
+				"bVisible": false,
+				"aTargets": [ 6 ]
 			}
 		],
 		"aaSorting": [[3, 'desc']]
@@ -232,6 +263,7 @@ console.log('loading topics');
 	
 	$('#topics_table input[name="topic[]"]').unbind('click');
 	$('#topics_table input[name="topic[]"]').click(function(event) {
+	//$('#topics_table input[name="topic[]"]').live('click',function(event) {
 //console.log(event.target.tagName);
 console.log('checked:'+$(this).attr('value'));
 		var oTable = $('#topics_table').dataTable();		
@@ -382,13 +414,10 @@ function submitMenu(tab) {
 
 	//activate tab
 	//this will take care of rendering
-	if (tab=='grant') {
-		$('#tabs').tabs('select','tabs-1');
-	} else if (tab=='pi') {
-		$('#tabs').tabs('select','tabs-2');			
-	} else if (tab=='org') {
-		$('#tabs').tabs('select','tabs-3');
-	}
+	//if (tab=='pi') {
+//console.log('selecting tab:'+tab);
+	//	$('#tabs').tabs('select','tabs-1');			
+	//}
 	
 	//now show the selected topics in the filter form
 	var tmp = query_topics.split(',');
