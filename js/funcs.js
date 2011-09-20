@@ -128,12 +128,13 @@ function loadTopics(data) {
 		if (aaData[i][3]>maxProposalCount) maxProposalCount = aaData[i][3];
 		if (!aaData[i][6]) {
 			//if no requested dollar amount available use awarded dollar for total funding numbers (public vs. private access)
-			if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
+			//if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
 			aaData[i].push(null);
 		} else {
-			if (aaData[i][6]>maxAwardCount) maxAwardCount = aaData[i][6];
+			//if (aaData[i][6]>maxAwardCount) maxAwardCount = aaData[i][6];
 			aaData[i].push(((aaData[i][5]/aaData[i][6])*100).toFixed(2));
 		}
+		if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
 	}
 //console.log(maxAwardCount);	
 //alert(maxProposalCount);	

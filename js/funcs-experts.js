@@ -104,12 +104,13 @@ console.log('loading topics');
 	var maxAwardCount = 0;
 	for (var i=0;i<aaData.length;i++) {
 		if (aaData[i][3]>maxProposalCount) maxProposalCount = aaData[i][3];
-		if (!aaData[i][6]) {
+		/*if (!aaData[i][6]) {
 			//if no requested dollar amount available use awarded dollar for total funding numbers (public vs. private access)
 			if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
 		} else {
 			if (aaData[i][6]>maxAwardCount) maxAwardCount = aaData[i][6];
-		}
+		}*/
+		if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
 	}
 //console.log(maxAwardCount);	
 //alert(maxProposalCount);	
