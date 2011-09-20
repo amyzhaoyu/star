@@ -253,7 +253,7 @@ function loadTopics(data) {
 					}
 					return '<strong class="num-bar-wrap num-bar-proposals"><span class="number numproposals">'+calc+'</span></strong>';
 				},
-				"bVisible": true,
+				"bVisible": false,
 				"bUseRendered": false,
 				"sTitle": "Success Rate", 
 				"aTargets": [ 7 ]
@@ -265,11 +265,11 @@ function loadTopics(data) {
 	//if awarded selected show last column and default sort by it
 	var propstatusarray = [];
 	$('[id^="prop_status"]:checked').each(function() {
-		propstatusarray.push($(this).next().text());
+		propstatusarray.push($(this).val());
 	});
 	
-console.log('proposalaccessallowed:'+proposalaccessallowed);
-console.log(propstatusarray);
+//console.log('proposalaccessallowed:'+proposalaccessallowed);
+//console.log(propstatusarray);
 	if (proposalaccessallowed && jQuery.inArray( "award", propstatusarray )!=-1) {
 		oTable.fnSetColumnVis( 7, true );
 	}
