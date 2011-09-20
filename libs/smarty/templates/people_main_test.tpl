@@ -857,8 +857,7 @@ function createTable(tab, data)
 							//wrap each prop id in a link
 							var formatted = [];
 							if (oObj.aData[4]) {
-								var tmp = oObj.aData[4].split(',');
-								for (var i in tmp) formatted.push('<a href="https://www.ejacket.nsf.gov/ej/showProposal.do?optimize=Y&ID='+tmp[i]+'&docid='+tmp[i]+'" title="Open in e-Jacket" target="_blank">'+tmp[i]+'</a>');
+								for (var i in oObj.aData[4]) formatted.push('<a href="https://www.ejacket.nsf.gov/ej/showProposal.do?optimize=Y&ID='+oObj.aData[4][i]+'&docid='+oObj.aData[4][i]+'" title="Open in e-Jacket" target="_blank">'+oObj.aData[4][i]+'</a>');
 									
 							}
 							return formatted.join(',');

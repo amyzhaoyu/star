@@ -405,6 +405,28 @@ function submitMenu(tab) {
 		query_status = tmp;
 	}
 
+	$("#summary_pis").html('0');
+	$("#summary_rankedpis_bypropcount_1").html('0');
+	$("#summary_rankedpis_bypropcount_2").html('');
+	$("#summary_rankedpis_bypropcount_3").html('');
+	$("#summary_rankedpis_bypropcount_4").html('');
+	$("#summary_rankedpis_bypropcount_5").html('');
+	$("#summary_rankedpis_byawardcount_1").html('');
+	$("#summary_rankedpis_byawardcount_2").html('');
+	$("#summary_rankedpis_byawardcount_3").html('');
+	$("#summary_rankedpis_byawardcount_4").html('');
+	$("#summary_rankedpis_byawardcount_5").html('');
+	$("#summary_rankedpis_byawardfunding_1").html('');
+	$("#summary_rankedpis_byawardfunding_2").html('');
+	$("#summary_rankedpis_byawardfunding_3").html('');
+	$("#summary_rankedpis_byawardfunding_4").html('');
+	$("#summary_rankedpis_byawardfunding_5").html('');
+	$("#summary_rankedpis_byavgawardfunding_1").html('');
+	$("#summary_rankedpis_byavgawardfunding_2").html('');
+	$("#summary_rankedpis_byavgawardfunding_3").html('');
+	$("#summary_rankedpis_byavgawardfunding_4").html('');
+	$("#summary_rankedpis_byavgawardfunding_5").html('');
+
 //	if ($smarty.get.alert=="amy") {
 //		alert(JSON.stringify(input));
 //	}

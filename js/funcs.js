@@ -114,6 +114,7 @@ function loadTopics(data) {
 			padding_left((Math.floor(Math.random() * (imgMax - imgMin + 1)) + imgMin).toString(), '0', 2),			
 			v["awarded_dollar"],
 			keyExists("request_dollar",v,null),
+			0,
 		]; 
 	});
 
@@ -129,10 +130,10 @@ function loadTopics(data) {
 		if (!aaData[i][6]) {
 			//if no requested dollar amount available use awarded dollar for total funding numbers (public vs. private access)
 			//if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
-			aaData[i].push(null);
+			aaData[i][7] = 0;
 		} else {
 			//if (aaData[i][6]>maxAwardCount) maxAwardCount = aaData[i][6];
-			aaData[i].push(((aaData[i][5]/aaData[i][6])*100).toFixed(2));
+			aaData[i][7] = ((aaData[i][5]/aaData[i][6])*100).toFixed(2);
 		}
 		if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
 	}
@@ -142,6 +143,24 @@ function loadTopics(data) {
 	//set the number of orgs selected
 	$("#orgs_selected_right").html($("#orgs :selected").length);
 
+/*console.log($(document).dataTableSettings);
+	var s = $(document).dataTableSettings;
+	//clear the datatable
+	if (s != 'undefined') {
+		var len = s.length;
+		for (var i=0; i < len; i++)
+		{  
+			// if already exists, remove from the array
+			if (s[i].sInstance == "topics_table") {
+console.log('clearing table');
+				$('#topics_table').dataTable().fnClearTable(0);
+				//s.splice(i,1);
+			}
+		}
+	}
+console.log($(document).dataTableSettings);	*/
+//	$('#topics_table').dataTable().fnClearTable( 0 );
+	
 	var oTable = $('#topics_table').dataTable({
 		//TableTools - copy, csv, print, pdf
 		"bJQueryUI": true,
@@ -258,7 +277,7 @@ function loadTopics(data) {
 				"bUseRendered": false,
 				"sTitle": "Success Rate", 
 				"aTargets": [ 7 ]
-			},
+			}
 		],
 		"aaSorting": [[3, 'desc']]
 	});
