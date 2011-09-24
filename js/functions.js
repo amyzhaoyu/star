@@ -35,23 +35,43 @@ $(document).ready(function() {
 								var selTabIndex = $("#tabs").tabs('option', 'selected');
 //console.log(selTabIndex);
 								if (selTabIndex==0) {
-									$('#props table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#props table').dataTable();
+									var notselectedRows = fnGetNotSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).addClass('row_selected');
+										$(notselectedRows[i]).addClass('DTTT_selected');
+										//update summary
+										updatePropSummary(oTable,oTable.fnGetData(notselectedRows[i]),true);
+									});
 								} else if (selTabIndex==1) {
-									$('#grants table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#grants table').dataTable();
+									var notselectedRows = fnGetNotSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).addClass('row_selected');
+										$(notselectedRows[i]).addClass('DTTT_selected');
+										//update summary
+										updateGrantSummary(oTable,oTable.fnGetData(notselectedRows[i]),true);
+									});
 								} else if (selTabIndex==2) {
-									$('#pi table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#pi table').dataTable();
+									var notselectedRows = fnGetNotSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).addClass('row_selected');
+										$(notselectedRows[i]).addClass('DTTT_selected');
+										//update summary
+										updatePISummary(oTable.fnGetData(notselectedRows[i]),true);
+									});
 								} else if (selTabIndex==3) {
-									$('#org table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#org table').dataTable();
+									var notselectedRows = fnGetNotSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).addClass('row_selected');
+										$(notselectedRows[i]).addClass('DTTT_selected');
+										//update summary
+										updateOrgSummary(oTable.fnGetData(notselectedRows[i]),true);
+									});
 								}
-							}							
+							}
 						},
 						{
 							"sExtends": "select_none",
@@ -59,21 +79,41 @@ $(document).ready(function() {
 								var selTabIndex = $("#tabs").tabs('option', 'selected');
 //console.log(selTabIndex);
 								if (selTabIndex==0) {
-									$('#props table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#props table').dataTable();
+									var notselectedRows = fnGetSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).removeClass('row_selected');
+										$(notselectedRows[i]).removeClass('DTTT_selected');
+										//update summary
+										updatePropSummary(oTable,oTable.fnGetData(notselectedRows[i]),false);
+									});
 								} else if (selTabIndex==1) {
-									$('#grants table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#grants table').dataTable();
+									var notselectedRows = fnGetSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).removeClass('row_selected');
+										$(notselectedRows[i]).removeClass('DTTT_selected');
+										//update summary
+										updateGrantSummary(oTable,oTable.fnGetData(notselectedRows[i]),false);
+									});
 								} else if (selTabIndex==2) {
-									$('#pi table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#pi table').dataTable();
+									var notselectedRows = fnGetSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).removeClass('row_selected');
+										$(notselectedRows[i]).removeClass('DTTT_selected');
+										//update summary
+										updatePISummary(oTable.fnGetData(notselectedRows[i]),false);
+									});
 								} else if (selTabIndex==3) {
-									$('#org table tbody tr').each( function () {
-										$(this).click();
-									});									
+									var oTable = $('#org table').dataTable();
+									var notselectedRows = fnGetSelectedRows(oTable);
+									$.each(notselectedRows, function(i, item){
+										$(notselectedRows[i]).removeClass('row_selected');
+										$(notselectedRows[i]).removeClass('DTTT_selected');
+										//update summary
+										updateOrgSummary(oTable.fnGetData(notselectedRows[i]),false);
+									});
 								}
 							}							
 						}
@@ -99,6 +139,7 @@ $(document).ready(function() {
 			selTab = ["prop", "grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
+//alert(selTab);
 			var propstatus = query_status;
 			if (selTab=="grant") propstatus = "award";
 			else if (selTab=="prop") {
@@ -320,66 +361,7 @@ $(document).ready(function() {
 			} else {
 				$(this).addClass('row_selected');
 			}			
-	        //now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
-			//trap prop selection
-			var numGrantsSelected = $("#summary_props").html();
-			var numFundingSelected = parseInt(removeNumberFormatting($("#summary_prop_funding_total").html()));
-			var dateFirst = $("#summary_prop_datefirst").html();
-			var dateLast = $("#summary_prop_datelast").html();
-			if (dateLast) dateLast = new Date(dateLast);
-			if ($(this).hasClass('row_selected')) {
-				numGrantsSelected++; 
-				numFundingSelected += parseInt(aData[1]);
-			} else {
-				numGrantsSelected--;
-				numFundingSelected -= parseInt(aData[1]);
-			}
-
-			//now reformat
-			numFundingSelected = addCommas(numFundingSelected);
-			if (numFundingSelected) numFundingSelected = '$'+numFundingSelected;
-
-			$("#summary_props").html(numGrantsSelected);
-			$("#summary_prop_funding_total").html(numFundingSelected);
-
-//console.log(fnGetSelected(oTable));
-			//now recalculate the rankings - do this regardless of checked or unchecked
-			var checkedprops = fnGetSelected(oTable);
-			//now for the prop rankings
-			//first by amount of award
-			//sort the summaries list - descending by funding
-			checkedprops.sort(function(a,b) {return (parseInt(a[1]) > parseInt(b[1])) ? -1 : ((parseInt(b[1]) > parseInt(a[1])) ? 1 : 0);} );	
-			//now select the top 4 out of the summaries list
-			for (var i=0;i<4;i++) {
-				//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
-				$("#summary_rankedprops_byfunding_"+(i+1)).html(null);	
-				if (checkedprops[i]) {
-					var tmp = addCommas(checkedprops[i][1]);
-					if (tmp) tmp = '$'+tmp;				
-					//we found one, add it to the summary
-					$("#summary_rankedprops_byfunding_"+(i+1)).html(tmp+' ('+checkedprops[i][0]+')');				
-				}
-			}
-			//min summary
-			$("#summary_prop_funding_min").html(null);	
-			if (checkedprops.length) {
-				var tmp = addCommas(checkedprops[checkedprops.length-1][1]);
-				if (tmp) tmp = '$'+tmp;				
-				$("#summary_prop_funding_min").html(tmp+' ('+checkedprops[checkedprops.length-1][0]+')');					
-			}
-			//date summary
-			//sort the summaries list - ascending by date
-			checkedprops.sort(function(a,b) {return (a[2] > b[2]) ? 1 : ((b[2] > a[2]) ? -1 : 0);} );	
-			var dateFirst = null;
-			var dateLast = null;
-			if (checkedprops.length>0) {
-				dateFirst = checkedprops[0][2];
-				if (dateFirst) dateFirst = new Date(dateFirst).toLocaleDateString();
-				dateLast = checkedprops[checkedprops.length-1][2];
-				if (dateLast) dateLast = new Date(dateLast).toLocaleDateString();
-			}
-			$("#summary_prop_datefirst").html(dateFirst);
-			$("#summary_prop_datelast").html(dateLast);
+			updatePropSummary(oTable,aData,$(this).hasClass('row_selected'));
 	    }
 	});
 
@@ -426,67 +408,7 @@ $(document).ready(function() {
 			} else {
 				$(this).addClass('row_selected');
 			}			
-	        //now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
-			//trap grant selection
-			var numGrantsSelected = $("#summary_grants").html();
-			var numFundingSelected = parseInt(removeNumberFormatting($("#summary_funding_total").html()));
-			var dateFirst = $("#summary_datefirst").html();
-			var dateLast = $("#summary_datelast").html();
-			if (dateLast) dateLast = new Date(dateLast);
-			if ($(this).hasClass('row_selected')) {
-				numGrantsSelected++; 
-				numFundingSelected += parseInt(aData[1]);
-			} else {
-				numGrantsSelected--;
-				numFundingSelected -= parseInt(aData[1]);
-			}
-		
-			//now reformat
-			numFundingSelected = addCommas(numFundingSelected);
-			if (numFundingSelected) numFundingSelected = '$'+numFundingSelected;
-
-			$("#summary_grants").html(numGrantsSelected);
-			$("#summary_funding_total").html(numFundingSelected);
-
-//console.log(fnGetSelected(oTable));
-			//now recalculate the rankings - do this regardless of checked or unchecked
-			var checkedgrants = fnGetSelected(oTable);
-			//now for the grant rankings
-			//first by amount of award
-			//sort the summaries list - descending by funding
-			checkedgrants.sort(function(a,b) {return (parseInt(a[1]) > parseInt(b[1])) ? -1 : ((parseInt(b[1]) > parseInt(a[1])) ? 1 : 0);} );	
-//console.log(checkedgrants);			
-			//now select the top 4 out of the summaries list
-			for (var i=0;i<4;i++) {
-				//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
-				$("#summary_rankedgrants_byfunding_"+(i+1)).html(null);	
-				if (checkedgrants[i]) {
-					var tmp = addCommas(checkedgrants[i][1]);
-					if (tmp) tmp = '$'+tmp;				
-					//we found one, add it to the summary
-					$("#summary_rankedgrants_byfunding_"+(i+1)).html(tmp+' ('+checkedgrants[i][0]+')');				
-				}
-			}
-			//min summary
-			$("#summary_funding_min").html(null);	
-			if (checkedgrants.length) {
-				var tmp = addCommas(checkedgrants[checkedgrants.length-1][1]);
-				if (tmp) tmp = '$'+tmp;				
-				$("#summary_funding_min").html(tmp+' ('+checkedgrants[checkedgrants.length-1][0]+')');					
-			}
-			//date summary
-			//sort the summaries list - ascending by date
-			checkedgrants.sort(function(a,b) {return (a[2] > b[2]) ? 1 : ((b[2] > a[2]) ? -1 : 0);} );	
-			var dateFirst = null;
-			var dateLast = null;
-			if (checkedgrants.length>0) {
-				dateFirst = checkedgrants[0][2];
-				if (dateFirst) dateFirst = new Date(dateFirst).toLocaleDateString();
-				dateLast = checkedgrants[checkedgrants.length-1][2];
-				if (dateLast) dateLast = new Date(dateLast).toLocaleDateString();
-			}
-			$("#summary_datefirst").html(dateFirst);
-			$("#summary_datelast").html(dateLast);
+			updateGrantSummary(oTable,aData,$(this).hasClass('row_selected'));
 	    }
 	});
 
@@ -566,6 +488,26 @@ $(document).ready(function() {
 
 	$('#pi table tbody tr').live('click', function (event) {   
 		var oTable = $('#pi table').dataTable();
+	    var aData = oTable.fnGetData(this); // get datarow
+//console.log(fnGetSelected(oTable));
+
+		//load prop data for selected pis so we can calculate summaries and rankings
+		var propids = [];
+		var tmp_propids = aData[5];
+		//make array out of string
+		if (tmp_propids) propids = tmp_propids.split(',');
+		//now load the data for each propid if it is not already loaded
+		var params = '';
+//console.log(propsummarydata);		
+		for (var i in propids) {
+			var propid = jQuery.trim(propids[i]);
+			//if not previously loaded and cached, load it
+			if (!propsummarydata[propid]) {
+				if (params) params += ',';
+				params += propid;
+			}
+		}
+//console.log(params);
 
 		//if the show details link was clicked trap that		
 	   if(event.target.nodeName == "A"){
@@ -583,13 +525,45 @@ $(document).ready(function() {
 					else
 					{
 						$(event.target).html('Hide');
-						oTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[0] + "'></div>", 'details' );
+						oTable.fnOpen(pi_node, "<div class='dataInnerts' id='pid_" + pData[0] + "'><table><tr><td id='userDetails_"+pData[0]+"'></td><td id='propDetails_"+pData[0]+"'><h3>Proposals (<span></span>)</h3></td><td id='copiDetails_"+pData[0]+"'><h3>Co-PIs (<span></span>)</h3></td></tr><tr><td colspan='3' id='propList_"+pData[0]+"'></td></tr></table></div>", 'details' );
 						$.getJSON((apiurl+'prop?id=' + pData[5]).split(' ').join('') + '&jsoncallback=?', function(data) {
 							$("#pid_" + pData[0]).hide()
 							// Use $.each() to get all grant details for each PI
 							$.each(data["data"], function(i, item){
-								$($("#personRender").tmpl(item)).appendTo("#pid_" + pData[0]);
+								$($("#propListRender").tmpl(item)).appendTo("#propList_" + pData[0]);
 							});
+							//load pi data
+							$.getJSON(apiurl+'user?id=' + pData[0] + '&jsoncallback=?', function(data) {
+								$($("#personRender").tmpl(data["data"])).appendTo("#userDetails_" + pData[0]);
+							});
+							//co-collaborators					
+							$.getJSON(apiurl+'user?id=' + pData[0] + '&page=pi&jsoncallback=?', function(data) {
+								$("#copiDetails_"+pData[0]+" h3 span").html(data["count"]);
+								// Use $.each() to get all grant details for each PI
+								$.each(data["data"], function(i, item){
+									$($("#copiRender").tmpl(item)).appendTo("#copiDetails_" + pData[0]);
+								});
+							});
+							if (params) {
+				//console.log('getting data:'+params);
+								$.getJSON(apiurl + 'prop?id=' + params + '&jsoncallback=?', function(data) {
+				//console.log(data);
+									//for each prop store the data in the cache
+									if (data["data"]) {
+										for (var i in data["data"]) {							
+				//console.log(data["data"][i]["nsf_id"]);							
+											propsummarydata[data["data"][i]["nsf_id"]] = data["data"][i];
+										}
+									}
+									var propdetails = calcPIPropDetails(aData);
+									$("#propDetails_"+pData[0]+" h3 span").html(propdetails["propcount"]);
+									$($("#propSummRender").tmpl(propdetails)).appendTo("#propDetails_" + pData[0]);
+								});
+							} else {
+								var propdetails = calcPIPropDetails(aData);
+								$("#propDetails_"+pData[0]+" h3 span").html(propdetails["propcount"]);
+								$($("#propSummRender").tmpl(propdetails)).appendTo("#propDetails_" + pData[0]);						
+							}
 							$("#pid_" + pData[0]).slideDown()
 						});
 					}
@@ -601,7 +575,7 @@ $(document).ready(function() {
 			}
 		}
 		
-	    var aData = oTable.fnGetData(this); // get datarow
+	    //var aData = oTable.fnGetData(this); // get datarow
 	    if (null != aData)  // null if we clicked on title row
 	    {
 			//set the class
@@ -609,51 +583,8 @@ $(document).ready(function() {
 				$(this).removeClass('row_selected');
 			} else {
 				$(this).addClass('row_selected');
-			}			
-	        //now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
-			//trap grant selection
-			var numPIsSelected = $("#summary_pis").html();
-			if ($(this).hasClass('row_selected')) {
-				numPIsSelected++; 
-			} else {
-				numPIsSelected--;
 			}
-
-			$("#summary_pis").html(numPIsSelected);
-
-	//console.log(fnGetSelected(oTable));
-			//load prop data for selected pis so we can calculate summaries and rankings
-			var propids = [];
-			var rowdata = oTable.fnGetData(this);
-			var tmp_propids = rowdata[5];
-			//make array out of string
-			if (tmp_propids) propids = tmp_propids.split(',');
-			//now load the data for each propid if it is not already loaded
-			var params = '';
-			for (var i in propids) {
-				var propid = jQuery.trim(propids[i]);
-				//if not previously loaded and cached, load it
-				if (!propsummarydata[propid]) {
-					if (params) params += ',';
-					params += propid;
-				}
-			}
-			if (params) {
-	//console.log('getting data:'+params);
-				$.getJSON(apiurl + 'prop?id=' + params + '&jsoncallback=?', function(data) {
-	//console.log(data);
-					//for each prop store the data in the cache
-					if (data["data"]) {
-						for (var i in data["data"]) {							
-	//console.log(data["data"][i]["nsf_id"]);							
-							propsummarydata[data["data"][i]["nsf_id"]] = data["data"][i];
-						}
-					}
-					summarizePI();
-				});
-			} else {
-				summarizePI();
-			}
+			updatePISummary(aData,$(this).hasClass('row_selected'));			
 	    }
 	});
 
@@ -749,47 +680,7 @@ $(document).ready(function() {
 			} else {
 				$(this).addClass('row_selected');
 			}			
-	        //now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
-			//trap grant selection
-			var numOrgsSelected = $("#summary_orgs").html();
-			if ($(this).hasClass('row_selected')) {
-				numOrgsSelected++; 
-			} else {
-				numOrgsSelected--;
-			}
-
-			$("#summary_orgs").html(numOrgsSelected);
-
-	//console.log(fnGetSelected(oTable));
-			//load prop data for selected pis so we can calculate summaries and rankings
-			var rowdata = oTable.fnGetData(this);
-			var propids = rowdata[4];
-			//now load the data for each propid if it is not already loaded
-			var params = '';
-			for (var i in propids) {
-				var propid = jQuery.trim(propids[i]);
-				//if not previously loaded and cached, load it
-				if (!propsummarydata[propid]) {
-					if (params) params += ',';
-					params += propid;
-				}
-			}
-			if (params) {
-	//console.log('getting data:'+params);
-				$.getJSON(apiurl + 'prop?id=' + params + '&jsoncallback=?', function(data) {
-	//console.log(data);
-					//for each prop store the data in the cache
-					if (data["data"]) {
-						for (var i in data["data"]) {							
-	//console.log(data["data"][i]["nsf_id"]);							
-							propsummarydata[data["data"][i]["nsf_id"]] = data["data"][i];
-						}
-					}
-					summarizeOrg();
-				});
-			} else {
-				summarizeOrg();
-			}
+			updateOrgSummary(aData,$(this).hasClass('row_selected'));
 	    }
 	});
 
@@ -843,8 +734,605 @@ console.log('getting data:'+params);
 		} else {
 			summarizeOrg();
 		}
-	});	*/	
+	});	*/
+	
+	$('#topics_table input[name="topic[]"]').live('click',function(event) {
+//console.log('clicked:'+$(this).attr('value'));
+		//trap topic selection
+		var numTopicsSelected = $("#topics_selected").html();
+		var numProposalsSelected = parseInt($("#proposals_selected").html());
+		if ($(this).attr('checked')) {
+			//set the row on
+			$(this).parent().parent().addClass('selected');
+			numTopicsSelected++; 
+			numProposalsSelected += parseInt($(this).parent().parent().find('span.numproposals').html());
+		} else {
+			//set the row off
+			$(this).parent().parent().removeClass('selected');
+			numTopicsSelected--;
+			numProposalsSelected -= parseInt($(this).parent().parent().find('span.numproposals').html());
+		}
+		$("#topics_selected").html(numTopicsSelected);
+		$("#proposals_selected").html(numProposalsSelected);
+
+//console.log(topicsummarydata);	
+		var topicid = $(this).attr('value');
+		var checked = $(this).attr('checked');
+
+		//we need status to filter by - get it here
+		var propstatus = [];
+		$('input[name=prop_status]:checked').each(function() {
+			propstatus.push($(this).val());
+		});
+		//but we need a string
+		propstatus = propstatus.join(',');			
+
+//console.log(topicid);			
+//console.log(topicsummarydata[topicid]);	
+		//now pull proposal information for selected topic
+		if (topicsummarydata[topicid]!== undefined) {
+//console.log('retrieving from cache');			
+			updateTopicSummary($(this).attr('checked'),topicsummarydata[topicid]);
+		} else {
+			//first get the data
+			var params = "org=" + $("#orgs").val() + "&" + "year=r" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&summ=full";
+			$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
+				//what we get back is a list of topics per year, per org, per status
+				//create the compiled data once for quick access
+				var count = 0;
+				var totalfunding = 0;
+				var max_year = null;
+				var min_year = null;
+				var status = {};
+				var org_count = {};
+				var year_count = {};
+				var org_funding = {};
+				var year_funding = {};
+				for (var i=0;i<data["data"].length;i++) {
+					//count
+					count += parseInt(data["data"][i]["count"]);
+					//total funding
+					totalfunding += parseInt(data["data"][i]["awarded_dollar"]);
+					var tmp = data["data"][i]["year"];
+					//max year
+					if (!max_year) max_year = tmp;
+					else if (tmp > max_year) {
+						max_year = tmp;
+					}
+					//min year
+					if (!min_year) min_year = tmp;
+					else if (tmp < min_year) {
+						min_year = tmp;
+					}
+					//gather counts by status
+					if (status[data["data"][i]["status"]]) status[data["data"][i]["status"]] += parseInt(data["data"][i]["count"]);
+					else status[data["data"][i]["status"]] = parseInt(data["data"][i]["count"]);
+					//gather counts by year
+					if (year_count[data["data"][i]["year"]]) year_count[data["data"][i]["year"]] += parseInt(data["data"][i]["count"]);
+					else year_count[data["data"][i]["year"]] = parseInt(data["data"][i]["count"]);					
+					//gather counts by org
+					if (org_count[data["data"][i]["org"]]) org_count[data["data"][i]["org"]] += parseInt(data["data"][i]["count"]);
+					else org_count[data["data"][i]["org"]] = parseInt(data["data"][i]["count"]);					
+					//gather funding by year
+					if (year_funding[data["data"][i]["year"]]) year_funding[data["data"][i]["year"]] += parseInt(data["data"][i]["awarded_dollar"]);
+					else year_funding[data["data"][i]["year"]] = parseInt(data["data"][i]["awarded_dollar"]);					
+					//gather funding by org
+					if (org_funding[data["data"][i]["org"]]) org_funding[data["data"][i]["org"]] += parseInt(data["data"][i]["awarded_dollar"]);
+					else org_funding[data["data"][i]["org"]] = parseInt(data["data"][i]["awarded_dollar"]);					
+				}
+//console.log(org_funding);								
+				var compileddata = {};
+				//save it
+				compileddata['summary_count'] = count;
+				compileddata['summary_totalfunding'] = totalfunding;
+				compileddata['summary_maxyear'] = max_year;
+				compileddata['summary_minyear'] = min_year;
+				compileddata['summary_status'] = status;
+				compileddata['summary_year_count'] = year_count;
+				compileddata['summary_org_count'] = org_count;
+				compileddata['summary_year_funding'] = year_funding;
+				compileddata['summary_org_funding'] = org_funding;
+				//save it
+				topicsummarydata[topicid] = compileddata;
+				//populate table
+				updateTopicSummary(checked,compileddata);				
+			}); 
+		}
+
+		//do it on the right side too
+		$("#topics_selected_right").html(numTopicsSelected);	
+		$("#proposals_selected_right").html(numProposalsSelected);	
+
+		//get count of institutions - we're not caching these for now
+		var params = "org=" + $("#orgs").val() + "&" + "year=r" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&page=org";
+		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
+			var curr_inst_count = parseInt($("#inst_selected_right").html());
+			if (checked) curr_inst_count += parseInt(data["count"]);
+			else curr_inst_count -= parseInt(data["count"]);
+			$("#inst_selected_right").html(curr_inst_count);
+			$("#inst_selected").html(curr_inst_count);
+		});
+
+		//get count of researchers - we're not caching these for now
+		var params = "org=" + $("#orgs").val() + "&" + "year=r" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&page=pi";
+		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
+			var curr_pi_count = parseInt($("#pi_selected_right").html());
+			if (checked) curr_pi_count += parseInt(data["count"]);
+			else curr_pi_count -= parseInt(data["count"]);
+			$("#pi_selected_right").html(curr_pi_count);
+			$("#pi_selected").html(curr_pi_count);
+		});		
+
+		//and lastly, if none checked, hide view results button - you can only do this after selecting a topic
+		if (numTopicsSelected==0) $(".button_view_results").hide();
+		else $(".button_view_results").show();
+	});			
 });		
+
+function updateTopicSummary(checked,data) {
+//console.log(checked);
+//console.log(data);
+
+	//extract the selected items out of the cached list
+	//current checked items
+	var checkedtopics = $('#topics_table input:checked[name="topic[]"]').map(function() {
+		var tmp = topicsummarydata[$(this).val()];
+		//add the topic id
+		tmp['id'] = $(this).val();
+		return tmp;
+		//return parseInt($(this).val());
+	}); //.get().join()
+	
+	//total funding
+	var curr_summary_totalfunding = parseInt(removeNumberFormatting($("#summary_totalfunding").html()));
+	var summary_totalfunding = data['summary_totalfunding'];
+	if (checked) curr_summary_totalfunding += summary_totalfunding;
+	else curr_summary_totalfunding -= summary_totalfunding;
+	curr_summary_totalfunding = addCommas(curr_summary_totalfunding);
+	if (curr_summary_totalfunding) curr_summary_totalfunding = '$'+curr_summary_totalfunding; 
+	$("#summary_totalfunding").html(curr_summary_totalfunding);
+	//max year
+	var curr_summary_maxyear = $("#summary_maxyear").html();
+	var summary_maxyear = data['summary_maxyear'];
+	//if the max year is not set this is the max year
+	if (!curr_summary_maxyear) curr_summary_maxyear = summary_maxyear;
+	//if the max year is set and 
+	else {
+		//we are checking
+		if (checked) {
+			//this year is more than the curr max year update curr max year
+			if (summary_maxyear>parseInt(curr_summary_maxyear)) curr_summary_maxyear = summary_maxyear;
+		} else {
+			//if we are unchecking
+			//if nothing currently checked reset
+			if (checkedtopics.length==0) curr_summary_maxyear = null;
+			else {
+				//this year is not the same as curr max year
+				if (summary_maxyear!=parseInt(curr_summary_maxyear)) {
+					//reset to the "previous" max - we get previous max by looping through the list of cached topcis (excluding this one) and finding the max year
+					summary_maxyear = 0;
+					for (var i in checkedtopics) {
+						if (checkedtopics[i]['summary_maxyear']>summary_maxyear) summary_maxyear = checkedtopics[i]['summary_maxyear'];
+					}
+					curr_summary_maxyear = summary_maxyear;			
+				}				
+			}
+		}
+	}
+	$("#summary_maxyear").html(curr_summary_maxyear);	
+	//min year
+	var curr_summary_minyear = $("#summary_minyear").html();
+	var summary_minyear = data['summary_minyear'];
+	//if the min year is not set this is the min year
+	if (!curr_summary_minyear) curr_summary_minyear = summary_minyear;
+	//if the min year is set and 
+	else {
+		//we are checking
+		if (checked) {
+			//this year is less than the curr min year update curr min year
+			if (summary_minyear>parseInt(curr_summary_minyear)) curr_summary_minyear = summary_minyear;
+		} else {
+			//if we are unchecking
+			//if nothing currently checked reset
+			if (checkedtopics.length==0) curr_summary_minyear = null;
+			else {
+				//this year is the not same as curr min year
+				if (summary_minyear!=parseInt(curr_summary_minyear)) {
+					//reset to the "previous" max - we get previous max by looping through the list of cached topcis (excluding this one) and finding the min year
+					summary_minyear = 0;
+					for (var i in checkedtopics) {
+						if (!summary_minyear) summary_minyear = checkedtopics[i]['summary_minyear'];
+						else {
+							if (checkedtopics[i]['summary_minyear']<summary_minyear) summary_minyear = checkedtopics[i]['summary_minyear'];							
+						}
+					}
+					curr_summary_minyear = summary_minyear;			
+				}				
+			}
+		}
+	}
+	$("#summary_minyear").html(curr_summary_minyear);
+//console.log(checkedtopics);	
+	//now collate by count
+	var status = {};
+	var org_count = {};
+	var year_count = {};
+	var org_funding = {};
+	var year_funding = {};
+	for (var i in checkedtopics) {
+		var summary_status = checkedtopics[i]["summary_status"];
+		//gather counts by status
+		for (var topic_status in summary_status) {
+			if (status[topic_status]) status[topic_status] += summary_status[topic_status];
+			else status[topic_status] = summary_status[topic_status];
+		}
+		//gather counts by year
+		var summary_year = checkedtopics[i]["summary_year_count"];
+		for (var topic_year in summary_year) {
+			if (year_count[topic_year]) year_count[topic_year] += summary_year[topic_year];
+			else year_count[topic_year] = summary_year[topic_year];
+		}
+		//gather counts by org
+		var summary_org = checkedtopics[i]["summary_org_count"];
+		for (var topic_org in summary_org) {
+			if (org_count[topic_org]) org_count[topic_org] += summary_org[topic_org];
+			else org_count[topic_org] = summary_org[topic_org];
+		}
+		//gather funding by year
+		var summary_year = checkedtopics[i]["summary_year_funding"];
+		for (var topic_year in summary_year) {
+			if (year_funding[topic_year]) year_funding[topic_year] += summary_year[topic_year];
+			else year_funding[topic_year] = summary_year[topic_year];
+		}
+		//gather funding by org
+		var summary_org = checkedtopics[i]["summary_org_funding"];
+		for (var topic_org in summary_org) {
+			if (org_funding[topic_org]) org_funding[topic_org] += summary_org[topic_org];
+			else org_funding[topic_org] = summary_org[topic_org];
+		}
+	}
+	//got them all, now display
+	var status_html = '';
+	for (var i in status) {
+		status_html += '<tr>';
+		status_html += '<td class="label">';
+		if (i=='award') status_html+='Awarded';
+		else if (i=='propose') status_html+='Proposed';
+		else if (i=='decline') status_html+='Declined';
+		status_html += '</td>';
+		status_html += '<td class="value">'+status[i]+'</td>';
+		status_html += '</tr>';
+	}
+	//by count
+	var year_count_html = '';
+	//we want to sort
+	//currently an associative array - so first have to sort keys - bit icky but quick and dirty for now
+	var sortedKeys = new Array();
+	var sortedObj = {};	
+	// Separate keys and sort them
+	for (var i in year_count){
+		sortedKeys.push(i);
+	}
+	sortedKeys.sort();		 
+	// Reconstruct sorted obj based on keys
+	for (var i in sortedKeys){
+		sortedObj[sortedKeys[i]] = year_count[sortedKeys[i]];
+	}
+	for (var i in sortedObj) {
+		year_count_html += '<tr>';
+		year_count_html += '<td class="label">'+i+'</td>';
+		year_count_html += '<td class="value">'+sortedObj[i]+'</td>';
+		year_count_html += '</tr>';
+	}
+	var org_count_html = '';
+	for (var i in org_count) {
+		org_count_html += '<tr>';
+		org_count_html += '<td class="label">'+i+'</td>';
+		org_count_html += '<td class="value">'+org_count[i]+'</td>';
+		org_count_html += '</tr>';
+	}
+	//by funding
+	var year_funding_html = '';
+	//we want to sort
+	//currently an associative array - so first have to sort keys - bit icky but quick and dirty for now
+	var sortedKeys = new Array();
+	var sortedObj = {};	
+	// Separate keys and sort them
+	for (var i in year_funding){
+		sortedKeys.push(i);
+	}
+	sortedKeys.sort();		 
+	// Reconstruct sorted obj based on keys
+	for (var i in sortedKeys){
+		sortedObj[sortedKeys[i]] = year_funding[sortedKeys[i]];
+	}
+	for (var i in sortedObj) {
+		year_funding_html += '<tr>';
+		year_funding_html += '<td class="label">'+i+'</td>';
+		year_funding_html += '<td class="value">'+'$'+addCommas(sortedObj[i])+'</td>';
+		year_funding_html += '</tr>';
+	}
+	var org_funding_html = '';
+	for (var i in org_funding) {
+		org_funding_html += '<tr>';
+		org_funding_html += '<td class="label">'+i+'</td>';
+		org_funding_html += '<td class="value">'+'$'+addCommas(org_funding[i])+'</td>';
+		org_funding_html += '</tr>';
+	}
+	//build breakdown
+	var html = '';
+	html += status_html;
+	if (org_count_html || org_funding_html) {
+		html += '<tr><td class="label">&nbsp;</td><td>&nbsp;</td></tr>';
+		html += '<tr class="heading"><td class="label" colspan="2"><strong>By Division</strong></td></tr>';
+		if (org_count_html) {
+			html += '<tr><td class="label" colspan="2"><strong>By Qty.</strong></td></tr>';
+			html += org_count_html;			
+		}
+		if (org_funding_html) {
+			html += '<tr><td class="label" colspan="2"><strong>By Award Amount</strong></td></tr>';
+			html += org_funding_html;			
+		}
+	}
+	if (year_count_html || year_funding_html) {
+		html += '<tr><td class="label">&nbsp;</td><td>&nbsp;</td></tr>';
+		html += '<tr class="heading"><td class="label" colspan="2"><strong>By Year</strong></td></tr>';
+		if (year_count_html) {
+			html += '<tr><td class="label" colspan="2"><strong>By Qty.</strong></td></tr>';
+			html += year_count_html;
+		}
+		if (year_funding_html) {
+			html += '<tr><td class="label" colspan="2"><strong>By Award Amount</strong></td></tr>';
+			html += year_funding_html;
+		}
+	}
+	$("#summary_breakdown").html(html);
+	//now for the topic rankings
+	//first by number of grants
+	//sort the summaries list - descending by count
+	checkedtopics.sort(function(a,b) {return (parseInt(a.summary_count) > parseInt(b.summary_count)) ? -1 : ((parseInt(b.summary_count) > parseInt(a.summary_count)) ? 1 : 0);} );	
+	//now select the top 3 out of the summaries list
+	for (var i=0;i<3;i++) {
+		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
+		$("#summary_rankedtopics_bycount_"+(i+1)).html(null);	
+		if (checkedtopics[i]) {
+			//we found one, add it to the summary
+			$("#summary_rankedtopics_bycount_"+(i+1)).html(checkedtopics[i]['id']+' ('+checkedtopics[i]['summary_count']+')');				
+		}
+	}
+	//do the funding rankings
+	//sort the summaries list - descending by totalfunding
+	checkedtopics.sort(function(a,b) {return (parseInt(a.summary_totalfunding) > parseInt(b.summary_totalfunding)) ? -1 : ((parseInt(b.summary_totalfunding) > parseInt(a.summary_totalfunding)) ? 1 : 0);} );	
+	//now select the top 3 out of the summaries list
+	for (var i=0;i<3;i++) {
+		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
+		$("#summary_rankedtopics_byfunding_"+(i+1)).html(null);	
+		if (checkedtopics[i]) {
+			//we found one, add it to the summary
+			var totalfunding = addCommas(checkedtopics[i]['summary_totalfunding']);
+			if (totalfunding) totalfunding = '$'+totalfunding;
+			$("#summary_rankedtopics_byfunding_"+(i+1)).html(checkedtopics[i]['id']+' ('+totalfunding+')');	
+		}
+	}
+}
+
+function updatePropSummary(oTable,aData,selected) {
+	//now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
+	//trap prop selection
+	var numGrantsSelected = $("#summary_props").html();
+	var numFundingSelected = parseInt(removeNumberFormatting($("#summary_prop_funding_total").html()));
+	var dateFirst = $("#summary_prop_datefirst").html();
+	var dateLast = $("#summary_prop_datelast").html();
+	if (dateLast) dateLast = new Date(dateLast);
+	if (selected) {
+		numGrantsSelected++; 
+		numFundingSelected += parseInt(aData[1]);
+	} else {
+		numGrantsSelected--;
+		numFundingSelected -= parseInt(aData[1]);
+	}
+
+	//now reformat
+	numFundingSelected = addCommas(numFundingSelected);
+	if (numFundingSelected) numFundingSelected = '$'+numFundingSelected;
+
+	$("#summary_props").html(numGrantsSelected);
+	$("#summary_prop_funding_total").html(numFundingSelected);
+
+//console.log(fnGetSelected(oTable));
+	//now recalculate the rankings - do this regardless of checked or unchecked
+	var checkedprops = fnGetSelected(oTable);
+	//now for the prop rankings
+	//first by amount of award
+	//sort the summaries list - descending by funding
+	checkedprops.sort(function(a,b) {return (parseInt(a[1]) > parseInt(b[1])) ? -1 : ((parseInt(b[1]) > parseInt(a[1])) ? 1 : 0);} );	
+	//now select the top 4 out of the summaries list
+	for (var i=0;i<4;i++) {
+		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
+		$("#summary_rankedprops_byfunding_"+(i+1)).html(null);	
+		if (checkedprops[i]) {
+			var tmp = addCommas(checkedprops[i][1]);
+			if (tmp) tmp = '$'+tmp;				
+			//we found one, add it to the summary
+			$("#summary_rankedprops_byfunding_"+(i+1)).html(tmp+' ('+checkedprops[i][0]+')');				
+		}
+	}
+	//min summary
+	$("#summary_prop_funding_min").html(null);	
+	if (checkedprops.length) {
+		var tmp = addCommas(checkedprops[checkedprops.length-1][1]);
+		if (tmp) tmp = '$'+tmp;				
+		$("#summary_prop_funding_min").html(tmp+' ('+checkedprops[checkedprops.length-1][0]+')');					
+	}
+	//date summary
+	//sort the summaries list - ascending by date
+	checkedprops.sort(function(a,b) {return (a[2] > b[2]) ? 1 : ((b[2] > a[2]) ? -1 : 0);} );	
+	var dateFirst = null;
+	var dateLast = null;
+	if (checkedprops.length>0) {
+		dateFirst = checkedprops[0][2];
+		if (dateFirst) dateFirst = new Date(dateFirst).toLocaleDateString();
+		dateLast = checkedprops[checkedprops.length-1][2];
+		if (dateLast) dateLast = new Date(dateLast).toLocaleDateString();
+	}
+	$("#summary_prop_datefirst").html(dateFirst);
+	$("#summary_prop_datelast").html(dateLast);	
+}
+
+function updateGrantSummary(oTable,aData,selected) {
+    //now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
+	//trap grant selection
+	var numGrantsSelected = $("#summary_grants").html();
+	var numFundingSelected = parseInt(removeNumberFormatting($("#summary_funding_total").html()));
+	var dateFirst = $("#summary_datefirst").html();
+	var dateLast = $("#summary_datelast").html();
+	if (dateLast) dateLast = new Date(dateLast);
+	if (selected) {
+		numGrantsSelected++; 
+		numFundingSelected += parseInt(aData[1]);
+	} else {
+		numGrantsSelected--;
+		numFundingSelected -= parseInt(aData[1]);
+	}
+
+	//now reformat
+	numFundingSelected = addCommas(numFundingSelected);
+	if (numFundingSelected) numFundingSelected = '$'+numFundingSelected;
+
+	$("#summary_grants").html(numGrantsSelected);
+	$("#summary_funding_total").html(numFundingSelected);
+
+//console.log(fnGetSelected(oTable));
+	//now recalculate the rankings - do this regardless of checked or unchecked
+	var checkedgrants = fnGetSelected(oTable);
+	//now for the grant rankings
+	//first by amount of award
+	//sort the summaries list - descending by funding
+	checkedgrants.sort(function(a,b) {return (parseInt(a[1]) > parseInt(b[1])) ? -1 : ((parseInt(b[1]) > parseInt(a[1])) ? 1 : 0);} );	
+//console.log(checkedgrants);			
+	//now select the top 4 out of the summaries list
+	for (var i=0;i<4;i++) {
+		//we always reset this - just for now, for simplicity sake, later we can add a check to see if the rankings need to be updated or not
+		$("#summary_rankedgrants_byfunding_"+(i+1)).html(null);	
+		if (checkedgrants[i]) {
+			var tmp = addCommas(checkedgrants[i][1]);
+			if (tmp) tmp = '$'+tmp;				
+			//we found one, add it to the summary
+			$("#summary_rankedgrants_byfunding_"+(i+1)).html(tmp+' ('+checkedgrants[i][0]+')');				
+		}
+	}
+	//min summary
+	$("#summary_funding_min").html(null);	
+	if (checkedgrants.length) {
+		var tmp = addCommas(checkedgrants[checkedgrants.length-1][1]);
+		if (tmp) tmp = '$'+tmp;				
+		$("#summary_funding_min").html(tmp+' ('+checkedgrants[checkedgrants.length-1][0]+')');					
+	}
+	//date summary
+	//sort the summaries list - ascending by date
+	checkedgrants.sort(function(a,b) {return (a[2] > b[2]) ? 1 : ((b[2] > a[2]) ? -1 : 0);} );	
+	var dateFirst = null;
+	var dateLast = null;
+	if (checkedgrants.length>0) {
+		dateFirst = checkedgrants[0][2];
+		if (dateFirst) dateFirst = new Date(dateFirst).toLocaleDateString();
+		dateLast = checkedgrants[checkedgrants.length-1][2];
+		if (dateLast) dateLast = new Date(dateLast).toLocaleDateString();
+	}
+	$("#summary_datefirst").html(dateFirst);
+	$("#summary_datelast").html(dateLast);	
+}
+
+function updatePISummary(aData,selected) {
+	//now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
+	//trap grant selection
+	var numPIsSelected = $("#summary_pis").html();
+	if (selected) {
+		numPIsSelected++; 
+	} else {
+		numPIsSelected--;
+	}
+
+	$("#summary_pis").html(numPIsSelected);
+
+//console.log(fnGetSelected(oTable));
+	//load prop data for selected pis so we can calculate summaries and rankings
+	var propids = [];
+//	var rowdata = oTable.fnGetData(this);
+	var tmp_propids = aData[5];
+	//make array out of string
+	if (tmp_propids) propids = tmp_propids.split(',');
+	//now load the data for each propid if it is not already loaded
+	var params = '';
+	for (var i in propids) {
+		var propid = jQuery.trim(propids[i]);
+		//if not previously loaded and cached, load it
+		if (!propsummarydata[propid]) {
+			if (params) params += ',';
+			params += propid;
+		}
+	}
+	if (params) {
+//console.log('getting data:'+params);
+		$.getJSON(apiurl + 'prop?id=' + params + '&jsoncallback=?', function(data) {
+//console.log(data);
+			//for each prop store the data in the cache
+			if (data["data"]) {
+				for (var i in data["data"]) {							
+//console.log(data["data"][i]["nsf_id"]);							
+					propsummarydata[data["data"][i]["nsf_id"]] = data["data"][i];
+				}
+			}
+			summarizePI();
+		});
+	} else {
+		summarizePI();
+	}	
+}
+
+function updateOrgSummary(aData,selected) {
+//now aData[0] - 1st column(count_id), aData[1] -2nd, etc. 
+	//trap grant selection
+	var numOrgsSelected = $("#summary_orgs").html();
+	if (selected) {
+		numOrgsSelected++; 
+	} else {
+		numOrgsSelected--;
+	}
+
+	$("#summary_orgs").html(numOrgsSelected);
+
+//console.log(fnGetSelected(oTable));
+	//load prop data for selected pis so we can calculate summaries and rankings
+	//var rowdata = oTable.fnGetData(this);
+	var propids = aData[4];
+	//now load the data for each propid if it is not already loaded
+	var params = '';
+	for (var i in propids) {
+		var propid = jQuery.trim(propids[i]);
+		//if not previously loaded and cached, load it
+		if (!propsummarydata[propid]) {
+			if (params) params += ',';
+			params += propid;
+		}
+	}
+	if (params) {
+//console.log('getting data:'+params);
+		$.getJSON(apiurl + 'prop?id=' + params + '&jsoncallback=?', function(data) {
+//console.log(data);
+			//for each prop store the data in the cache
+			if (data["data"]) {
+				for (var i in data["data"]) {							
+//console.log(data["data"][i]["nsf_id"]);							
+					propsummarydata[data["data"][i]["nsf_id"]] = data["data"][i];
+				}
+			}
+			summarizeOrg();
+		});
+	} else {
+		summarizeOrg();
+	}	
+}
 
 function summarizePI() {
 //console.log(propsummarydata);
@@ -1123,6 +1611,58 @@ function summarizeOrg() {
 	}
 }
 
+function calcPIPropDetails(v) {
+//console.log(propsummarydata);
+	//now recalculate the rankings - do this regardless of checked or unchecked
+	//current checked items
+	var tmp = {};
+	tmp['propcount'] = v[4];
+
+	//now total up the funding for all the proposals
+	var awardcount = 0;
+	var requestfunding = 0;
+	var awardfunding = 0;
+	var mindate = null;
+	var maxdate = null;
+
+	var propids = [];
+	var tmp_propids = v[5];
+	//make array out of string
+	if (tmp_propids) propids = tmp_propids.split(',');
+	for (var i in propids) {
+		var propid = jQuery.trim(propids[i]);
+		//read from cache
+//console.log(propid);			
+		if (propsummarydata[propid]) {
+			if (propsummarydata[propid]["status"]["code"]=="award") {
+				awardcount++;
+				if (propsummarydata[propid]["awarded"]["dollar"])
+					awardfunding += parseInt(propsummarydata[propid]["awarded"]["dollar"]);
+				var date = new Date(propsummarydata[propid]["awarded"]["date"]);
+			} else {
+				var date = new Date(propsummarydata[propid]["request"]["date"]);
+			}
+			requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
+			if (!mindate) mindate = date;
+			else if (date < mindate) mindate = date;
+			if (!maxdate) maxdate = date;
+			else if (date > maxdate) maxdate = date;
+		}
+	}
+	tmp['awardcount'] = awardcount;
+	tmp['awardfunding'] = '$'+addCommas(awardfunding.toString());
+	if (awardcount) tmp['avgawardfunding'] = '$'+addCommas((awardfunding/awardcount).toFixed(0).toString());
+	else tmp['avgawardfunding'] = 0;
+	tmp['requestfunding'] = '$'+addCommas(requestfunding.toString());
+	tmp['mindate'] = mindate.getMonth()+'/'+mindate.getDate()+'/'+mindate.getFullYear();
+	tmp['maxdate'] = maxdate.getMonth()+'/'+maxdate.getDate()+'/'+maxdate.getFullYear();
+	//add the topic id
+	tmp['id'] = v[0];
+	tmp['name'] = v[1];
+
+	return tmp;			
+}
+
 function fnGetSelected( oTableLocal )
 {
     var aReturn = new Array();
@@ -1133,6 +1673,36 @@ function fnGetSelected( oTableLocal )
         if ( $(aTrs[i]).hasClass('row_selected') )
         {
             aReturn.push( oTableLocal.fnGetData(aTrs[i]) ); //return data, not node
+        }
+    }
+    return aReturn;
+}
+
+function fnGetSelectedRows( oTableLocal )
+{
+    var aReturn = new Array();
+    var aTrs = oTableLocal.fnGetNodes();
+     
+    for ( var i=0 ; i<aTrs.length ; i++ )
+    {
+        if ( $(aTrs[i]).hasClass('row_selected') )
+        {
+            aReturn.push( aTrs[i] ); //return node
+        }
+    }
+    return aReturn;
+}
+
+function fnGetNotSelectedRows( oTableLocal )
+{
+    var aReturn = new Array();
+    var aTrs = oTableLocal.fnGetNodes();
+     
+    for ( var i=0 ; i<aTrs.length ; i++ )
+    {
+        if ( !$(aTrs[i]).hasClass('row_selected') )
+        {
+            aReturn.push( aTrs[i] ); //return node
         }
     }
     return aReturn;

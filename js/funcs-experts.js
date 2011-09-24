@@ -1,3 +1,8 @@
+//global variable that holds proposal data for selected topics
+//when user first selects a topic read the data and store it in this array (indexed by topic id)
+//then use it to add/remove from the summary instead of retrieving it each time
+var topicsummarydata = {};
+
 function setSelects() {
 /*	var numSelected = $("#orgs :selected").length;
 	var selValues = "";
@@ -33,7 +38,7 @@ function chgSelects(selector) {
 		status = status.join(',');
 		var params = "";
 		params += "org=AST,CHE,DMR,DMS,PHY,BIO,MCB,DBI,IOS,DEB,EF,CISE,CCF,CNS,IIS,EHR,DRL,DGE,HRD,DUE,ENG,CBET,CMMI,ECCS,EEC,EFRI,IIP,GEO,AGS,EAR,OCE,SBE,SES,BCS,NCSE,SMA,BFA,BD,DACS,DFM,DGA,DIAS,OIRM,HRM,DIS,DAS";
-		params += "&year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val();
+		params += "&year=r" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val();
 		if (status) params += "&" + "status=" + status;		
 //console.log(apiurl+'topic?' + params + '&summ&jsoncallback=?');		
 		$.getJSON(apiurl+'topic?' + params + '&summ&jsoncallback=?', function(data) {
@@ -47,7 +52,7 @@ function chgSelects(selector) {
 		if ($("#topics").val() != null) {
 			topicStr = "t" + ($("#primary_topic").attr("checked")?"1":"") + "=" + $("#topics").val() + "&";
 		}
-		var params = topicStr + "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val()
+		var params = topicStr + "year=r" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val()
 		$.getJSON(apiurl+'topic?' + params + '&summ&jsoncallback=?', function(data) {
 			//populate table
 			loadTopics(data);			
@@ -65,13 +70,23 @@ function fullTopics(){
 }
 
 function loadTopics(data) {
-console.log('loading topics');
+//console.log('loading topics');
 	//reset the summaries
 	$("#topics_selected").html('0');
 	$("#pi_selected").html('0');
 	$("#topics_selected_right").html('0');
 	$("#topics_selected_list").empty();
 	$("#pi_selected_right").html('0');
+	$("#summary_totalfunding").html('0');
+	$("#summary_minyear").html('');
+	$("#summary_maxyear").html('');
+	$("#summary_rankedtopics_bycount_1").html('');
+	$("#summary_rankedtopics_bycount_2").html('');
+	$("#summary_rankedtopics_bycount_3").html('');
+	$("#summary_rankedtopics_byfunding_1").html('');
+	$("#summary_rankedtopics_byfunding_2").html('');
+	$("#summary_rankedtopics_byfunding_3").html('');
+	$("#summary_breakdown").html('');
 	
 	//clear data table
 	//$('#topics_table').empty();
@@ -262,64 +277,6 @@ console.log('loading topics');
 	      },
 	});*/
 	
-	$('#topics_table input[name="topic[]"]').unbind('click');
-	$('#topics_table input[name="topic[]"]').click(function(event) {
-	//$('#topics_table input[name="topic[]"]').live('click',function(event) {
-//console.log(event.target.tagName);
-console.log('checked:'+$(this).attr('value'));
-		var oTable = $('#topics_table').dataTable();		
-		/* Get the position of the current data from the node */
-		var aPos = oTable.fnGetPosition( $(this).parent().parent().get(0) );
-		/* Get the data array for this row */
-		var aData = oTable.fnGetData( aPos );
-
-		var topicid = $(this).attr('value');
-		var checked = $(this).attr('checked');
-		
-		//trap topic selection
-		var numTopicsSelected = $("#topics_selected").html();
-console.log(numTopicsSelected);		
-		if (checked) {
-			//set the row on
-			$(this).parent().parent().addClass('selected');
-//alert($(this).parent().parent());
-			numTopicsSelected++; 
-			//update list of selected topics (id and description)
-			$("#topics_selected_list").append('<li id="selected_topic_'+topicid+'"><strong>'+topicid+'</strong>: '+aData[1].substr(0,20)+'...</li>');
-		} else {
-			//set the row off
-			$(this).parent().parent().removeClass('selected');
-			numTopicsSelected--;
-			//update list of selected topics (id and description)
-			$('li[id="selected_topic_'+topicid+'"]').remove();
-		}
-		$("#topics_selected").html(numTopicsSelected);
-		
-		//do it on the right side too
-		$("#topics_selected_right").html(numTopicsSelected);
-
-		//we need status to filter by - get it here
-		var propstatus = [];
-		$('input[name=prop_status]:checked').each(function() {
-			propstatus.push($(this).val());
-		});
-		//but we need a string
-		propstatus = propstatus.join(',');					
-		//get count of researchers - we're not caching these for now
-		var params = "year=" + $("select[name=year_from]").val() + "-" + $("select[name=year_to]").val() + "&" + "t1=" + topicid+"&status="+propstatus+"&page=pi";
-		$.getJSON(apiurl + 'topic?' + params + '&jsoncallback=?', function(data) {
-			var curr_pi_count = parseInt($("#pi_selected_right").html());
-			if (checked) curr_pi_count += parseInt(data["count"]);
-			else curr_pi_count -= parseInt(data["count"]);
-			$("#pi_selected_right").html(curr_pi_count);
-			$("#pi_selected").html(curr_pi_count);
-		});		
-
-		//and lastly, if none checked, hide view results button - you can only do this after selecting a topic
-		if (numTopicsSelected==0) $(".button_view_results").hide();
-		else $(".button_view_results").show();
-	});	
-	
 	$("#navTopics").slideDown();
 }
 
@@ -482,7 +439,7 @@ function renderIt(org, year_from, year_to, status, topic, prim, tab) {
 		query = query + "org=" + org + "&";
 	}
 	if(year != ""){
-		query = query + "year=" + year + "&";
+		query = query + "year=r" + year + "&";
 	}
 	if(topic != undefined){
 		if(prim){

@@ -22,12 +22,37 @@
 		<p><strong>NSF Division: </strong>${org.full} (${org.name})</p>
 	{/literal}
 </script>
-<script id="personRender" type="text/x-jquery-tmpl"> 
+<script id="propListRender" type="text/x-jquery-tmpl"> 
 	{literal}
 		<b>Grant ${nsf_id}:</b>
 		<p>${title}</p>
 		<p>NSF Division: ${org.full} (${org.name})</p>
 		<p>Program Element: ${pge.full} (${pge.code})</p>
+	{/literal}
+</script>
+<script id="personRender" type="text/x-jquery-tmpl"> 
+	{literal}
+		<h3><strong>${name}:</strong></h3>
+		<p>${email}<br />
+		${phone}</p>
+		<p>${inst.dept}<br />
+		${inst.name}</p>
+	{/literal}
+</script>
+<script id="copiRender" type="text/x-jquery-tmpl"> 
+	{literal}
+		<p>${name} (${count})</p>
+	{/literal}
+</script>
+<script id="propSummRender" type="text/x-jquery-tmpl"> 
+	{literal}
+		<p>Awards: ${awardcount}<br /><br />
+		Date First: ${mindate}<br />
+		Date Last: ${maxdate}<br /><br />
+		Total Requested Funding: ${requestfunding}<br />
+		Award Funding: ${awardfunding}<br />
+		Award Avg.: ${avgawardfunding}<br />
+		</p>
 	{/literal}
 </script>
 <script id="orgRender" type="text/x-jquery-tmpl"> 
@@ -647,6 +672,7 @@ function createTable(tab, data)
 					v["proposal"]["nsf_id"],
 					v["awarded"]["dollar"],
 					v["awarded"]["date"],
+					keyExists("request.date", v, null),
 					v["pge"]["code"], 
 					v["org"]["name"],
 					v["topic"]["id"].join(", "), 
@@ -689,16 +715,24 @@ function createTable(tab, data)
 						"sTitle": "Award Date",
 						"aTargets": [ 2 ] 
 					}, 
-					{ "sTitle": "Prg. Elem. Code", "aTargets": [ 3 ] }, 
-					{ "sTitle": "Division", "aTargets": [ 4 ] }, 
-					{ "sTitle": "Topics", "aTargets": [ 5 ] },
+					{ 
+						//"fnRender": function ( oObj ) {
+						//	return '<span class="date" id="date_'+oObj.aData[0]+'">'+oObj.aData[2]+'</span>';
+						//},
+						//"bUseRendered": false,
+						"sTitle": "Request Date",
+						"aTargets": [ 3 ] 
+					}, 
+					{ "sTitle": "Prg. Elem. Code", "aTargets": [ 4 ] }, 
+					{ "sTitle": "Division", "aTargets": [ 5 ] }, 
+					{ "sTitle": "Topics", "aTargets": [ 6 ] },
 					{ 
 						"fnRender": function ( oObj ) {
-							return '<a class="details" title="'+oObj.aData[6]+'">Show</a>';
+							return '<a class="details" title="'+oObj.aData[7]+'">Show</a>';
 						},
 						"bSortable": false,						
 						"sTitle": "Details",
-						"aTargets": [ 6 ]
+						"aTargets": [ 7 ]
 					}
 				],
 				"aaData": aaData,

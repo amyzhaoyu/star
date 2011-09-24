@@ -21,6 +21,9 @@
 	<link rel="stylesheet" href="js/jquery-ui/smoothness/jquery-ui-1.8.14.custom.css" rel="stylesheet" />	
 	<link rel="stylesheet" href="css/starMetrics-css.css" rel="stylesheet" />	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+	<!--[if IE 7]>
+        <link rel="stylesheet" type="text/css" href="css/ie7.css">
+	<![endif]-->
 
 	<script>
 
@@ -40,11 +43,11 @@
 	
 	//initialize the access status and api url
 	//inside the network
-	//var proposalaccessallowed = true;
-	//var apiurl = "http://128.150.10.70/py/api.py/";
+	var proposalaccessallowed = true;
+	var apiurl = "http://128.150.10.70/py/api.py/";
 	//outside the network
-	var proposalaccessallowed = false;
-	var apiurl = "http://readidata.nitrd.gov/star/py/api.py/";
+	//var proposalaccessallowed = false;
+	//var apiurl = "http://readidata.nitrd.gov/star/py/api.py/";
 	
 	</script>
 

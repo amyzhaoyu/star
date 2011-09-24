@@ -104,6 +104,64 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
+          <tr>
+            <td class="label">Funded</td>
+            <td class="value" id="summary_totalfunding">0</td>
+          </tr>
+          <tr>
+            <td class="label">Date first</td>
+            <td class="value" id="summary_minyear"></td>
+          </tr>
+          <tr>
+            <td class="label">Date last</td>
+            <td class="value" id="summary_maxyear"></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="label">Top Topic (#)</td>
+            <td class="value" id="summary_rankedtopics_bycount_1"></td>
+          </tr>
+          <tr>
+            <td class="label">2nd Topic</td>
+            <td class="value" id="summary_rankedtopics_bycount_2"></td>
+          </tr>
+          <tr>
+            <td class="label">3rd Topic</td>
+            <td class="value" id="summary_rankedtopics_bycount_3"></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="label">Top Topic ($)</td>
+            <td class="value" id="summary_rankedtopics_byfunding_1"></td>
+          </tr>
+          <tr>
+            <td class="label">2nd Topic</td>
+            <td class="value" id="summary_rankedtopics_byfunding_2"></td>
+          </tr>
+          <tr>
+            <td class="label">3rd Topic</td>
+            <td class="value" id="summary_rankedtopics_byfunding_3"></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+		  <tr>
+			<td colspan="2">
+				<table id="summary_breakdown" class="topic-selection-summary-table">
+				</table>
+			</td>
+		  </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
           <tr class="heading">
             <td class="label"><strong>Researchers</strong></td>
             <td><div class="header-row-wrap"><span class="num-lg" id="pi_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Show" onclick="submitMenu('pi');" style="display: none;" /></div></td>
@@ -131,7 +189,7 @@
         </h3></td>
       <td align="left">Topics: <span class="values" id="topics_selected">0</span>/<span class="values" id="topics_total">[count total]</span></td>
       <td>Researchers: <span class="values" id="pi_selected">0</span></td>
-      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change" onClick="editTopics();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change Selection" onClick="editTopics();" /></td>
     </tr>
   </table>
 </div>

@@ -1,0 +1,17 @@
+#container td {
+position: relative;
+}
+
+/*
+--------------------------------------------------------------------------------------- BARS
+*/
+
+.num-bar-wrap {
+position: relative;
+}
+
+.num-bar {
+position: absolute;
+top: 0;
+left: 0;
+}

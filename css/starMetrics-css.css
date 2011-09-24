@@ -249,12 +249,17 @@ border-bottom: 1px solid #CED2D5;
 #container td {
 	font-family: "Lucida Grande", "Lucida Sans", Arial, Helvetica, sans-serif;
 	color: #272b3d;
-	font-size: 11px;	
+	font-size: 11px;
 }
 
 #container tr.odd,
 #container tr.odd td.sorting_1 {
 background: #fff;
+}
+
+#container #dtable_grants tr.odd td.storting_1,
+#container #dtable_grants tr.even td.storting_1 {
+border-bottom: 1px solid #CED2D5;
 }
 
 #container tr.even td.sorting_1,
@@ -360,6 +365,11 @@ float: right;
 /*
 --------------------------------------------------------------------------------------- BARS
 */
+
+#fundingreport td {
+padding: 5px !important;
+border: 1px solid #ccc !important;
+}
 
 .num-bar-wrap {
 border: 1px solid #cfcfcf;

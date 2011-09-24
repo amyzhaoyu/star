@@ -150,7 +150,7 @@
       <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
       <td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
       <!--<td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>-->
-      <td align="right"><input class="buttonGreen-sm button_view_results" type="button" value="Change" onClick="editQuery();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="button" value="Change Selection" onClick="editQuery();" /></td>
     </tr>
   </table>
 </div>
@@ -322,7 +322,7 @@
         (soon)</span></td>
       <td><span class="values">Publications<br />
 (soon)</span></td>
-      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change" onClick="editTopics();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change Selection" onClick="editTopics();" /></td>
     </tr>
   </table>
 </div>
