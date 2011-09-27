@@ -49,11 +49,11 @@
 	</div>
    </td>
    <td><div class="topic-selection-summary-wrap">
-	 <h3>Filter Results</h3>
+<!--	 <h3>Filter Results</h3>
 	 <form id="filter_results">
 	 </form>
-	 <br /><br />
-     <h3>Selection Summary</h3>
+	 <br /><br /> -->
+     <h3 style="font-size: 18px; font-weight: bold; color: #336699; margin-top: 10px; margin-right: 0pt; margin-bottom: 10px; margin-left: 0pt; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">Quick Selection Summary</h3>
        <p>The below reflects a summary of the items you 
          selected on the left.</p>
 

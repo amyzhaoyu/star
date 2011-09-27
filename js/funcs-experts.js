@@ -154,7 +154,7 @@ function loadTopics(data) {
 				"fnRender": function ( oObj ) {
 					return '<strong>Topic '+oObj.aData[0]+'</strong> : '+oObj.aData[1];
 				},
-				"bUseRendered": false,
+				//"bUseRendered": false,
 				"bSortable": false,
 				"sTitle": "Topic",
 				//"sClass": "topic_words", 
@@ -175,13 +175,12 @@ function loadTopics(data) {
 				"fnRender": function ( oObj ) {
 					//calculate the width of the "bar" for this row
 					//it is relative to the maxCount and the size of this column - 150px
-					var numPixels = 0;
-					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[3]);
-					return '<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">'+oObj.aData[3]+'</span></span></strong>';
+					//var numPixels = 0;
+					//if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[3]);
+					return '<span class="number">'+oObj.aData[3]+'</span>'; //'<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number">'+oObj.aData[3]+'</span></span></strong>';
 				},
-				"bSearchable": false,
 				"bUseRendered": false,
-				"sWidth": "150px",
+				/* "sWidth": "150px",*/
 				"sTitle": "Proposals", 
 				"aTargets": [ 3 ]
 			},

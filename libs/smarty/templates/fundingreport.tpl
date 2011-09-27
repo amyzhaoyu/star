@@ -7,8 +7,8 @@
 				<li><span class="menu_r"><a href="home.html"><span class="menu_ar">Home</span></a></span></li>
 				<li><span class="menu_r"><a href="portfolio_viewer.php"><span class="menu_ar">Portfolio Viewer</span></a></span></li>
 				<li><span class="menu_r"><a href="expertise.php"><span class="menu_ar">Expertise Locator</span></a></span></li>
-				<li class="highlight"><span class="menu_r"><a href="fundingreport.php"><span class="menu_ar">Funding Report</span></a></span></li>
-				<li><span class="menu_r"><a href="http://rd-dashboard.nitrd.gov/investment.html" target="_blank"><span class="menu_ar">Institutions</span></a></span></li>
+				<li class="highlight"><span class="menu_r"><a href="fundingreport.php"><span class="menu_ar">Funding Reporter</span></a></span></li>
+				<li><span class="menu_r"><a href="http://rd-dashboard.nitrd.gov/investment.html" target="_blank"><span class="menu_ar">Map Viewer</span></a></span></li>
 			</ul>
 		</div>
 	</div>
@@ -31,7 +31,9 @@
 {* html *}
 				<form id="queryform" name="queryform" method="post" action="">
 				<div id="navDivisions">
-				  <h2>Select an NSF Division:</h2>
+				<h2><strong>Funding Reporter:</strong></h2>
+				<p>This tool helps you review how funding overlaps among divisions.</p>
+				<h3><br />Select an NSF Division:</h2>
 				  <table width="100%" border="0" cellspacing="0" cellpadding="0">
 				    <tr valign="top">
 				      <td align="left"><label>
@@ -148,10 +150,6 @@
 				      </table></td>
 				      <td align="left">
 				        <input class="buttonGreen" type="button" value="View Funding Report" onclick="getTopics();" />
-				        <br /><br />To begin: choose a division <br />
-				          and other search criteria. Then click <br />
-				          'View Funding Report' to  
-				        view a funding report by division.<br /><br />
 							<div id="message"></div>
 						</td>
 				      </tr>
@@ -167,13 +165,14 @@
 				      <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
 				      <!--<td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>-->
 				      <!--<td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>-->
-				      <td align="right"><input class="buttonGreen-sm button_view_results" type="button" value="Change Selection" onClick="editQuery();" /></td>
+				      <td align="right"><input class="buttonGreen-sm button_view_results" type="button" value="Change Division" onClick="editQuery();" /></td>
 				    </tr>
 				  </table>
 				</div>
 				<img id="topic_loader" style="display:none" src="images/ajax-loader.gif" />
 				<div id="navTopics" style="display: none;">
 				 <h3>Funding Report</h3>
+				<p>This tool helps you review how funding overlaps among divisions.</p>
 				 <table id="fundingreport"></table>
 				</div>
 				</form>

@@ -96,6 +96,7 @@ function loadTopics(data) {
 	$("#summary_rankedtopics_byfunding_2").html('');
 	$("#summary_rankedtopics_byfunding_3").html('');
 	$("#summary_breakdown").html('');
+	$('#topics-tab-summary_breakdown').html('');
 	$("#pi_selected_right").html('0');
 	$("#inst_selected_right").html('0');
 	
@@ -126,6 +127,7 @@ function loadTopics(data) {
 	//we need this for the "bar graphs"
 	var maxProposalCount = 0;
 	var maxAwardCount = 0;
+	var maxFundingRate = 0;
 	for (var i=0;i<aaData.length;i++) {
 		if (aaData[i][3]>maxProposalCount) maxProposalCount = aaData[i][3];
 		if (!aaData[i][6]) {
@@ -137,6 +139,7 @@ function loadTopics(data) {
 			aaData[i][7] = ((aaData[i][5]/aaData[i][6])*100).toFixed(2);
 		}
 		if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
+		if (aaData[i][7]>maxFundingRate) maxFundingRate = aaData[i][7];
 	}
 //console.log(maxAwardCount);	
 //alert(maxProposalCount);	
@@ -186,7 +189,7 @@ console.log($(document).dataTableSettings);	*/
 				"fnRender": function ( oObj ) {
 					return '<strong>Topic '+oObj.aData[0]+'</strong> : '+oObj.aData[1];
 				},
-				"bUseRendered": false,
+				//"bUseRendered": false,
 				"bSortable": false,
 				"sTitle": "Topic",
 				//"sClass": "topic_words", 
@@ -207,14 +210,13 @@ console.log($(document).dataTableSettings);	*/
 				"fnRender": function ( oObj ) {
 					//calculate the width of the "bar" for this row
 					//it is relative to the maxCount and the size of this column - 150px
-					var numPixels = 0;
-					if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[3]);
+					//var numPixels = 0;
+					//if (maxProposalCount > 0) numPixels = Math.ceil((150/maxProposalCount)*oObj.aData[3]);
 					var numProposals = oObj.aData[3];
-					return '<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number numproposals">'+numProposals+'</span></span></strong>';
+					return '<span class="number numproposals">'+numProposals+'</span>'; //'<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number numproposals">'+numProposals+'</span></span></strong>';
 				},
-				"bSearchable": false,
 				"bUseRendered": false,
-				"sWidth": "150px",
+				/*"sWidth": "150px",*/
 				"sTitle": "Proposals", 
 				"aTargets": [ 3 ]
 			},
@@ -269,14 +271,19 @@ console.log($(document).dataTableSettings);	*/
 			{
 				"fnRender": function ( oObj ) {
 					var calc = oObj.aData[7];
+					var numPixels = 0;
 					if (oObj.aData[7]) {
+						if (maxFundingRate > 0) {
+							numPixels = Math.ceil((150/maxFundingRate)*calc);
+						}
 						calc += '%';
 					}
-					return '<strong class="num-bar-wrap num-bar-proposals"><span class="number numproposals">'+calc+'</span></strong>';
+					return '<strong class="num-bar-wrap num-bar-proposals"><span class="num-bar" style="width: '+numPixels+'px;"><span class="number numproposals">'+calc+'</span></span></strong>'; //'<strong class="num-bar-wrap num-bar-proposals"><span class="number numproposals">'+calc+'</span></strong>';
 				},
 				"bVisible": false,
 				"bUseRendered": false,
-				"sTitle": "Success Rate", 
+				"sWidth": "150px",
+				"sTitle": "Funding Rate", 
 				"aTargets": [ 7 ]
 			}
 		],

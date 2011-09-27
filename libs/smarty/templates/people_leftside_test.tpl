@@ -14,8 +14,10 @@
 {* html *}
 <form id="queryform" name="queryform" method="post" action="">
 <div id="navDivisions">
-  <h2>Select one or more NSF Division(s):</h2>
-  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<h2><strong>Portfolio Viewer:</strong></h2>
+	<p>This tool describes the structure of divisional and program investments by topic.</p>
+	<h3><br />Select one or more NSF Division(s):</h3>
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
     <tr valign="top">
       <td align="left"><label>
 			<select id="orgs" multiple="multiple" name="org" class="sel">
@@ -131,7 +133,7 @@
       </table></td>
       <td align="left">
         <input class="buttonGreen" type="button" value="View Topics" onclick="getTopics();" />
-        <br /><br />To begin: choose one or more divisions <br />
+        <br /><br /><strong>To begin:</strong> choose one or more divisions <br />
           and other search criteria. Then click <br />
           'View Topics' to  
         view applicable topics.<br /><br />
@@ -150,7 +152,7 @@
       <td>Timing: <span class="values" id="year_selected">[dropdown value]</span></td>
       <td>Show: <span class="values" id="propstatus_selected">[dropdown value]</span></td>
       <!--<td>Topics: <span class="values" id="primarytopic_selected">[dropdown value]</span></td>-->
-      <td align="right"><input class="buttonGreen-sm button_view_results" type="button" value="Change Selection" onClick="editQuery();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="button" value="Change Division/s" onClick="editQuery();" /></td>
     </tr>
   </table>
 </div>
@@ -230,20 +232,28 @@
             <td class="label">&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
+          <tr class="heading">
+            <td class="label"><strong>Researchers</strong></td>
+            <td><div class="header-row-wrap"><span class="num-lg" id="pi_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu('pi');" style="display: none;" /></div></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr class="heading">
+            <td class="label"><strong>Institutions</strong></td>
+            <td><div class="header-row-wrap"><span class="num-lg" id="inst_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu('org');" style="display: none;" /></div></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
 		  <tr>
 			<td colspan="2">
 				<table id="summary_breakdown" class="topic-selection-summary-table">
 				</table>
 			</td>
 		  </tr>
-          <tr>
-            <td class="label">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr class="heading">
-            <td class="label"><strong>Researchers</strong></td>
-            <td><div class="header-row-wrap"><span class="num-lg" id="pi_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu('pi');" style="display: none;" /></div></td>
-          </tr>
 		<!--
           <tr>
             <td class="label">Top Researcher</td>
@@ -261,14 +271,6 @@
             <td class="label">Researcher 4</td>
             <td class="value">[#]</td>
           </tr> -->
-          <tr>
-            <td class="label">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr class="heading">
-            <td class="label"><strong>Institutions</strong></td>
-            <td><div class="header-row-wrap"><span class="num-lg" id="inst_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Detailed View" onclick="submitMenu('org');" style="display: none;" /></div></td>
-          </tr>
 		<!--
           <tr>
             <td class="label">Total # of States</td>
@@ -322,7 +324,7 @@
         (soon)</span></td>
       <td><span class="values">Publications<br />
 (soon)</span></td>
-      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change Selection" onClick="editTopics();" /></td>
+      <td align="right"><input class="buttonGreen-sm button_view_results" type="submit" value="Change Topic/s" onClick="editTopics();" /></td>
     </tr>
   </table>
 </div>

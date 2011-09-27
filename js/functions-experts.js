@@ -553,7 +553,7 @@ function updateTopicSummary(checked,data) {
 		status_html += '<tr>';
 		status_html += '<td class="label">';
 		if (i=='award') status_html+='Awarded';
-		else if (i=='propose') status_html+='Proposed';
+		else if (i=='propose') status_html+='Other';
 		else if (i=='decline') status_html+='Declined';
 		status_html += '</td>';
 		status_html += '<td class="value">'+status[i]+'</td>';

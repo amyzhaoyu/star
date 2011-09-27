@@ -8,7 +8,7 @@
 {* templates *}
 <script id="orgSearch" type="text/x-jquery-tmpl"> 
 	{literal}
-		<p><b>${proposal.title}</b> (<a onclick="renderProp('id=${proposal.nsf_id}', '${proposal.nsf_id}');">${proposal.nsf_id}</a>)</p>
+		<p><strong>${proposal.title}</strong> (<a onclick="renderProp('id=${proposal.nsf_id}', '${proposal.nsf_id}');">${proposal.nsf_id}</a>)</p>
 		<div id="div_${proposal.nsf_id}" style="display:none;"><div>
 		</div>
 			<a onclick="$('#div_${proposal.nsf_id}').slideUp();">Close!</a>
@@ -19,14 +19,14 @@
 	{literal}
 		<p><strong>Title: </strong>${title}</p>
 		<p><strong>Abstract Text:</strong>${abstract}</p>
-		<p><strong>NSF Division: </strong>${org.full} (${org.name})</p>
+		<p><strong>NSF Division: </strong>${org.full} (<strong>${org.name}</strong>)</p>
 	{/literal}
 </script>
 <script id="propListRender" type="text/x-jquery-tmpl"> 
 	{literal}
-		<b>Grant ${nsf_id}:</b>
+		<strong>Grant ${nsf_id}:</strong>
 		<p>${title}</p>
-		<p>NSF Division: ${org.full} (${org.name})</p>
+		<p>NSF Division: ${org.full} (<strong>${org.name}</strong>)</p>
 		<p>Program Element: ${pge.full} (${pge.code})</p>
 	{/literal}
 </script>
@@ -57,7 +57,7 @@
 </script>
 <script id="orgRender" type="text/x-jquery-tmpl"> 
 	{literal}
-		<b>${name}</b>
+		<strong>${name}</strong>
 		<p>${address.street}</p>
 		<p>${address.city}, ${address.state} ${address.zip} ${address.country}</p>
 		<p>Phone: ${phone}</p>
@@ -106,6 +106,7 @@
 			</tr>
 			</thead>
 			<tbody>
+			<tr valign=top><td colspan="8"><h3<br />The data below is not based on your topic selection (for illustration purposes only)<br /><br /></td></tr>
 			<tr valign=top class="odd selected"><td><input name=" value=" type="checkbox"></td><td><a href="#">94961</a></td><td>29</td><td><A href="#">SMITH, DOUG</a></td><td>7150101</td><td>12/15/03</td><td>Apparatus for fabricating comp</td><td><a href="#">More</a></td></tr>
 			<tr valign=top class="odd selected"><td><input name=" value=" type="checkbox"></td><td><a href="#">349034</a></td><td>29</td><td><A href="#">ISMAGILOV, </a></td><td>7774920</td><td>4/25/07</td><td>Fabrication of metallic micros</td><td><a href="#">More</a></td></tr>
 			<tr valign=top class="odd selected"><td><input name=" value=" type="checkbox"></td><td><a href="#">616505</a></td><td>29</td><td><A href="#">WHITE, HENR</a></td><td>7849581</td><td>5/3/07</td><td>Nanopore electrode, nanopore m</td><td><a href="#">More</a></td></tr>
@@ -164,8 +165,8 @@
    <td><div id="prop-selection-summary" class="topic-selection-summary-wrap">
 
 	 <h3>Filter Results</h3>
-	 <form id="filter_results">
-	 </form>
+	 <!--<form id="filter_results">
+	 </form>-->
 	 <br /><br />
 
      <h3>Selection Summary</h3>
@@ -538,6 +539,28 @@
 		</tr>
        </table>
        </div><!-- /topic-selection-summary-wrap -->
+	<div id="topics_tab-selection-summary" class="topic-selection-summary-wrap">
+
+	     <h3>Selection Summary</h3>
+	       <p>The below reflects a summary of the items you 
+	         selected on the left.</p>
+
+       <table id="org-selection-summary-table" class="topic-selection-summary-table">
+         <tr class="heading">
+           <td class="label" colspan="2"><strong>Topic Summary</strong></td>
+         </tr>
+         <tr>
+           <td class="label">&nbsp;</td>
+           <td>&nbsp;</td>
+         </tr>
+		  <tr>
+			<td colspan="2">
+				<table id="topics-tab-summary_breakdown" class="topic-selection-summary-table">
+				</table>
+			</td>
+		  </tr>
+		</table>
+	</div>
      </td>
   </tr>
 </table>
@@ -570,7 +593,7 @@ function renderJSON(query, tab)
 	query = query.substr(0, query.length-1);
 
 	if(tab == "topics_tab"){
-		$.getJSON(apiurl+'topic?' + query + '&summ=full&jsoncallback=?', function(data){
+		$.getJSON(apiurl+'topic?' + query + '&summ&jsoncallback=?', function(data){
 			createTable(tab, data);		
 		});
 	}
@@ -609,7 +632,7 @@ function createTable(tab, data)
 					v["request"]["date"],
 					v["pge"]["code"], 
 					v["org"]["name"],
-					v["topic"]["id"].join(", "), 
+					v["topic"]["id"].join(", ").replace(', ,', ""), 
 					//v["status"]["name"],
 				]; 
 			});
@@ -675,7 +698,7 @@ function createTable(tab, data)
 					keyExists("request.date", v, null),
 					v["pge"]["code"], 
 					v["org"]["name"],
-					v["topic"]["id"].join(", "), 
+					v["topic"]["id"].join(", ").replace(', ,', ""), 
 					v["proposal"]["title"],
 				]; 
 			});
@@ -885,7 +908,7 @@ function createTable(tab, data)
 						"sTitle": "Number of Proposals", 
 						"aTargets": [ 2 ] 
 					}, 
-					{ "sTitle": "Number of PIs", "aTargets": [ 3 ] },
+					{ "sTitle": "# of PIs", "aTargets": [ 3 ] },
 					{ 
 						"fnRender": function ( oObj ) {
 							//wrap each prop id in a link

@@ -15,8 +15,11 @@
 <img id="topic_loader" style="display:none" src="images/ajax-loader.gif" />
 <form id="queryform" name="queryform" method="post" action="">
 <div id="navTopics" style="display: none;">
- <h3>Topics Filter<br /><span style="font-size: 13px;">(include researchers for selected topics)</h3>
-  <table class="topics-table-wrap">
+	<h3><strong>Expertise Locator:</strong></h3>
+	<p>This tool can be used to help find experts in particular topics.</p>
+	<p><br /><strong>To begin:</strong> select one or more topics below. The Summary sidebar provides selection summary information. <strong>To view the Researchers</strong> for selected topics, click the &quot;Show&quot; button in the sidebar.</p>
+	<h2><br />Select one or more Topics:</h2>
+	<table class="topics-table-wrap">
     <tr valign="top">
       <td class="topics-table-cell">
         <table class="topics-table" id="topics_table"></table>
@@ -85,7 +88,7 @@
 			</td>
 	      </tr>
 	  </table>
-      <h3>Quick Selection Summary</h3>
+      <h3 style="font-size: 18px; font-weight: bold; color: #336699; margin-top: 10px; margin-right: 0pt; margin-bottom: 10px; margin-left: 0pt; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">Quick Selection Summary</h3>
         <p>The below reflects a summary of the items you 
           selected on the left. Click the links below to 
           analyze your selection deeper.        </p>
@@ -152,20 +155,20 @@
             <td class="label">&nbsp;</td>
             <td>&nbsp;</td>
           </tr>
+          <tr class="heading">
+            <td class="label"><strong>Researchers</strong></td>
+            <td><div class="header-row-wrap"><span class="num-lg" id="pi_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Show" onclick="submitMenu('pi');" style="display: none;" /></div></td>
+          </tr>
+          <tr>
+            <td class="label">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
 		  <tr>
 			<td colspan="2">
 				<table id="summary_breakdown" class="topic-selection-summary-table">
 				</table>
 			</td>
 		  </tr>
-          <tr>
-            <td class="label">&nbsp;</td>
-            <td>&nbsp;</td>
-          </tr>
-          <tr class="heading">
-            <td class="label"><strong>Researchers</strong></td>
-            <td><div class="header-row-wrap"><span class="num-lg" id="pi_selected_right">0</span><input class="buttonGreen button_view_results" type="button" value="Show" onclick="submitMenu('pi');" style="display: none;" /></div></td>
-          </tr>
         </table>
         </div><!-- /topic-selection-summary-wrap -->
         </td>

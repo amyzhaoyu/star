@@ -997,7 +997,7 @@ function updateTopicSummary(checked,data) {
 		status_html += '<tr>';
 		status_html += '<td class="label">';
 		if (i=='award') status_html+='Awarded';
-		else if (i=='propose') status_html+='Proposed';
+		else if (i=='propose') status_html+='Other';
 		else if (i=='decline') status_html+='Declined';
 		status_html += '</td>';
 		status_html += '<td class="value">'+status[i]+'</td>';
@@ -1087,6 +1087,7 @@ function updateTopicSummary(checked,data) {
 		}
 	}
 	$("#summary_breakdown").html(html);
+	$('#topics-tab-summary_breakdown').html(html);
 	//now for the topic rankings
 	//first by number of grants
 	//sort the summaries list - descending by count
@@ -1171,9 +1172,15 @@ function updatePropSummary(oTable,aData,selected) {
 	var dateLast = null;
 	if (checkedprops.length>0) {
 		dateFirst = checkedprops[0][2];
-		if (dateFirst) dateFirst = new Date(dateFirst).toLocaleDateString();
+		if (dateFirst) {
+			var tmpdate = new Date(dateFirst);
+			dateFirst = tmpdate.getFullYear()+'/'+tmpdate.getMonth()+'/'+tmpdate.getDate();
+		}
 		dateLast = checkedprops[checkedprops.length-1][2];
-		if (dateLast) dateLast = new Date(dateLast).toLocaleDateString();
+		if (dateLast) {
+			var tmpdate = new Date(dateLast);
+			dateLast = tmpdate.getFullYear()+'/'+tmpdate.getMonth()+'/'+tmpdate.getDate();
+		}
 	}
 	$("#summary_prop_datefirst").html(dateFirst);
 	$("#summary_prop_datelast").html(dateLast);	
@@ -1235,9 +1242,15 @@ function updateGrantSummary(oTable,aData,selected) {
 	var dateLast = null;
 	if (checkedgrants.length>0) {
 		dateFirst = checkedgrants[0][2];
-		if (dateFirst) dateFirst = new Date(dateFirst).toLocaleDateString();
+		if (dateFirst) {
+			var tmpdate = new Date(dateFirst);
+			dateFirst = tmpdate.getFullYear()+'/'+tmpdate.getMonth()+'/'+tmpdate.getDate();
+		}
 		dateLast = checkedgrants[checkedgrants.length-1][2];
-		if (dateLast) dateLast = new Date(dateLast).toLocaleDateString();
+		if (dateLast) {
+			var tmp = new Date(dateLast);
+			dateLast = tmpdate.getFullYear()+'/'+tmpdate.getMonth()+'/'+tmpdate.getDate();
+		}
 	}
 	$("#summary_datefirst").html(dateFirst);
 	$("#summary_datelast").html(dateLast);	
@@ -1642,7 +1655,7 @@ function calcPIPropDetails(v) {
 			} else {
 				var date = new Date(propsummarydata[propid]["request"]["date"]);
 			}
-			requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
+			if (propsummarydata[propid]["request"]) requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 			if (!mindate) mindate = date;
 			else if (date < mindate) mindate = date;
 			if (!maxdate) maxdate = date;
