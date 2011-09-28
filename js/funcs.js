@@ -139,9 +139,12 @@ function loadTopics(data) {
 			aaData[i][7] = ((aaData[i][5]/aaData[i][6])*100).toFixed(2);
 		}
 		if (aaData[i][5]>maxAwardCount) maxAwardCount = aaData[i][5];
-		if (aaData[i][7]>maxFundingRate) maxFundingRate = aaData[i][7];
+		if (parseFloat(aaData[i][7])>maxFundingRate) {
+			maxFundingRate = aaData[i][7];
+		}
 	}
-//console.log(maxAwardCount);	
+//console.log(maxAwardCount);
+//console.log(maxFundingRate);	
 //alert(maxProposalCount);	
 
 	//set the number of orgs selected

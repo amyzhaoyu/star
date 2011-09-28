@@ -66,14 +66,8 @@
 	        </tr>
 	        <tr>
 	          <td><strong>Show</strong></td>
-	          <td>
-	         	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded (up to last Fiscal Year)</label></p>
-	<script>
-				if (proposalaccessallowed) {
-					document.write('<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>');
-					document.write('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined (up to last Fiscal Year)</label></p>');
-				}
-	</script>			
+	          <td id="prop_status_container">
+	         	<p><input type="checkbox" checked id = "prop_status_award" name = "prop_status" value = "award"><label for="prop_status_award">Awarded (up to last Fiscal Year)</label></p>			
 	          </td>
 	        </tr>
 	        <tr>

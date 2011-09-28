@@ -27,24 +27,13 @@
 
 	<script>
 
-	/* 	var proposalaccessallowed = false;
-		var apiurl = "http://readidata.nitrd.gov/py/api.py/";
-		//initialize the access status and api url
-		$.ajax({
-			async: false,
-	        url: 'http://readidata.nitrd.gov/star/fetch.html?jsonpcallback=?',
-	        success: function(data) {
-	console.log(data);	
-	  //          var proposalaccessallowed = true;
-	//			var apiurl = "http://128.150.10.70/py/api.py/";
-	        }
-	    });
-	*/
+	var proposalaccessallowed = false;
+	var apiurl = "http://readidata.nitrd.gov/star/py/api.py/";
 	
 	//initialize the access status and api url
 	//inside the network
-	var proposalaccessallowed = true;
-	var apiurl = "http://128.150.10.70/py/api.py/";
+	//var proposalaccessallowed = true;
+	//var apiurl = "http://128.150.10.70/py/api.py/";
 	//outside the network
 	//var proposalaccessallowed = false;
 	//var apiurl = "http://readidata.nitrd.gov/star/py/api.py/";

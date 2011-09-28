@@ -935,7 +935,7 @@ function createTable(tab, data)
 					}					
 				],
 				"aaData": aaData,
-				"aaSorting": [[2, 'desc']]
+				"aaSorting": [[1, 'asc']]
 			});
 			 {* END OF INSTITUTIONS SECTION *}
 		} else if (tab == "topics_tab"){

@@ -4,6 +4,25 @@
 var propsummarydata = {};
 
 $(document).ready(function() {
+	// Check to see if we have access to nsfstarmetrics server 
+	$.ajax({
+		url: "http://128.150.10.70/py/api.py/access",
+		dataType: 'JSONP',
+		timeout: 2000,
+		success: function(data) {
+			console.log(data);
+			proposalaccessallowed = true;
+			apiurl = "http://128.150.10.70/py/api.py/";
+			$('#prop_status_container').append('<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>');
+			$('#prop_status_container').append('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined (up to last Fiscal Year)</label></p>');
+console.log(apiurl);
+		},
+		error: function(data) {
+			console.log(data);
+		},
+	});
+
+
 	// TableTools defaults
 	TableTools.DEFAULTS.aButtons = [
 						{
