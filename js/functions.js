@@ -10,16 +10,21 @@ $(document).ready(function() {
 		dataType: 'JSONP',
 		timeout: 2000,
 		success: function(data) {
+//alert('hello');
 			console.log(data);
 			proposalaccessallowed = true;
 			apiurl = "http://128.150.10.70/py/api.py/";
-			$('#prop_status_container').append('<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>');
-			$('#prop_status_container').append('<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined (up to last Fiscal Year)</label></p>');
+			var tmp = $('#prop_status_container').html();
+			tmp += '<p><input type="checkbox" checked id = "prop_status_propose" name = "prop_status" value = "propose"><label for="prop_status_propose">Proposed</label></p>';
+			tmp += '<p><input type="checkbox" checked id = "prop_status_decline" name = "prop_status" value = "decline"><label for="prop_status_decline">Declined (up to last Fiscal Year)</label></p>';
+//alert(tmp);
+			$('#prop_status_container').html(tmp);
 console.log(apiurl);
 		},
 		error: function(data) {
+//alert('boo');
 			console.log(data);
-		},
+		}
 	});
 
 
@@ -1395,7 +1400,7 @@ function summarizePI() {
 					if (propsummarydata[propid]["awarded"]["dollar"])
 						awardfunding += parseInt(propsummarydata[propid]["awarded"]["dollar"]);
 				}
-				requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
+				if (propsummarydata[propid]["request"]) requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 			}
 		}
 		tmp['awardcount'] = awardcount;
@@ -1532,7 +1537,7 @@ function summarizeOrg() {
 					if (propsummarydata[propid]["awarded"]["dollar"])
 						awardfunding += parseInt(propsummarydata[propid]["awarded"]["dollar"]);
 				}
-				requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
+				if (propsummarydata[propid]["request"]) requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 			}
 		}
 		tmp['awardcount'] = awardcount;

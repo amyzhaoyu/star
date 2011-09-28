@@ -12,7 +12,7 @@ console.log(apiurl);
 		},
 		error: function(data) {
 			console.log(data);
-		},
+		}
 	});
 	$.data($("body").get(0), "orgSelect", $("#orgs").html());
 	$("#orgs").val("CHE");

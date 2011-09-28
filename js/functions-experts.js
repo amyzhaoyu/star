@@ -22,7 +22,7 @@ console.log(apiurl);
 			//load all topics to start
 			getTopics();
 			console.log(data);
-		},
+		}
 	});
 
 
@@ -774,7 +774,7 @@ function summarizePI() {
 				} else {
 					var date = new Date(propsummarydata[propid]["request"]["date"]);
 				}
-				requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
+				if (propsummarydata[propid]["request"]) requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 				if (!mindate) mindate = date;
 				else if (date < mindate) mindate = date;
 				if (!maxdate) maxdate = date;
@@ -883,7 +883,7 @@ function calcPIPropDetails(v) {
 			} else {
 				var date = new Date(propsummarydata[propid]["request"]["date"]);
 			}
-			requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
+			if (propsummarydata[propid]["request"]) requestfunding += parseInt(propsummarydata[propid]["request"]["dollar"]);						
 			if (!mindate) mindate = date;
 			else if (date < mindate) mindate = date;
 			if (!maxdate) maxdate = date;
