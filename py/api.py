@@ -1,28 +1,12 @@
 from mod_python import apache
 import sys
-sys.path.append("/home/ron/Govt/Govt-API/NSF/RptSql/py")
 from objectClasses import *
-
-
-#  - ID (specific to each object)
-#
-#  - Year (> < - >= <=) .. between .... getYear (CHECK)
-#  - Type (a)ward, (d)ecline, (p)roposal
-#
-# Prop == year_r
-# PIs
-# Org
-#
-# Topic == awarded_year
-#  - Division
-#
-# search*
-
+from config import *
 
 ###########################
 
-full = False
-server = "readidata"
+full = api["full"]
+server = api["server"]
 
 ###########################
 

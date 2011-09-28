@@ -136,7 +136,7 @@ $(document).ready(function() {
 
 	$('#tabs').tabs({
 		select: function(event, ui) {
-			selTab = ["prop", "grant", "pi", "org", "topics_tab"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
+			selTab = ["prop", "grant", "pi", "org", "topics_tab", "patents", "publications"][ui.index]; //"divs",  put that back before "topics_tab" to reactivate the divs
 //console.log(query_nsfDiv);			
 //console.log(query_topics);
 //alert(selTab);
